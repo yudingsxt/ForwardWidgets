@@ -5,7 +5,7 @@ WidgetMetadata = {
   title: "榜单🔍聚合", // Combined title
   description: "聚合豆瓣、TMDB、IMDB 和 Bangumi 的电影、剧集、动画片单与榜单", // Combined description
   author: "阿米诺斯", // Combined authors
-  site: "", // Combined sites
+  site: "https://github.com/quantumultxx/FW-Widgets", // Combined sites
   version: "1.1.0", // Updated version
   requiredVersion: "0.0.1", // Keep the minimum required version
   modules: [
