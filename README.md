@@ -1,14 +1,14 @@
 # FW-Widgets
 <p align="center">
   <br>
-  <img width="150" src="./icon.png">
+  <img width="150" src="./IMG_2812.png">
   <br>
   <br>
 </p>
 
 <div align=center>
     
-[**简体中文 🇨🇳**](README.md) / [**English 🇺🇸**](README_EN.md)
+[**简体中文 🇨🇳**](README.md)
 
 </div>
 
