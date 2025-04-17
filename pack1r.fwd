@@ -1,6 +1,6 @@
 {
-  "title": "缝合怪",
-  "description": "A collection of widgets created by 缝合怪",
+  "title": "阿米诺斯",
+  "description": "A collection of widgets created by 阿米诺斯",
   "icon": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/IMG_2812.png",
   "widgets": [
     {
@@ -9,7 +9,7 @@
       "description": "解析豆瓣、TMDB、IMDB和Bangumi的电影、剧集、动画片单与榜单",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
-      "author": "缝合怪",
+      "author": "阿米诺斯",
       "url": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/ForwardWidgets.js"
     }
   ]
