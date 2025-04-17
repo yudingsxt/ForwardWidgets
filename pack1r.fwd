@@ -1,15 +1,16 @@
 {
-  "title": "pack1r's Widgets",
+  "title": "缝合怪",
   "description": "A collection of widgets created by pack1r",
   "icon": "https://github.com/pack1r/ForwardWidgets/raw/main/icon.png",
   "widgets": [
     {
       "id": "douban",
-      "title": "豆瓣",
-      "description": "解析豆瓣片单，获取视频信息",
+      "title": "聚合片单",
+      "description": "解析豆瓣、TMDB、IMDB和Bangumi的电
+影、剧集、动画片单与榜单",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
-      "author": "pack1r",
+      "author": "缝合怪",
       "url": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/ForwardWidgets.js"
     }
   ]
