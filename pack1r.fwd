@@ -4,7 +4,7 @@
   "icon": "https://github.com/pack1r/ForwardWidgets/raw/main/icon.png",
   "widgets": [
     {
-      "id": "douban",
+      "id": "豆瓣、TMDB、IMDB、Bangumi",
       "title": "聚合片单",
       "description": "解析豆瓣、TMDB、IMDB和Bangumi的电
 影、剧集、动画片单与榜单",
