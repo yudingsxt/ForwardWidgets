@@ -3,7 +3,7 @@
 WidgetMetadata = {
   id: "forward.combined.media.lists", // New unique ID for the combined widget
   title: "榜单🔍聚合", // Combined title
-  description: "聚合豆瓣、TMDB、IMDB 和 Bangumi 的电影、剧集、动画片单与榜单", // Combined description
+  description: "聚合豆瓣、TMDB、IMDB和 Bangumi的影视动画榜单", // Combined description
   author: "阿米诺斯", // Combined authors
   site: "https://github.com/quantumultxx/FW-Widgets", // Combined sites
   version: "1.1.0", // Updated version
