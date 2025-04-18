@@ -6,7 +6,7 @@
     {
       "id": "douban",
       "title": "榜单🔍聚合",
-      "description": "解析豆瓣、TMDB、IMDB和Bangumi的电影、剧集、动画片单与榜单",
+      "description": "解析豆瓣、TMDB、IMDB和 Bangumi的影视动画榜单",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
       "author": "阿米诺斯",
