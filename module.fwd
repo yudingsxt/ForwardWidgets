@@ -4,7 +4,7 @@
   "icon": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/IMG_2812.png",
   "widgets": [
     {
-      "id": "douban",
+      "id": "forward.combined.media.lists",
       "title": "榜单🔍聚合",
       "description": "解析豆瓣、TMDB、IMDB和 Bangumi的影视动画榜单",
       "requiredVersion": "0.0.1",
