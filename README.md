@@ -1,7 +1,7 @@
 # FW-Widgets
 <p align="center">
   <br>
-  <img width="150" src="./IMG_2812.png">
+  <img width="150" src="./icon.png">
   <br>
   <br>
 </p>
