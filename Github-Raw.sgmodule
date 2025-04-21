@@ -7,6 +7,8 @@
 
 [Script]
 GitHub Raw Link = type=http-response,pattern=^https://github\.com/.*/blob/.*,requires-body=true,max-size=0,timeout=30,script=body-only
+[MITM]
+hostname = %APPEND% github.com
 const modify = $response.body;
 if (!modify) $done({});
 
@@ -118,6 +120,3 @@ const script = `
 
 const modified = modify.replace('</body>', `<script>${script}</script></body>`);
 $done({ body: modified });
-
-[MITM]
-hostname = %APPEND% github.com
