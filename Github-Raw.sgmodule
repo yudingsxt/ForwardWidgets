@@ -1,0 +1,11 @@
+#!name=GitHub Raw 快速访问
+#!desc=在GitHub文件页面添加一键打开Raw原始文件的按钮
+#!icon=https://github.githubassets.com/favicons/favicon.png
+#!module-type=script
+
+[Script]
+GitHub Raw Link = type=http-response,pattern=^https://github\.com/.*/blob/.*,requires-body=true,max-size=0,timeout=10,script-pathhttps://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/Github-raw-link.js
+script-echo-response = false
+
+[MITM]
+hostname = github.com
