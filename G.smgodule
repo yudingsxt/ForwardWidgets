@@ -1,0 +1,162 @@
+#!name=GitHub RAW 终极一体版
+#!desc=在 GitHub 文件页强制显示 RAW 按钮（Safari 完美兼容）
+
+
+[Script]
+GitHub RAW Ultimate = type=http-response,pattern=^https://github\.com/.*,requires-body=true,max-size=0,timeout=60,script=body-only
+const body = $response.body;
+if (!body || !body.includes('</body>')) $done({});
+
+const ultimateScript = `
+<!-- 强制样式注入 -->
+<style id="surge-raw-style">
+  #surge-github-raw-btn {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    background-color: #238636 !important;
+    color: white !important;
+    border: none !important;
+    padding: 7px 16px !important;
+    border-radius: 6px !important;
+    font-size: 14px !important;
+    font-weight: 600 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
+    box-shadow: 0 1px 5px rgba(0,0,0,0.2) !important;
+    z-index: 2147483647 !important; /* 最大可能值 */
+    cursor: pointer !important;
+    display: flex !important;
+    align-items: center !important;
+    opacity: 0.9 !important;
+    transition: all 0.2s !important;
+  }
+  #surge-github-raw-btn:hover {
+    opacity: 1 !important;
+    background-color: #2ea043 !important;
+  }
+  #surge-github-raw-btn svg {
+    margin-right: 6px !important;
+  }
+</style>
+
+<!-- 主逻辑脚本 -->
+<script id="surge-raw-script">
+(function() {
+  // 增强版配置
+  const CONFIG = {
+    btnId: 'surge-github-raw-btn',
+    maxAttempts: 15,      // 最大尝试次数
+    retryDelay: 400,      // 重试间隔(ms)
+    pjaxWait: 1000,       // PJAX 等待时间(ms)
+    debug: true           // 调试模式
+  };
+
+  // 调试输出
+  function debugLog(...args) {
+    if (CONFIG.debug) console.log('[Surge RAW]', ...args);
+  }
+
+  // 是否为文件页面
+  function isTargetPage() {
+    try {
+      const isBlob = /\\/blob\\//.test(window.location.pathname);
+      const hasContent = document.querySelector('.blob-wrapper') || 
+                        document.querySelector('[data-testid="code-block-content"]');
+      return isBlob && hasContent;
+    } catch (e) {
+      debugLog('Page check error:', e);
+      return false;
+    }
+  }
+
+  // 创建RAW按钮
+  function createButton() {
+    try {
+      if (document.getElementById(CONFIG.btnId)) {
+        debugLog('Button already exists');
+        return true;
+      }
+
+      const btn = document.createElement('button');
+      btn.id = CONFIG.btnId;
+      btn.title = 'Open Raw Content (by Surge)';
+      btn.innerHTML = \`
+        <svg width="16" height="16" viewBox="0 0 16 16">
+          <path fill="white" d="M10.604 1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.06-1.06l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1zM3.75 2A1.75 1.75 0 0 0 2 3.75v8.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0 0 14 12.25v-5.5a.75.75 0 0 1 1.5 0v5.5a3.25 3.25 0 0 1-3.25 3.25h-8.5A3.25 3.25 0 0 1 0 12.25v-8.5A3.25 3.25 0 0 1 3.25 1h5.5a.75.75 0 0 1 0 1.5h-5.5z"/>
+        </svg>
+        RAW
+      \`;
+
+      // 安全打开链接（兼容所有浏览器）
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        const rawUrl = window.location.href
+          .replace('/blob/', '/raw/')
+          .replace('github.com', 'raw.githubusercontent.com');
+        const a = document.createElement('a');
+        a.href = rawUrl;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        setTimeout(() => document.body.removeChild(a), 100);
+      });
+
+      document.body.appendChild(btn);
+      debugLog('Button injected successfully');
+      return true;
+    } catch (e) {
+      debugLog('Button creation failed:', e);
+      return false;
+    }
+  }
+
+  // 主注入逻辑
+  function attemptInjection(attempt = 1) {
+    if (attempt > CONFIG.maxAttempts) {
+      debugLog('Max attempts reached');
+      return;
+    }
+
+    debugLog(\`Attempt \${attempt}/\${CONFIG.maxAttempts}\`);
+    
+    if (isTargetPage()) {
+      if (createButton()) return;
+    }
+
+    setTimeout(() => attemptInjection(attempt + 1), CONFIG.retryDelay);
+  }
+
+  // 初始注入
+  function init() {
+    if (document.readyState === 'complete') {
+      attemptInjection();
+    } else {
+      window.addEventListener('load', () => attemptInjection());
+      document.addEventListener('DOMContentLoaded', () => attemptInjection());
+    }
+  }
+
+  // PJAX处理（GitHub的AJAX导航）
+  function setupPjaxHandler() {
+    document.addEventListener('pjax:end', () => {
+      setTimeout(attemptInjection, CONFIG.pjaxWait);
+    });
+  }
+
+  // 启动执行
+  init();
+  setupPjaxHandler();
+})();
+</script>
+`;
+
+// 双重注入确保可靠性
+const modifiedBody = body
+  .replace('</head>', '<!-- Surge RAW Button Style --></head>')
+  .replace('</body>', ultimateScript + '</body>');
+
+$done({ body: modifiedBody });
+
+[MITM]
+hostname = %APPEND% github.com
