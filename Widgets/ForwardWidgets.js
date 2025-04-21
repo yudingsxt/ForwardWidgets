@@ -4,7 +4,7 @@ WidgetMetadata = {
   id: "forward.combined.media.lists",
   title: "榜单🔍聚合",
   description: "聚合豆瓣、TMDB、IMDB 和 Bangumi 的电影、剧集、动画片单与榜单",
-  author: "𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂",
+  author: "阿米诺斯",
   site: "https://github.com/quantumultxx/FW-Widgets",
   version: "1.2.0",
   requiredVersion: "0.0.1",
