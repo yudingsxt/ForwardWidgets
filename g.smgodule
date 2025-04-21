@@ -1,0 +1,22 @@
+[Script]
+GitHub Raw 按钮 = type=page,pattern=^https?://github\.com/.*/blob/,requires-body=true,script=
+    (() => {
+        const rawUrl = window.location.href
+            .replace("/blob/", "/")
+            .replace("github.com", "raw.githubusercontent.com");
+        
+        const rawButton = document.createElement("a");
+        rawButton.href = rawUrl;
+        rawButton.textContent = "🔄 Raw";
+        rawButton.style.position = "fixed";
+        rawButton.style.right = "20px";
+        rawButton.style.bottom = "20px";
+        rawButton.style.backgroundColor = "#24292e";
+        rawButton.style.color = "white";
+        rawButton.style.padding = "8px 16px";
+        rawButton.style.borderRadius = "6px";
+        rawButton.style.zIndex = "9999";
+        rawButton.style.textDecoration = "none";
+
+        document.body.appendChild(rawButton);
+    })();
