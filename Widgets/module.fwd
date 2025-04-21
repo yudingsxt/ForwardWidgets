@@ -4,6 +4,24 @@
   "icon": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/icon.png",
   "widgets": [
     {
+      "id": "douban",
+      "title": "豆瓣",
+      "description": "解析豆瓣片单，获取视频信息",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.0",
+      "author": "pack1r",
+      "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/douban.js"
+    },
+    {
+      "id": "imdb",
+      "title": "IMDB",
+      "description": "解析IMDB片单，获取视频信息",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.0",
+      "author": "pack1r",
+      "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/imdb.js"
+    },
+    {
       "id": "hot_picks",
       "title": "热门精选",
       "description": "获取最新热播剧和热门影片推荐",
