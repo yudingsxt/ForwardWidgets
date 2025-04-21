@@ -1,54 +1,52 @@
-#!name=GitHub RAW 终极修复版
-#!desc=强制在 iOS 设备显示 RAW 按钮
+#!name=GitHub RAW 按钮 (XR专享版)
+#!desc=为iPhone XR优化的GitHub RAW按钮
 
 [Script]
-GitHub RAW Ultimate = type=http-response,pattern=^https://github\.com/.*,requires-body=true,max-size=0,timeout=60,script=body-only
+GitHub RAW XR = type=http-response,pattern=^https://github\.com/.*,requires-body=true,max-size=0,timeout=60,script=body-only
 const body = $response.body;
-if (!body) $done({});
+if (!body || !body.includes('</body>')) $done({});
 
-const rawScript = `
-<!-- 强制样式 -->
+const xrScript = `
+<!-- XR专属样式 -->
 <style>
-  #surge-raw-btn-ultimate {
+  #xr-raw-btn {
     position: fixed !important;
-    bottom: 30px !important; /* 避开iOS底部工具栏 */
+    bottom: 25px !important; /* XR底部安全区域 */
     right: 20px !important;
     background-color: #238636 !important;
     color: white !important;
-    border: 1px solid rgba(240,246,252,0.1) !important;
-    padding: 12px 20px !important; /* 增大触摸区域 */
-    border-radius: 8px !important;
-    font-size: 16px !important;
+    border: none !important;
+    padding: 11px 22px !important; /* XR最佳触摸尺寸 */
+    border-radius: 9px !important; /* XR圆角更大 */
+    font-size: 16px !important; /* XR更大字体 */
     font-weight: 600 !important;
     font-family: -apple-system, BlinkMacSystemFont !important;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15) !important;
-    z-index: 2147483647 !important; /* iOS最大z-index */
+    box-shadow: 0 4px 14px rgba(0,0,0,0.18) !important;
+    z-index: 2147483647 !important;
     display: flex !important;
     align-items: center !important;
-    opacity: 0.95 !important;
-    transition: all 0.2s !important;
     -webkit-tap-highlight-color: transparent !important;
+    transform: translateZ(0) !important; /* 触发XR硬件加速 */
+  }
+  #xr-raw-btn:active {
+    transform: scale(0.96) translateZ(0) !important;
+    background-color: #1f7d34 !important;
   }
 </style>
 
-<!-- 终极注入脚本 -->
+<!-- XR专用脚本 -->
 <script>
-(function() {
-  const ULTIMATE_ID = 'surge-raw-btn-ultimate';
-  const MAX_RETRIES = 10;
-  let retryCount = 0;
+(function(){
+  // XR设备检测
+  const isXR = /iPhone11,8/.test(navigator.platform) || 
+              (navigator.maxTouchPoints > 0 && window.screen.width === 414 && window.screen.height === 896);
   
-  function isGitHubBlobPage() {
-    return /\\/blob\\//.test(window.location.pathname) && 
-          (document.querySelector('.blob-wrapper') || 
-           document.querySelector('[data-testid="code-block-content"]'));
-  }
-  
-  function createUltimateButton() {
-    if (document.getElementById(ULTIMATE_ID)) return true;
+  // XR专用按钮创建
+  function createXRButton() {
+    if (document.getElementById('xr-raw-btn')) return;
     
     const btn = document.createElement('button');
-    btn.id = ULTIMATE_ID;
+    btn.id = 'xr-raw-btn';
     btn.innerHTML = \`
       <svg width="20" height="20" viewBox="0 0 16 16" style="margin-right:8px">
         <path fill="white" d="M10.604 1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.06-1.06l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1zM3.75 2A1.75 1.75 0 0 0 2 3.75v8.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0 0 14 12.25v-5.5a.75.75 0 0 1 1.5 0v5.5a3.25 3.25 0 0 1-3.25 3.25h-8.5A3.25 3.25 0 0 1 0 12.25v-8.5A3.25 3.25 0 0 1 3.25 1h5.5a.75.75 0 0 1 0 1.5h-5.5z"/>
@@ -56,59 +54,66 @@ const rawScript = `
       RAW
     \`;
     
-    // iOS专用点击处理
+    // XR优化点击事件
     btn.addEventListener('click', function(e) {
       e.preventDefault();
       const rawUrl = window.location.href
         .replace('/blob/', '/raw/')
         .replace('github.com', 'raw.githubusercontent.com');
       
-      // iOS最可靠的打开方式
-      const link = document.createElement('a');
-      link.href = rawUrl;
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      document.body.appendChild(link);
-      link.click();
-      setTimeout(() => document.body.removeChild(link), 200);
+      // XR最稳定跳转方式
+      const iframe = document.createElement('iframe');
+      iframe.style.cssText = 'position:absolute;width:1px;height:1px;left:-9999px;';
+      iframe.src = rawUrl;
+      document.body.appendChild(iframe);
+      setTimeout(() => iframe.remove(), 3000);
     });
     
     document.body.appendChild(btn);
-    console.log('[Surge] RAW按钮注入成功');
-    return true;
   }
-  
-  function attemptInjection() {
-    if (retryCount >= MAX_RETRIES) return;
-    retryCount++;
+
+  // XR专用DOM检测
+  function checkXRPage() {
+    if (!isXR) return;
     
-    if (isGitHubBlobPage()) {
-      if (!createUltimateButton()) {
-        setTimeout(attemptInjection, 500);
-      }
-    } else {
-      setTimeout(attemptInjection, 500);
+    const blobContent = document.querySelector('.blob-wrapper, [data-testid="code-block-content"]');
+    if (blobContent) {
+      createXRButton();
+      return true;
     }
+    return false;
   }
-  
-  // 初始注入
-  attemptInjection();
-  
-  // 处理GitHub的PJAX导航
+
+  // 初始检查
+  if (document.readyState === 'complete') {
+    checkXRPage();
+  } else {
+    window.addEventListener('load', checkXRPage);
+    document.addEventListener('DOMContentLoaded', checkXRPage);
+  }
+
+  // XR的PJAX处理
   document.addEventListener('pjax:end', function() {
-    retryCount = 0;
-    setTimeout(attemptInjection, 1000);
+    setTimeout(checkXRPage, 800);
   });
+
+  // XR备用检测（针对动态加载）
+  let xrCheckCount = 0;
+  const xrCheckInterval = setInterval(() => {
+    if (checkXRPage() || xrCheckCount++ > 15) {
+      clearInterval(xrCheckInterval);
+    }
+  }, 500);
 })();
 </script>
 `;
 
-// 双重注入确保可靠性
-const modifiedBody = body
-  .replace('</head>', '<style>'+rawScript+'</style></head>')
-  .replace('</body>', '<script>'+rawScript+'</script></body>');
+// 针对XR的body处理
+const modified = body
+  .replace('</head>', '<style>'+xrScript+'</style></head>')
+  .replace('</body>', '<script>'+xrScript+'</script></body>');
 
-$done({ body: modifiedBody });
+$done({ body: modified });
 
 [MITM]
 hostname = %APPEND% github.com
