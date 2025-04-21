@@ -1,0 +1,110 @@
+#!name=GitHub Raw 按钮修复版
+#!desc=强制在GitHub文件页显示RAW按钮(Safari兼容)
+
+[Script]
+GitHub Raw Force = type=http-response,pattern=^https://github\.com/.*,requires-body=true,max-size=0,timeout=60,script=body-only
+const body = $response.body;
+if (!body || !body.includes('</body>')) $done({});
+
+const forceScript = `
+(() => {
+    /* 强制注入检查 */
+    const FORCE_ID = 'github-raw-force-btn';
+    const MAX_WAIT = 5000; // 最大等待时间(ms)
+    const RETRY_DELAY = 300; // 重试间隔(ms)
+    
+    let startTime = Date.now();
+    
+    function isFileView() {
+        return /\\/blob\\//.test(location.pathname) && 
+               (document.querySelector('.blob-wrapper') || 
+                document.querySelector('[data-testid="code-block-content"]'));
+    }
+    
+    function createBtn() {
+        if (document.getElementById(FORCE_ID)) return;
+        
+        const btn = document.createElement('button');
+        btn.id = FORCE_ID;
+        btn.innerHTML = \`
+            <svg width="16" height="16" viewBox="0 0 16 16" style="margin-right:6px">
+                <path fill="#fff" d="M10.604 1h4.146a.25.25 0 0 1 .25.25v4.146a.25.25 0 0 1-.427.177L13.03 4.03 9.28 7.78a.75.75 0 0 1-1.06-1.06l3.75-3.75-1.543-1.543A.25.25 0 0 1 10.604 1zM3.75 2A1.75 1.75 0 0 0 2 3.75v8.5c0 .966.784 1.75 1.75 1.75h8.5A1.75 1.75 0 0 0 14 12.25v-5.5a.75.75 0 0 1 1.5 0v5.5a3.25 3.25 0 0 1-3.25 3.25h-8.5A3.25 3.25 0 0 1 0 12.25v-8.5A3.25 3.25 0 0 1 3.25 1h5.5a.75.75 0 0 1 0 1.5h-5.5z"/>
+            </svg>
+            RAW
+        \`;
+        
+        Object.assign(btn.style, {
+            position: 'fixed',
+            bottom: '20px',
+            right: '20px',
+            backgroundColor: '#238636',
+            color: 'white',
+            border: 'none',
+            padding: '7px 16px',
+            borderRadius: '6px',
+            fontSize: '14px',
+            fontWeight: '600',
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+            boxShadow: '0 1px 5px rgba(0,0,0,0.2)',
+            zIndex: '99999',
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            opacity: '0.9',
+            transition: 'all 0.2s'
+        });
+        
+        btn.addEventListener('click', () => {
+            window.open(
+                location.href
+                    .replace('/blob/', '/raw/')
+                    .replace('github.com', 'raw.githubusercontent.com'),
+                '_blank'
+            );
+        });
+        
+        // 悬停效果
+        btn.addEventListener('mouseenter', () => {
+            btn.style.opacity = '1';
+            btn.style.backgroundColor = '#2ea043';
+        });
+        btn.addEventListener('mouseleave', () => {
+            btn.style.opacity = '0.9';
+            btn.style.backgroundColor = '#238636';
+        });
+        
+        document.body.appendChild(btn);
+        console.log('[Surge] GitHub RAW按钮已强制注入');
+    }
+    
+    /* 主注入逻辑 */
+    function checkAndInject() {
+        if (isFileView()) {
+            createBtn();
+        } else if (Date.now() - startTime < MAX_WAIT) {
+            setTimeout(checkAndInject, RETRY_DELAY);
+        }
+    }
+    
+    /* 启动方式 */
+    if (document.readyState === 'complete') {
+        checkAndInject();
+    } else {
+        window.addEventListener('load', checkAndInject);
+        document.addEventListener('DOMContentLoaded', checkAndInject);
+    }
+    
+    /* PJAX处理 */
+    document.addEventListener('pjax:end', () => {
+        startTime = Date.now();
+        checkAndInject();
+    });
+})();
+`;
+
+// 强制注入到所有GitHub页面(由脚本内部判断)
+const modified = body.replace('</body>', `<script>${forceScript}</script></body>`);
+$done({ body: modified });
+
+[MITM]
+hostname = %APPEND% github.com
