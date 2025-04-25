@@ -5,8 +5,8 @@ WidgetMetadata = {
   title: "榜单🔍聚合",
   description: "聚合豆瓣、TMDB、IMDB 和 Bangumi 的电影、剧集、动画片单与榜单",
   author: "阿米诺斯",
-  site: "https://github.com/quantumultxx/FW-Widgets",
-  version: "1.2.0", // Refactor: Merge TMDB Popular movie/tv modules
+  site: "",
+  version: "1.1.45", // Refactor: Merge TMDB Popular movie/tv modules
   requiredVersion: "0.0.1",
   modules: [
     // --- 🔥 实时热点 (Real-time Hot) ---
@@ -76,9 +76,9 @@ WidgetMetadata = {
       ]
     },
 
-    // --- 🏆 精选榜单 (Curated Charts) ---
+    // --- 🏆 经典 Top 榜单 (Classic Top Charts) ---
     {
-      title: "📚 豆瓣 Top 250 电影",
+      title: "🏆 豆瓣 Top 250 - 电影",
       description: "豆瓣评分最高的 250 部电影",
       requiresWebView: false,
       functionName: "loadDoubanCardItems", // Uses the card loader which handles collections
@@ -89,7 +89,7 @@ WidgetMetadata = {
       ],
     },
     {
-      title: "💯 IMDb Top 250 电影",
+      title: "🏆 IMDb Top 250 - 电影",
       description: "IMDb 用户评分最高的 250 部电影",
       requiresWebView: false,
       functionName: "loadImdbCardItems",
@@ -98,7 +98,7 @@ WidgetMetadata = {
       ],
     },
     {
-      title: "💯 IMDb Top 250 剧集",
+      title: "🏆 IMDb Top 250 - 剧集",
       description: "IMDb 用户评分最高的 250 部剧集",
       requiresWebView: false,
       functionName: "loadImdbCardItems",
@@ -106,9 +106,10 @@ WidgetMetadata = {
         { name: "url", title: "🔗 列表地址", type: "constant", value: "https://www.imdb.com/chart/toptv/?ref_=nv_tvv_250" },
       ],
     },
+    // --- 📅 豆瓣周榜与自定义 (Douban Weekly & Custom) ---
      {
-      title: "🏆 豆瓣一周国内综艺", // Kept specific weeklies
-      description: "来自豆瓣的国内综艺周榜",
+      title: "📅 豆瓣 - 一周国内综艺榜",
+      description: "豆瓣国内综艺口碑周榜",
       requiresWebView: false,
       functionName: "loadDoubanCardItems",
       params: [
@@ -117,8 +118,8 @@ WidgetMetadata = {
       ]
     },
     {
-      title: "🌏 豆瓣一周国外综艺", // Kept specific weeklies
-      description: "来自豆瓣的全球综艺周榜",
+      title: "📅 豆瓣 - 一周全球综艺榜",
+      description: "豆瓣全球综艺口碑周榜",
       requiresWebView: false,
       functionName: "loadDoubanCardItems",
       params: [
@@ -127,19 +128,17 @@ WidgetMetadata = {
       ]
     },
      {
-      title: "📚 豆瓣自定义片单＆榜单", // Renamed general input module
-      description: "加载豆瓣官方榜单或用户豆列 (需输入 URL)",
+      title: "🔍 豆瓣 - 自定义榜单/豆列",
+      description: "加载豆瓣官方榜单或用户豆列 (输入URL)",
       requiresWebView: false,
       functionName: "loadDoubanCardItems",
       params: [
         {
-          name: "url", title: "🔗 列表地址", type: "input", description: "输入豆瓣片单或榜单地址 (subject_collection 或 doulist)",
+          name: "url", title: "🔗 列表地址", type: "input", description: "输入豆瓣榜单(subject_collection)或豆列(doulist)地址",
           placeholders: [
-            // Removed Top250 as it has its own entry now
             { title: "一周电影口碑榜", value: "https://m.douban.com/subject_collection/movie_weekly_best" },
             { title: "一周华语口碑剧集榜", value: "https://m.douban.com/subject_collection/tv_chinese_best_weekly" },
             { title: "一周全球口碑剧集榜", value: "https://m.douban.com/subject_collection/tv_global_best_weekly" },
-            // Removed weekly综艺 as they have their own entries
             { title: "第97届奥斯卡 (2025)", value: "https://m.douban.com/subject_collection/EC7I7ZDRA?type=rank" },
             { title: "豆瓣电影测试豆列", value: "https://www.douban.com/doulist/155718871/" }
           ]
@@ -148,16 +147,16 @@ WidgetMetadata = {
         { name: "limit", title: "🔢 每页数量", type: "constant", value: "20" }, // Keep limit consistent
       ],
     },
+    // --- 🔍 IMDb 自定义与探索 (IMDb Custom & Explore) ---
     {
-      title: "💯 IMDB 自定义榜单", // Renamed general input module
-      description: "解析 IMDB 热门电影/剧集等网页片单 (需输入 URL)",
+      title: "🔍 IMDb - 自定义榜单",
+      description: "加载 IMDb 网页榜单/片单 (输入URL)",
       requiresWebView: false,
       functionName: "loadImdbCardItems",
       params: [
         {
-          name: "url", title: "🔗 列表地址", type: "input", description: "输入 IMDB 片单或榜单地址",
+          name: "url", title: "🔗 列表地址", type: "input", description: "输入 IMDb 榜单或片单地址",
           placeholders: [
-            // Removed Top 250 as they have their own entry now
             { title: "时下热门电影", value: "https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm"},
             { title: "时下热门剧集", value: "https://www.imdb.com/chart/tvmeter/?ref_=nv_tvv_mptv"}
           ],
@@ -165,13 +164,13 @@ WidgetMetadata = {
       ],
     },
     {
-      title: "✨ IMDB 编辑推荐 ",
-      description: "通过 IMDB API 获取推荐列表 (可能需抓包)",
+      title: "💡 IMDb - 编辑推荐 (API)",
+      description: "通过 IMDb API 获取推荐列表 (需抓包获取URL)",
       requiresWebView: false,
       functionName: "loadImdbApiItems",
       params: [
         {
-          name: "url", title: "🔗 API 地址", type: "input", description: "输入 IMDB GraphQL API 地址 (需从浏览器网络请求中捕获)",
+          name: "url", title: "🔗 API 地址", type: "input", description: "输入 IMDb GraphQL API 地址 (需从浏览器网络请求中捕获)",
           placeholders: [
             { title: "例如：用户最爱 (Fan Favorites)", value: '在此粘贴捕获的URL' },
             { title: "例如：热门选择 (Top Picks)", value: '在此粘贴捕获的URL' },
@@ -180,10 +179,10 @@ WidgetMetadata = {
       ],
     },
 
-    // --- 🌸 动漫专区 (Anime Zone) ---
+    // --- 🌸 Bangumi 动画专区 (Bangumi Anime Zone) ---
     {
-        title: "🥇 Bangumi 动画总排行",
-        description: "按排名浏览 Bangumi 动画 (基于评分)",
+        title: "🏆 Bangumi - 动画总排行",
+        description: "按综合评分排名浏览 Bangumi 动画",
         requiresWebView: false,
         functionName: "loadBangumiRankings",
         params: [
@@ -191,8 +190,8 @@ WidgetMetadata = {
         ]
     },
     {
-        title: "🏷️ Bangumi 动画筛选浏览",
-        description: "按标签、年份、类型、题材、地区、受众筛选 Bangumi 动画",
+        title: "🏷️ Bangumi - 动画筛选浏览",
+        description: "按标签、年份、类型、题材等条件筛选 Bangumi 动画",
         requiresWebView: false,
         functionName: "loadBangumiBrowser",
         params: [
@@ -214,19 +213,20 @@ WidgetMetadata = {
         ]
     },
  {
-    title: "🗓️ Bangumi 放送日历", // 新标题
-    description: "查看指定日期或整周的 Bangumi 动画放送安排", // 新描述
+    title: "📅 Bangumi - 放送日历",
+    description: "查看 Bangumi 动画每日/每周放送时间表",
     requiresWebView: false,
-    functionName: "loadBangumiCalendarUnified", // 新的统一函数名
-    sectionMode: true, // 必须为 true，因为可能返回分段数据
+    functionName: "loadBangumiCalendarUnified",
+    sectionMode: true,
     params: [
         {
             name: "viewType", // 新增参数：视图类型
             title: "视图模式",
             type: "enumeration",
-            description: "选择查看单日放送还是整周概览",
-            value: "weekly", // 默认显示整周
+            description: "选择查看今日放送、指定单日放送还是整周概览", // Updated description
+            value: "today", // 默认显示今日
             enumOptions: [
+                { title: "今日放送", value: "today" }, // Added new option
                 { title: "整周视图 (按天分组)", value: "weekly" },
                 { title: "指定单日", value: "daily" }
             ]
@@ -254,10 +254,10 @@ WidgetMetadata = {
     ]
 },
 
-    // --- 🎬 探索发现 (Explore & Discover) ---
+    // --- 🧭 探索发现 (Explore & Discover) ---
     {
-      title: "👍 TMDB 热门内容", // Merged movie & tv
-      description: "TMDB 当前流行的电影或剧集 (按热度排序)", // Updated description
+      title: "👍 TMDB - 热门内容", // Merged movie & tv
+      description: "当前流行的电影或剧集 (按TMDB热度排序)", // Updated description
       requiresWebView: false,
       functionName: "tmdbPopular",
       params: [
@@ -281,8 +281,8 @@ WidgetMetadata = {
       ]
     },
      {
-      title: "✨ TMDB 热门人物", // Moved
-      description: "TMDB 当前热门人物 (演员/导演等)",
+      title: "🧑‍🤝‍🧑 TMDB - 热门人物", // Changed Emoji
+      description: "当前热门人物 (演员/导演等)",
       requiresWebView: false,
       functionName: "tmdbPopularPeople",
       params: [
@@ -291,8 +291,8 @@ WidgetMetadata = {
       ]
     },
     {
-      title: "👍 豆瓣电影推荐", // Keep simplified version
-      description: "按分类、地区、类型标签浏览豆瓣推荐电影",
+      title: "🧭 豆瓣 - 电影类型榜单",
+      description: "根据分类、地区、类型标签等条件筛选和浏览豆瓣电影",
       requiresWebView: false,
       functionName: "loadDoubanRecommendMovies",
       params: [
@@ -329,8 +329,8 @@ WidgetMetadata = {
       ],
     },
     {
-      title: "👍 豆瓣剧集推荐", // Keep simplified version
-      description: "按分类、类型浏览豆瓣推荐剧集/综艺",
+      title: "🧭 豆瓣 - 电视类型榜单",
+      description: "根据分类和类型筛选浏览豆瓣推荐的剧集或综艺节目",
       requiresWebView: false,
       functionName: "loadDoubanRecommendShows",
       params: [
@@ -453,22 +453,6 @@ WidgetMetadata = {
     },
 
     // --- 🔧 实用工具 (Utilities) ---
-    {
-      title: "🎧 OST搜索", // Moved
-      description: "生成影视原声带在主流音乐平台的搜索链接",
-      requiresWebView: false,
-      functionName: "generateSoundtrackSearchLinks",
-      params: [
-        { name: "title", title: "🎬 影视标题", type: "input", description: "输入电影或剧集名称", value: "", placeholders:[{title:"例如：星际穿越", value:"星际穿越"}, {title:"沙丘", value:"沙丘"}] },
-        {
-          name: "platforms", title: "🎶 平台", type: "enumeration", description: "选择要搜索的音乐平台", value: "all",
-          enumOptions: [
-            { title: "全部", value: "all" }, { title: "网易云音乐", value: "netease" }, { title: "QQ音乐", value: "qq" },
-            { title: "Apple Music", value: "apple" }, { title: "Spotify", value: "spotify" }
-          ]
-        }
-      ]
-    },
 
   ], // End of modules array
   search: {
@@ -504,26 +488,115 @@ function formatItemDescription(item) {
 
 
 // --- Douban Functions ---
-
+// 【已更新】主入口函数，根据 URL 类型分发任务 (增加 dispatch 处理)
 async function loadDoubanCardItems(params = {}) {
-  try {
-    console.log("开始解析豆瓣片单...");
-    console.log("参数:", params);
-    const url = params.url;
-    if (!url) throw new Error("缺少片单 URL");
-
-    if (url.includes("douban.com/doulist/")) {
-      return loadDoubanDefaultList(params);
-    } else if (url.includes("douban.com/subject_collection/")) {
-      return loadDoubanSubjectCollection(params);
-    } else {
-        throw new Error("不支持的豆瓣 URL 格式");
+    try {
+      console.log("开始解析豆瓣片单/豆列...");
+      console.log("参数:", params);
+      const url = params.url;
+      if (!url || typeof url !== 'string' || url.trim() === '') {
+          return [{ id: `info-empty-url-${Date.now()}`, type: "info", title: "请输入网址", description: "请在上方输入框粘贴豆瓣榜单或豆列的网址。" }];
+      }
+  
+      const trimmedUrl = url.trim();
+  
+      // 1. 优先处理 doulist (网页解析, www.douban.com)
+      if (trimmedUrl.includes("www.douban.com/doulist/")) {
+        console.log("检测到豆列 URL (doulist)");
+        return loadDoubanDefaultList(params);
+      }
+      // 2. 处理 subject_collection (移动版 API, m.douban.com)
+      // 注意: 确保 URL 是 m.douban.com 的格式或者能从中提取 ID
+      else if (trimmedUrl.includes("m.douban.com/subject_collection/")) {
+        console.log("检测到移动版 subject_collection URL");
+        return loadDoubanSubjectCollection(params); // 直接调用，因为它处理 m.douban.com/rexxar/api
+      }
+      // 3. 【新增】处理 doubanapp/dispatch 格式
+      else if (trimmedUrl.includes("/doubanapp/dispatch") && trimmedUrl.includes("uri=")) {
+        console.log("检测到 doubanapp/dispatch URL");
+        const uriMatch = trimmedUrl.match(/uri=([^&]+)/); // 提取 uri 参数值
+        if (uriMatch && uriMatch[1]) {
+          let decodedUri = "";
+          try {
+              // 对提取到的 uri 值进行解码
+              decodedUri = decodeURIComponent(uriMatch[1]);
+              console.log("提取并解码的 URI:", decodedUri);
+          } catch (e) {
+              console.error("解码 URI 参数失败:", e);
+              return [{ id: `info-dispatch-decode-${Date.now()}`, type: "info", title: "解码失败", description: "无法解码 dispatch URL 中的 URI 参数，请检查网址是否完整或损坏。" }];
+          }
+  
+          // 判断解码后的 uri 类型并构造有效 URL
+          let effectiveUrl = decodedUri;
+          // 如果是 subject_collection，构造成 m.douban.com 的 API 调用基础 URL
+          if (effectiveUrl.startsWith('/subject_collection/')) {
+               // 注意：我们需要的是API调用基础，而不是网页地址，所以 loadDoubanSubjectCollection 会处理
+              effectiveUrl = `https://m.douban.com${effectiveUrl}`; // 构造一个可供 loadDoubanSubjectCollection 识别的 URL
+              console.log("Dispatch URI 包含 subject_collection, 构建的有效 URL:", effectiveUrl);
+              // 创建临时参数，替换 url
+              const tempParams = { ...params, url: effectiveUrl };
+              // 调用 subject_collection 的处理函数
+              return loadDoubanSubjectCollection(tempParams);
+          }
+          // 如果是 doulist，构造成 www.douban.com 的网页地址
+          else if (effectiveUrl.startsWith('/doulist/')) {
+              effectiveUrl = `https://www.douban.com${effectiveUrl}`;
+              console.log("Dispatch URI 包含 doulist, 构建的有效 URL:", effectiveUrl);
+               // 创建临时参数，替换 url
+              const tempParams = { ...params, url: effectiveUrl };
+               // 调用 doulist 的处理函数
+              return loadDoubanDefaultList(tempParams);
+          }
+          // 如果是其他无法处理的 uri 类型
+          else {
+             console.error("Dispatch URI 参数未包含可识别的路径:", decodedUri);
+             return [{ id: `info-dispatch-unsupported-${Date.now()}`, type: "info", title: "无法识别的链接", description: "dispatch URL 中的链接类型无法识别或暂不支持 (例如，它可能指向一个讨论或其他页面)。" }];
+          }
+        } else {
+          // 如果 dispatch URL 中没有找到 uri 参数
+          console.error("无法从 dispatch URL 中提取 URI 参数:", trimmedUrl);
+          return [{ id: `info-dispatch-nourl-${Date.now()}`, type: "info", title: "无法提取链接", description: "无法从 dispatch URL 中提取有效的目标网址。" }];
+        }
+      }
+      // 4. 处理 www.douban.com 的 subject_collection (不常见，但尝试兼容)
+      // 通常应使用 m.douban.com 的 API，但如果用户粘贴了这个，尝试转换
+      else if (trimmedUrl.includes("www.douban.com/subject_collection/")) {
+         console.log("检测到桌面版 subject_collection URL，尝试转换为移动版处理");
+         const mobileUrl = trimmedUrl.replace("www.douban.com", "m.douban.com");
+         const tempParams = { ...params, url: mobileUrl };
+         return loadDoubanSubjectCollection(tempParams);
+      }
+      // 5. 处理单个条目链接 (提供提示)
+      else if (trimmedUrl.match(/movie\.douban\.com\/subject\/\d+\/?$/) || trimmedUrl.match(/m\.douban\.com\/(movie|tv)\/subject\/\d+\/?$/)) {
+          console.log("检测到单个电影/剧集页面 URL");
+          return [{ id: `info-single-subject-${Date.now()}`, type: "info", title: "单个条目", description: "这是一个指向单个电影/剧集的链接，而非榜单或豆列。请粘贴榜单或豆列的网址。" }];
+      }
+      // 6. 处理奥斯卡桌面版链接 (提供提示)
+      else if (trimmedUrl.match(/movie\.douban\.com\/awards\/Oscar\/(\d+)/)) {
+          const oscarSession = trimmedUrl.match(/movie\.douban\.com\/awards\/Oscar\/(\d+)/)[1];
+          console.log(`检测到奥斯卡桌面网址 (第 ${oscarSession} 届)`);
+          let suggestionUrl = "";
+          if (params.placeholders) {
+             const oscarPlaceholder = params.placeholders.find(p => p.title.includes(`奥斯卡(${1928 + parseInt(oscarSession)})`) || p.title.includes(`奥斯卡(${oscarSession}届)`));
+             if (oscarPlaceholder) suggestionUrl = oscarPlaceholder.value;
+          }
+          let description = `检测到奥斯卡桌面网址。请尝试使用豆瓣官方提供的移动版“合集”或“豆列”网址。`;
+          if (suggestionUrl) description += `\n例如: ${suggestionUrl}`;
+          return [{ id: `info-oscar-desktop-${Date.now()}`, type: "info", title: "提示：奥斯卡桌面网址", description: description }];
+      }
+      // 7. 无法识别的格式 (最终 fallback)
+      else {
+          console.error("无法识别的豆瓣 URL 格式:", trimmedUrl);
+          // 返回错误信息，而不是抛出异常，让 Promise resolve
+          return [{ id: `error-unsupported-format-${Date.now()}`, type: "error", title: "不支持的豆瓣 URL 格式", description: "请检查输入的网址是否为有效的豆瓣官方榜单、用户豆列或分享链接。" }];
+      }
+    } catch (error) {
+      // 捕获在调用 loadDoubanDefaultList 或 loadDoubanSubjectCollection 时可能发生的内部错误
+      console.error("解析豆瓣片单/豆列时发生内部错误:", error);
+      // 返回错误信息
+      return [{ id: `error-douban-card-internal-${Date.now()}`, type: "error", title: "解析失败", description: `处理过程中发生错误: ${error.message || error}` }];
     }
-  } catch (error) {
-    console.error("解析豆瓣片单失败:", error);
-    throw error;
   }
-}
 
 async function loadDoubanDefaultList(params = {}) { // Specific helper
   const url = params.url;
@@ -1389,7 +1462,12 @@ async function _fetchAndProcessBangumiCalendar() {
         const processedItems = [];
         for (const dayData of response.data) {
              const apiWeekdayId = dayData.weekday?.id; // API 返回 1-7 (周一到周日)
+             // Bangumi API返回的数据结构可能有两种情况：
+             // 1. dayData中包含items数组
+             // 2. dayData本身就是一个项目数组
+             // 这里我们检查两种情况并适当处理
              if (dayData.items && Array.isArray(dayData.items)) {
+                // 情况1: 标准结构，dayData包含items数组
                 for (const item of dayData.items) {
                     // 安全地提取数据
                      const images = item.images || {};
@@ -1429,6 +1507,44 @@ async function _fetchAndProcessBangumiCalendar() {
                         airWeekday: apiWeekdayId
                     });
                 }
+             } else {
+                // 情况2: dayData本身可能是项目，或者有其他结构
+                // 尝试直接从dayData中提取项目信息
+                const item = dayData;
+                // 安全地提取数据
+                const images = item.images || {};
+                const coverUrl = images.large || images.common || images.medium || images.small || undefined;
+                const title = item.name_cn || item.name || "未知标题";
+                const summary = item.summary || "";
+                const airDate = item.air_date || "";
+                const rating = item.rating?.score;
+                const rank = item.rank;
+                const itemId = item.id; // 获取 ID
+
+                // 检查基本信息是否存在
+                if (itemId && title) {
+                    let rawDescription = `放送日期: ${airDate || '未知'}`;
+                    if (summary) rawDescription += ` | 简介: ${summary.substring(0, 80)}${summary.length > 80 ? '...' : ''}`; // 限制摘要长度
+
+                    // 使用已存在的 formatItemDescription 格式化描述
+                    const formattedDescription = formatItemDescription({
+                        description: rawDescription,
+                        rating: rating,
+                        releaseDate: airDate && airDate.length >= 4 ? airDate : undefined // 只在有年份时传递日期
+                    }) + (rank ? ` | 排名: ${rank}` : ''); // 添加排名信息
+
+                    processedItems.push({
+                        id: itemId.toString(), // 确保 ID 是字符串
+                        type: "bangumi",
+                        title: title.trim(),
+                        coverUrl: coverUrl ? (coverUrl.startsWith('//') ? 'https:' + coverUrl : coverUrl) : undefined,
+                        description: formattedDescription.trim() || undefined,
+                        rating: rating ? parseFloat(rating) : undefined, // 确保评分是数字
+                        releaseDate: airDate || undefined, // 保留原始放送日期
+                        // 存储 API 的星期 ID (1-7)，用于后续分组或筛选
+                        airWeekday: apiWeekdayId
+                    });
+                }
              }
         }
         console.log(`Bangumi API 获取并处理了 ${processedItems.length} 个原始项目`);
@@ -1441,89 +1557,177 @@ async function _fetchAndProcessBangumiCalendar() {
     }
 }
 
-// 新的统一处理函数
-    async function loadBangumiCalendarUnified(params = {}) {
-        const viewType = params.viewType || 'weekly'; // 默认周视图
-        console.log(`加载 Bangumi 日历，视图模式: ${viewType}`);
+// --- 辅助函数：获取星期标题 (基于 API Weekday ID 1-7) ---
+function getWeekdayTitle(apiWeekdayId) {
+    const weekdaysMeta = {
+        1: "--- 星期一 (Mon) ---",
+        2: "--- 星期二 (Tue) ---",
+        3: "--- 星期三 (Wed) ---",
+        4: "--- 星期四 (Thu) ---",
+        5: "--- 星期五 (Fri) ---",
+        6: "--- 星期六 (Sat) ---",
+        7: "--- 星期日 (Sun) ---" // API 使用 7 代表周日
+    };
+    return weekdaysMeta[apiWeekdayId] || `--- 未知星期 (${apiWeekdayId}) ---`;
+}
 
-        try {
-            // 第一步：获取并处理本周所有放送数据
-            const allProcessedItems = await _fetchAndProcessBangumiCalendar();
-            if (!allProcessedItems || allProcessedItems.length === 0) {
-                 console.log("未能从 Bangumi API 获取到任何日历数据。");
-                 return [];
-            }
+// --- 辅助函数：将 JS Day (0-6) 或用户选择 (0-6) 转换为 API Weekday ID (1-7) ---
+function convertToApiWeekdayId(dayValue) {
+    // dayValue 可以是 JS 的 getDay() 结果 (0-6) 或用户选择的字符串 "0"-"6"
+    const dayInt = parseInt(dayValue, 10);
+    if (isNaN(dayInt) || dayInt < 0 || dayInt > 6) {
+        console.warn(`无效的星期值: ${dayValue}, 默认使用周一 (1)`);
+        return 1; // 返回默认值或抛出错误
+    }
+    if (dayInt === 0) { // 周日 (JS:0 -> API:7)
+        return 7;
+    } else { // 周一到周六 (JS:1-6 -> API:1-6)
+        return dayInt;
+    }
+}
 
-            // 第二步：根据视图模式返回不同格式的数据
-            if (viewType === 'daily') {
-                // --- 返回指定单日数据 (需要包装成 Section 格式) ---
-                const selectedWeekday = params.weekday;
-                 if (selectedWeekday === undefined || selectedWeekday === null) {
-                     throw new Error("选择了单日视图，但未提供星期参数。");
-                 }
 
-                let targetApiWeekdayId;
-                 const selectedWeekdayInt = parseInt(selectedWeekday, 10);
-                if (selectedWeekdayInt === 0) { targetApiWeekdayId = 7; }
-                 else if (selectedWeekdayInt >= 1 && selectedWeekdayInt <= 6) { targetApiWeekdayId = selectedWeekdayInt; }
-                 else { throw new Error(`无效的星期参数值: ${selectedWeekday}`); }
+// --- Bangumi 放送日历统一处理函数 (已更新) ---
+async function loadBangumiCalendarUnified(params = {}) {
+    // --- CORRECTED: Read viewType, default to 'today' ---
+    const viewType = params.viewType || 'today';
+    console.log(`加载 Bangumi 日历，视图模式: ${viewType}`);
 
-                console.log(`筛选单日视图，用户选择: ${selectedWeekday}, 对应的 API 星期 ID: ${targetApiWeekdayId}`);
-                const dailyItems = allProcessedItems.filter(item => item.airWeekday === targetApiWeekdayId);
-                console.log(`筛选结果: 找到 ${dailyItems.length} 个符合条件的单日项目`);
-
-                // --- 修改开始 ---
-                // 为单日视图创建一个 Section 标题
-                const dayNames = ["周日 (Sun)", "周一 (Mon)", "周二 (Tue)", "周三 (Wed)", "周四 (Thu)", "周五 (Fri)", "周六 (Sat)"];
-                // 使用 selectedWeekdayInt 作为索引获取正确的星期名称
-                const sectionTitle = `--- ${dayNames[selectedWeekdayInt]} 放送 ---`;
-
-                // 将 dailyItems 包装在一个 Section 对象中，并放入数组返回
-                return [{
-                    title: sectionTitle,
-                    items: dailyItems
-                }];
-                // --- 修改结束 ---
-
-            } else { // viewType === 'weekly'
-                // --- 返回整周视图 (按天分组) --- (这部分逻辑保持不变)
-                console.log("生成整周视图 (按天分组)...");
-                const weekdaysMeta = [
-                    { id: 1, title: "--- 星期一 (Mon) ---" },
-                    { id: 2, title: "--- 星期二 (Tue) ---" },
-                    { id: 3, title: "--- 星期三 (Wed) ---" },
-                    { id: 4, title: "--- 星期四 (Thu) ---" },
-                    { id: 5, title: "--- 星期五 (Fri) ---" },
-                    { id: 6, title: "--- 星期六 (Sat) ---" },
-                    { id: 7, title: "--- 星期日 (Sun) ---" }
-                ];
-                const groupedResults = [];
-                for (const day of weekdaysMeta) {
-                    const itemsForDay = allProcessedItems.filter(item => item.airWeekday === day.id);
-                    if (itemsForDay.length > 0) {
-                        groupedResults.push({
-                            title: day.title,
-                            items: itemsForDay
-                        });
-                    }
-                }
-                console.log(`已将 Bangumi 日历分组为 ${groupedResults.length} 个部分 (天)`);
-                return groupedResults;
-            }
-
-        } catch (error) {
-             console.error(`加载 Bangumi 统一日历视图 (${viewType}) 失败:`, error);
+    try {
+        // 第一步：获取并处理本周所有放送数据 (逻辑不变)
+        const allProcessedItems = await _fetchAndProcessBangumiCalendar();
+        if (!allProcessedItems || allProcessedItems.length === 0) {
+             console.log("未能从 Bangumi API 获取到任何日历数据。");
+             // 返回一个表示无数据的 section
              return [{
-                 title: "加载失败",
+                 title: "无数据",
                  items: [{
-                     id: `error-bangumi-unified-${viewType}-${Date.now()}`,
-                     type: "error",
-                     title: "加载 Bangumi 日历失败",
-                     description: error.message || "发生未知错误"
+                     id: `info-bangumi-nodata-${Date.now()}`,
+                     type: "info",
+                     title: "无放送数据",
+                     description: "未能从 Bangumi API 获取到本周放送数据。"
                  }]
              }];
         }
+
+        // 第二步：根据视图模式返回不同格式的数据
+
+        if (viewType === 'weekly') {
+            // --- 返回整周视图 (按天分组) ---
+            console.log("生成整周视图 (按天分组)...");
+             const weekdaysOrder = [1, 2, 3, 4, 5, 6, 7]; // API ID 顺序
+            const groupedResults = [];
+
+            for (const apiId of weekdaysOrder) {
+                const itemsForDay = allProcessedItems.filter(item => item.airWeekday === apiId);
+                if (itemsForDay.length > 0) {
+                    groupedResults.push({
+                        title: getWeekdayTitle(apiId), // 使用辅助函数获取标题
+                        items: itemsForDay
+                    });
+                }
+            }
+            console.log(`已将 Bangumi 日历分组为 ${groupedResults.length} 个部分 (天)`);
+            return groupedResults;
+
+        } else if (viewType === 'today') {
+            // --- 新增：返回今日放送数据 ---
+            console.log("筛选今日放送...");
+            const jsToday = new Date().getDay(); // 0 = Sun, 1 = Mon, ..., 6 = Sat
+            const targetApiWeekdayId = convertToApiWeekdayId(jsToday); // 转换为 API ID (1-7)
+            console.log(`今天是 JS 星期 ${jsToday}, 对应的 API 星期 ID: ${targetApiWeekdayId}`);
+
+            const dailyItems = allProcessedItems.filter(item => item.airWeekday === targetApiWeekdayId);
+            const dailyTitle = getWeekdayTitle(targetApiWeekdayId); // 获取今天的标题
+            console.log(`筛选结果: 找到 ${dailyItems.length} 个今日放送项目`);
+
+             // 返回包含单个分组的数组 (符合 sectionMode)
+             if (dailyItems.length === 0) {
+                 return [{
+                     title: `${dailyTitle} (无放送)`,
+                     items: [{
+                         id: `info-bangumi-today-empty-${Date.now()}`,
+                         type: "info",
+                         title: "今日无放送",
+                         description: "今天似乎没有动画放送计划。"
+                     }]
+                 }];
+             } else {
+                return [{
+                    title: dailyTitle,
+                    items: dailyItems
+                }];
+             }
+
+        } else if (viewType === 'daily') { // <--- 处理指定单日 ('daily' value from metadata)
+            // --- 处理选择的单日 ---
+            const selectedWeekdayParam = params.weekday; // 用户选择的星期 ("0" 到 "6")
+            if (selectedWeekdayParam === undefined || selectedWeekdayParam === null) {
+                 console.error("选择了'指定单日'，但未提供星期参数。");
+                 // 返回错误信息 Section
+                 return [{
+                     title: "参数错误",
+                     items: [{
+                         id: `error-bangumi-missing-weekday-${Date.now()}`,
+                         type: "error",
+                         title: "缺少参数",
+                         description: "请选择要查看的星期。"
+                     }]
+                 }];
+            }
+
+            const targetApiWeekdayId = convertToApiWeekdayId(selectedWeekdayParam); // 转换为 API ID (1-7)
+            console.log(`筛选指定单日，用户选择: ${selectedWeekdayParam}, 对应的 API 星期 ID: ${targetApiWeekdayId}`);
+
+            const dailyItems = allProcessedItems.filter(item => item.airWeekday === targetApiWeekdayId);
+            const dailyTitle = getWeekdayTitle(targetApiWeekdayId); // 获取所选日期的标题
+            console.log(`筛选结果: 找到 ${dailyItems.length} 个符合条件的单日项目`);
+
+            // 返回包含单个分组的数组 (符合 sectionMode)
+            if (dailyItems.length === 0) {
+                return [{
+                    title: `${dailyTitle} (无放送)`,
+                    items: [{
+                        id: `info-bangumi-daily-empty-${targetApiWeekdayId}-${Date.now()}`,
+                        type: "info",
+                        title: "当日无放送",
+                        description: "所选日期似乎没有动画放送计划。"
+                    }]
+                }];
+            } else {
+               return [{
+                   title: dailyTitle,
+                   items: dailyItems
+               }];
+            }
+        } else {
+             // 处理未知的 viewType
+             console.warn(`未知的视图模式: ${viewType}, 将返回空数据。`);
+             return [{
+                 title: "未知视图",
+                 items: [{
+                     id: `error-bangumi-unknown-view-${Date.now()}`,
+                     type: "error",
+                     title: "无效的视图模式",
+                     description: `请求了未知的视图模式: ${viewType}`
+                 }]
+             }];
+        }
+
+    } catch (error) {
+         console.error(`加载 Bangumi 统一日历视图 (${viewType}) 失败:`, error);
+         // 返回一个包含错误信息的 Section，符合 sectionMode: true 的格式
+         return [{
+             title: "加载失败", // Section 标题
+             items: [{ // Section 内容，包含一个错误项
+                 id: `error-bangumi-unified-${viewType}-${Date.now()}`,
+                 type: "error", // 标记为错误类型
+                 title: "加载 Bangumi 日历失败",
+                 description: error.message || "发生未知错误" // 显示具体的错误信息
+             }]
+         }];
     }
+}
 
 
 // --- 保留原有的 Bangumi 排行榜功能 ---
