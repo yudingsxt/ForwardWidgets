@@ -1,4 +1,4 @@
-#!name=Github 429
+#!name=Github
 #!desc=解除 Github 429 限制
 
 [Header Rewrite]
