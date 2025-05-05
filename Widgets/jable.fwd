@@ -1,0 +1,16 @@
+{
+  "title": "𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂 ‘𝓼 𝓦𝓲𝓭𝓰𝓮𝓽𝓼",
+  "description": "𝒜 𝒸𝑜𝓁𝓁𝑒𝒸𝓉𝒾𝑜𝓃 𝑜𝒻 𝓌𝒾𝒹𝑔𝑒𝓉𝓈 𝒸𝓇𝑒𝒶𝓉𝑒𝒹 𝒷𝓎 𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂",
+  "icon": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/icon.png",
+  "widgets": [
+    {
+      "id": "jable",
+      "title": "jable",
+      "description": "获取jable热门影片榜单",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.1",
+      "author": "nibiru",
+      "url": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/Widgets/jable.js"
+    }
+  ]
+}
