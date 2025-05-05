@@ -1,0 +1,61 @@
+{
+  "title": "𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂 ‘𝓼 𝓦𝓲𝓭𝓰𝓮𝓽𝓼",
+  "description": "𝒜 𝒸𝑜𝓁𝓁𝑒𝒸𝓉𝒾𝑜𝓃 𝑜𝒻 𝓌𝒾𝒹𝑔𝑒𝓉𝓈 𝒸𝓇𝑒𝒶𝓉𝑒𝒹 𝒷𝓎 𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂",
+  "icon": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/icon.png",
+  "widgets": [
+    {
+      "id": "douban",
+      "title": "豆瓣我看&豆瓣个性化推荐",
+      "description": "解析豆瓣想看、在看、已看以及根据个人数据生成的个性化推荐",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.1",
+      "author": "huangxd",
+      "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/douban.js"
+    },
+    {
+      "id": "douban_old",
+      "title": "豆瓣",
+      "description": "解析豆瓣片单，获取视频信息",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.0",
+      "author": "pack1r",
+      "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/douban.js"
+    },
+    {
+      "id": "imdb",
+      "title": "IMDB",
+      "description": "解析IMDB片单，获取视频信息",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.0",
+      "author": "pack1r",
+      "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/imdb.js"
+    },
+    {
+      "id": "hot_picks",
+      "title": "热门精选",
+      "description": "获取最新热播剧和热门影片推荐",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.5",
+      "author": "两块",
+      "url": "https://raw.githubusercontent.com/2kuai/ForwardWidgets/refs/heads/main/Widgets/HotPicks.js"
+    },
+    {
+      "id": "now_showing",
+      "title": "院线电影",
+      "description": "获取正在上映和即将上映的电影",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.2",
+      "author": "两块",
+      "url": "https://raw.githubusercontent.com/2kuai/ForwardWidgets/refs/heads/main/Widgets/NowShowing.js"
+    },
+    {
+      "id": "forward.combined.media.lists",
+      "title": "榜单🔍聚合",
+      "description": "获取豆瓣、TMDB、IMDB和Bangumi的影视动画榜单",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.0",
+      "author": "阿米诺斯",
+      "url": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/Widgets/ForwardWidgets.js"
+    }
+  ]
+}
