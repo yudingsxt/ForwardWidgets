@@ -1,0 +1,16 @@
+{
+  "title": "nibiru's Widgets",
+  "description": "A collection of widgets created by nibiru",
+  "icon": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/icon.png",
+  "widgets": [
+    {
+      "id": "jable",
+      "title": "jable",
+      "description": "解析各类榜单",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.1",
+      "author": "nibiru",
+      "url": "https://gist.githubusercontent.com/quantumultxx/31178d852c5a09c07dcfb28b310674bf/raw/jable.js"
+    }
+  ]
+}
