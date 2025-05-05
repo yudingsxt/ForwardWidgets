@@ -4,7 +4,7 @@ WidgetMetadata = {
   description: "获取Jable热门影片榜单",
   author: "nibiru",
   site: "https://github.com/quantumultxx/FW-Widgets",
-  version: "1.0.0",
+  version: "1.0.1",
   requiredVersion: "0.0.1",
   modules: [
     {
