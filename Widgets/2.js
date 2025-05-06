@@ -570,7 +570,286 @@ async function loadDoubanCardItems(params = {}) {
 }
 
 // ...（此处保留所有中间函数实现，与之前提供的完全一致）...
+async function loadDoubanDefaultList(params = {}) {
+  const { start, limit } = calculatePagination(params);
+  const url = params.url;
+  const listId = url.match(/doulist\/(\d+)/)?.[1];
+  console.debug("豆瓣豆列 ID:", listId);
+  if (!listId) throw new Error("无法从 URL 获取豆瓣豆列 ID");
 
+  const pageUrl = `https://www.douban.com/doulist/${listId}/?start=${start}&sort=&playable=&sub_type=`;
+  console.log("请求豆瓣豆列页面:", pageUrl);
+
+  const response = await Widget.http.get(pageUrl, {
+    headers: {
+      Referer: `https://www.douban.com/`,
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+    },
+  });
+
+  if (!response || !response.data) throw new Error("获取豆瓣豆列数据失败");
+  console.log("豆瓣豆列页面数据长度:", response.data.length);
+
+  const docId = Widget.dom.parse(response.data);
+  if (docId < 0) throw new Error("解析豆瓣豆列 HTML 失败");
+
+  const itemElements = Widget.dom.select(docId, "div.doulist-item");
+  console.log("找到项目元素数量 (.doulist-item):", itemElements.length);
+
+  let fallbackItemElements = [];
+  if (!itemElements || itemElements.length === 0) {
+       const articleElement = Widget.dom.selectFirst(docId, ".article");
+       if (articleElement >= 0) {
+            fallbackItemElements = Widget.dom.select(articleElement, ".doulist-subject");
+            console.log("未找到 .doulist-item, 尝试查找 .doulist-subject: ", fallbackItemElements.length);
+             if (!fallbackItemElements || fallbackItemElements.length === 0) {
+                 fallbackItemElements = Widget.dom.select(articleElement, "li.subject-item");
+                 console.log("未找到 .doulist-subject, 尝试查找 li.subject-item: ", fallbackItemElements.length);
+             }
+       }
+  }
+
+  const finalItemElements = (itemElements && itemElements.length > 0) ? itemElements : fallbackItemElements;
+
+  if (!finalItemElements || finalItemElements.length === 0) {
+      const paging = Widget.dom.selectFirst(docId, ".paginator .next a");
+      if (paging < 0) {
+          console.log("已到达豆列末尾或豆列为空 (使用主要和备用选择器均未找到项目)");
+          return [];
+      } else {
+           console.warn("页面结构可能已更改，使用主要和备用选择器均未找到项目，但存在分页");
+           return [];
+      }
+  }
+  console.log(`最终使用 ${finalItemElements.length} 个元素进行处理`);
+
+  let doubanIds = [];
+  for (const itemId of finalItemElements) {
+       let titleElementId = Widget.dom.selectFirst(itemId, ".title a");
+       if (titleElementId < 0) {
+           titleElementId = Widget.dom.selectFirst(itemId, ".item-title a");
+       }
+       if (titleElementId < 0) {
+           titleElementId = Widget.dom.selectFirst(itemId, "a[onclick*='subject']");
+       }
+
+      if (titleElementId >= 0) {
+          const link = await Widget.dom.attr(titleElementId, "href");
+          const idMatch = link ? link.match(/subject\/(\d+)/) : null;
+          const title = await Widget.dom.text(titleElementId);
+
+          if (idMatch && idMatch[1]) {
+              let coverUrl = "";
+              let imgElementId = Widget.dom.selectFirst(itemId, ".post img");
+              if (imgElementId < 0) {
+                 imgElementId = Widget.dom.selectFirst(itemId, ".item-poster img");
+              }
+              if (imgElementId >= 0) {
+                  coverUrl = await Widget.dom.attr(imgElementId, "src");
+                   if (coverUrl) {
+                       coverUrl = coverUrl.replace(/\/(s|m|sq)\//, '/l/');
+                   }
+              }
+
+              let description = "";
+              let abstractElementId = Widget.dom.selectFirst(itemId, ".abstract");
+              if (abstractElementId < 0) {
+                  abstractElementId = Widget.dom.selectFirst(itemId, ".card-abstract");
+              }
+               if (abstractElementId >= 0) {
+                   description = await Widget.dom.text(abstractElementId);
+                   description = description.trim().replace(/\n\s*/g, ' ');
+               }
+
+              let rating = undefined;
+              let ratingElementId = Widget.dom.selectFirst(itemId, ".rating .rating_nums");
+              if (ratingElementId < 0) {
+                  ratingElementId = Widget.dom.selectFirst(itemId, ".item-rating .rating_nums");
+              }
+              if (ratingElementId >= 0) {
+                  rating = await Widget.dom.text(ratingElementId);
+                  rating = rating.trim();
+              }
+
+              doubanIds.push({
+                  id: idMatch[1],
+                  type: "douban",
+                  title: title ? title.trim() : "未知标题",
+                  coverUrl: coverUrl || undefined,
+                  description: formatItemDescription({ description: description || undefined, rating: rating }),
+                  rating: rating ? parseFloat(rating) : undefined
+                });
+          } else {
+             console.warn("解析豆列项时未找到 subject ID, Title:", title, "Link:", link);
+          }
+      } else {
+         console.warn("在豆列项中未找到标题链接元素, Item ID:", itemId);
+      }
+  }
+  console.log(`解析到 ${doubanIds.length} 个豆瓣条目`);
+  return doubanIds;
+}
+
+async function loadDoubanItemsFromApi(params = {}) {
+  const { start, limit } = calculatePagination(params);
+  const url = params.url;
+  const apiUrl = `${url}?start=${start}&count=${limit}&updated_at&items_only=1&for_mobile=1`;
+  console.log("请求豆瓣 API:", apiUrl);
+
+  const listIdMatch = params.url.match(/subject_collection\/(\w+)/);
+  const referer = listIdMatch ? `https://m.douban.com/subject_collection/${listIdMatch[1]}/` : 'https://m.douban.com/';
+
+  const response = await Widget.http.get(apiUrl, {
+    headers: {
+      Referer: referer,
+      "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
+    },
+  });
+
+  console.log("豆瓣 API 响应:", response.data);
+  if (response.data && response.data.subject_collection_items) {
+    const items = response.data.subject_collection_items;
+    const doubanIds = items.map((item) => ({
+      id: item.id,
+      type: "douban",
+      title: item.title,
+      coverUrl: item.cover?.url,
+      description: formatItemDescription({
+          description: item.card_subtitle || item.description,
+          rating: item.rating?.value,
+          releaseDate: item.year
+      }),
+      rating: item.rating?.value,
+      releaseDate: item.year
+    }));
+    return doubanIds;
+  }
+  return [];
+}
+
+async function loadDoubanSubjectCollection(params = {}) {
+  const listIdMatch = params.url.match(/subject_collection\/(\w+)/);
+  console.debug("豆瓣合集 ID:", listIdMatch ? listIdMatch[1] : "未知");
+  if (!listIdMatch) throw new Error("无法从 URL 获取豆瓣合集 ID");
+
+  const listId = listIdMatch[1];
+  const { start, limit } = calculatePagination(params);
+  const apiUrl = `https://m.douban.com/rexxar/api/v2/subject_collection/${listId}/items`;
+
+  return await loadDoubanItemsFromApi({
+      ...params,
+      url: apiUrl,
+  });
+}
+
+async function loadDoubanRecommendMovies(params = {}) {
+  return await loadDoubanRecommendItems(params, "movie");
+}
+
+async function loadDoubanRecommendShows(params = {}) {
+  return await loadDoubanRecommendItems(params, "tv");
+}
+
+async function loadDoubanRecommendItems(params = {}, mediaType = "movie") {
+  const funcName = "loadDoubanRecommendItems";
+  const { start, limit } = calculatePagination(params);
+  const category = params.category || "";
+  const subType = params.type || "";
+  const tags = params.tags || "";
+  const minYear = params.min_year || "";
+  const maxYear = params.max_year || "";
+
+  let url;
+  const encodedTags = encodeURIComponent(tags);
+  const encodedSelectedCategories = encodeURIComponent(JSON.stringify(params.selected_categories || {}));
+
+  if (category === "全部" || category === "all") {
+      let recommendUrl = `https://m.douban.com/rexxar/api/v2/${mediaType}/recommend?refresh=0&start=${start}&count=${limit}&selected_categories=${encodedSelectedCategories}&uncollect=false&score_range=0,10`;
+      if (encodedTags) {
+          recommendUrl += `&tags=${encodedTags}`;
+      }
+      let yearRange = "";
+      if (minYear && /\d{4}/.test(minYear)) {
+          yearRange += minYear;
+      }
+      yearRange += ",";
+      if (maxYear && /\d{4}/.test(maxYear)) {
+          yearRange += maxYear;
+      }
+      if (yearRange !== ",") {
+         if (yearRange.startsWith(",") && yearRange.length > 1) yearRange = yearRange.substring(1);
+         if (yearRange.endsWith(",") && yearRange.length > 1) yearRange = yearRange.substring(0, yearRange.length - 1);
+
+         if(yearRange && yearRange !== ",") {
+            recommendUrl += `&year_range=${yearRange}`;
+         }
+      }
+
+      url = recommendUrl;
+  } else {
+      url = `https://m.douban.com/rexxar/api/v2/subject/recent_hot/${mediaType}?start=${start}&count=${limit}&category=${encodeURIComponent(category)}&type=${encodeURIComponent(subType)}`;
+  }
+
+  console.log(`[Douban Recommend] 请求豆瓣推荐 API (${mediaType}): ${url}`);
+
+  try {
+      const response = await Widget.http.get(url, {
+        headers: {
+          Referer: `https://movie.douban.com/explore`,
+          "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
+        },
+      });
+
+      console.log("[Douban Recommend] API 结果 (部分):", JSON.stringify(response.data)?.substring(0,200));
+
+      const items = response.data?.subjects
+                 || response.data?.items
+                 || response.data?.modules?.[0]?.data?.subject_collection_items
+                 || [];
+
+      if (items && items.length > 0) {
+          if (!Array.isArray(items)) throw new Error("推荐 API 返回的项目不是数组");
+
+          const results = items.map((item) => {
+            if (!item || !item.id || !item.title) {
+                console.warn("[Douban Recommend] 跳过无效项目 (缺少 id 或 title):", item);
+                return null;
+            }
+            const rating = item.rating?.value || (item.rate ? parseFloat(item.rate) : undefined);
+            const releaseYear = item.year || item.release_date?.substring(0, 4);
+            const cover = item.cover?.url || item.pic?.normal;
+
+            return {
+                id: String(item.id),
+                type: "douban",
+                title: item.title,
+                coverUrl: cover,
+                description: formatItemDescription({
+                    description: item.card_subtitle || item.description || item.intro,
+                    rating: rating,
+                    releaseDate: releaseYear ? `${releaseYear}-01-01` : undefined
+                }),
+                rating: rating,
+                releaseDate: releaseYear ? `${releaseYear}-01-01` : undefined
+            };
+        }).filter(item => item !== null);
+
+         console.log(`[Douban Recommend] 成功解析并过滤得到 ${results.length} 个有效条目`);
+         if (results.length === 0 && items.length > 0) {
+             console.warn("[Douban Recommend] API 返回了项目但未能成功映射或过滤任何有效条目，检查 API 结构或映射逻辑。")
+         }
+        return results;
+      } else {
+          console.warn("[Douban Recommend] API响应中未找到有效项目列表", response.data);
+          if (items.length === 0 && (response.data?.total === 0 || response.data?.count === 0 || start > (response.data?.total || 0))) {
+              return [];
+          }
+          return [{id:`${funcName}-no-items-${mediaType}`, type:"info", title:"提示", description:"未能从推荐API响应中找到项目列表。"}];
+      }
+  } catch (error) {
+      return [createErrorItem(`${funcName}-fail-${mediaType}-${category}`, `加载豆瓣 ${mediaType} 推荐失败`, error)];
+  }
+}
 // === 更新后的 TMDB 发现函数 ===
 async function tmdbDiscoverByNetwork(params) {
     const api = "discover/tv";
