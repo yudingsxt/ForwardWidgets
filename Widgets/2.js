@@ -871,7 +871,110 @@ async function tmdbDiscoverByNetwork(params) {
 
     return await fetchTmdbData(api, discoverParams);
 }
+// === TMDB Functions ===
+async function fetchTmdbData(api, params) {
+    try {
+        const tmdbParams = { ...params };
+        delete tmdbParams.type;
+        delete tmdbParams.time_window;
 
+        const response = await Widget.tmdb.get(api, { params: tmdbParams });
+        
+        if (!response?.results) {
+            throw new Error(response?.status_message || "无效的API响应格式");
+        }
+
+        return response.results.map(item => {
+            const isMovie = api.includes('movie') || item.media_type === 'movie';
+            const mediaType = isMovie ? 'movie' : 'tv';
+            
+            return {
+                id: item.id,
+                type: "tmdb",
+                mediaType: mediaType,
+                title: isMovie ? item.title : item.name,
+                description: formatItemDescription({
+                    description: item.overview,
+                    rating: item.vote_average ? (item.vote_average / 2).toFixed(1) : undefined,
+                    releaseDate: isMovie ? item.release_date : item.first_air_date
+                }),
+                releaseDate: isMovie ? item.release_date : item.first_air_date,
+                backdropPath: item.backdrop_path && `https://image.tmdb.org/t/p/w780${item.backdrop_path}`,
+                posterPath: item.poster_path && `https://image.tmdb.org/t/p/w500${item.poster_path}`,
+                rating: item.vote_average ? (item.vote_average / 2).toFixed(1) : undefined
+            };
+        }).filter(item => item.id && item.title);
+
+    } catch (error) {
+        console.error(`API调用失败: ${api}`, error);
+        return [createErrorItem(api, '数据加载失败', error)];
+    }
+}
+
+async function tmdbNowPlaying(params) {
+    const type = params.type || 'movie';
+    const api = type === 'movie' ? "movie/now_playing" : "tv/on_the_air";
+    return await fetchTmdbData(api, params);
+}
+
+async function tmdbTrending(params) {
+    const timeWindow = params.time_window || 'day';
+    const api = `trending/all/${timeWindow}`;
+    return await fetchTmdbData(api, params);
+}
+
+async function tmdbPopular(params) {
+    const type = params.type || 'movie';
+    const api = type === 'movie' ? `movie/popular` : `tv/popular`;
+    return await fetchTmdbData(api, params);
+}
+
+async function tmdbTopRated(params) {
+    const type = params.type || 'movie';
+    const api = type === 'movie' ? `movie/top_rated` : `tv/top_rated`;
+    return await fetchTmdbData(api, params);
+}
+
+async function tmdbUpcomingMovies(params) {
+    const api = "discover/movie";
+    const getTodayDate = () => {
+        const today = new Date();
+        return today.toISOString().split('T')[0];
+    };
+    
+    const discoverParams = {
+        language: params.language || 'zh-CN',
+        page: params.page || 1,
+        sort_by: 'primary_release_date.asc',
+        'primary_release_date.gte': params['primary_release_date.gte'] || getTodayDate(),
+        with_release_type: params.with_release_type || '2,3'
+    };
+
+    // 可选参数处理
+    if (params['primary_release_date.lte']) discoverParams['primary_release_date.lte'] = params['primary_release_date.lte'];
+    if (params.with_genres) discoverParams.with_genres = params.with_genres;
+    if (params['vote_average.gte']) discoverParams['vote_average.gte'] = params['vote_average.gte'];
+    if (params['vote_count.gte']) discoverParams['vote_count.gte'] = params['vote_count.gte'];
+    if (params.with_keywords) discoverParams.with_keywords = params.with_keywords;
+
+    return await fetchTmdbData(api, discoverParams);
+}
+
+async function tmdbDiscoverByNetwork(params) {
+    const api = "discover/tv";
+    if (!params.with_networks) {
+        return [createErrorItem('network-filter', '参数错误', new Error('请先选择播出平台'))];
+    }
+
+    const discoverParams = {
+        language: params.language || 'zh-CN',
+        page: params.page || 1,
+        with_networks: params.with_networks,
+        ...(params.sort_by && { sort_by: params.sort_by })
+    };
+
+    return await fetchTmdbData(api, discoverParams);
+}
 // ...（此处保留所有其他函数实现，与之前提供的完全一致）...
 
 // --- END OF COMBINED WIDGET FILE ---
