@@ -41,7 +41,7 @@
     },
     {
       "id": "forward.combined.media.lists",
-      "title": "榜单🔍聚合",
+      "title": "影视榜单🔍超级聚合",
       "description": "获取豆瓣、TMDB、IMDB和Bangumi的影视动画榜单",
       "requiredVersion": "0.0.1",
       "version": "1.2.1",
