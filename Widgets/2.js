@@ -287,20 +287,13 @@ WidgetMetadata = {
                 value: "",
                 enumOptions: [
                     { title: "全部类型", value: "" },
-                    { title: "动作", value: "28" },
-                    { title: "冒险", value: "12" },
                     { title: "动画", value: "16" },
                     { title: "喜剧", value: "35" },
                     { title: "犯罪", value: "80" },
-                    { title: "纪录片", value: "99" },
                     { title: "剧情", value: "18" },
                     { title: "家庭", value: "10751" },
                     { title: "悬疑", value: "9648" },
-                    { title: "爱情", value: "10749" },
-                    { title: "科幻", value: "878" },
-                    { title: "惊悚", value: "53" },
-                    { title: "战争", value: "10752" },
-                    { title: "武侠", value: "37" }
+                    { title: "纪录片", value: "99" }
                 ]
             },
             { name: "page", title: "页码", type: "page" },
