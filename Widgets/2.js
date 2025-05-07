@@ -549,7 +549,773 @@ async function loadDoubanCardItems(params = {}) {
     throw error;
   }
 }
+async function loadDoubanDefaultList(params = {}) {
+  const { start, limit } = calculatePagination(params);
+  const url = params.url;
+  const listId = url.match(/doulist\/(\d+)/)?.[1];
+  console.debug("豆瓣豆列 ID:", listId);
+  if (!listId) throw new Error("无法从 URL 获取豆瓣豆列 ID");
 
-// ...后续辅助函数和具体实现代码保持原样未改动...
-// 完整代码长度超过20000字符，此处保留核心修改部分
+  const pageUrl = `https://www.douban.com/doulist/${listId}/?start=${start}&sort=&playable=&sub_type=`;
+  console.log("请求豆瓣豆列页面:", pageUrl);
+
+  const response = await Widget.http.get(pageUrl, {
+    headers: {
+      Referer: `https://www.douban.com/`,
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+    },
+  });
+
+  if (!response || !response.data) throw new Error("获取豆瓣豆列数据失败");
+  console.log("豆瓣豆列页面数据长度:", response.data.length);
+
+  const docId = Widget.dom.parse(response.data);
+  if (docId < 0) throw new Error("解析豆瓣豆列 HTML 失败");
+
+  const itemElements = Widget.dom.select(docId, "div.doulist-item");
+  console.log("找到项目元素数量 (.doulist-item):", itemElements.length);
+
+  let fallbackItemElements = [];
+  if (!itemElements || itemElements.length === 0) {
+       const articleElement = Widget.dom.selectFirst(docId, ".article");
+       if (articleElement >= 0) {
+            fallbackItemElements = Widget.dom.select(articleElement, ".doulist-subject");
+            console.log("未找到 .doulist-item, 尝试查找 .doulist-subject: ", fallbackItemElements.length);
+             if (!fallbackItemElements || fallbackItemElements.length === 0) {
+                 fallbackItemElements = Widget.dom.select(articleElement, "li.subject-item");
+                 console.log("未找到 .doulist-subject, 尝试查找 li.subject-item: ", fallbackItemElements.length);
+             }
+       }
+  }
+
+  const finalItemElements = (itemElements && itemElements.length > 0) ? itemElements : fallbackItemElements;
+
+  if (!finalItemElements || finalItemElements.length === 0) {
+      const paging = Widget.dom.selectFirst(docId, ".paginator .next a");
+      if (paging < 0) {
+          console.log("已到达豆列末尾或豆列为空 (使用主要和备用选择器均未找到项目)");
+          return [];
+      } else {
+           console.warn("页面结构可能已更改，使用主要和备用选择器均未找到项目，但存在分页");
+           return [];
+      }
+  }
+  console.log(`最终使用 ${finalItemElements.length} 个元素进行处理`);
+
+  let doubanIds = [];
+  for (const itemId of finalItemElements) {
+       let titleElementId = Widget.dom.selectFirst(itemId, ".title a");
+       if (titleElementId < 0) {
+           titleElementId = Widget.dom.selectFirst(itemId, ".item-title a");
+       }
+       if (titleElementId < 0) {
+           titleElementId = Widget.dom.selectFirst(itemId, "a[onclick*='subject']");
+       }
+
+      if (titleElementId >= 0) {
+          const link = await Widget.dom.attr(titleElementId, "href");
+          const idMatch = link ? link.match(/subject\/(\d+)/) : null;
+          const title = await Widget.dom.text(titleElementId);
+
+          if (idMatch && idMatch[1]) {
+              let coverUrl = "";
+              let imgElementId = Widget.dom.selectFirst(itemId, ".post img");
+              if (imgElementId < 0) {
+                 imgElementId = Widget.dom.selectFirst(itemId, ".item-poster img");
+              }
+              if (imgElementId >= 0) {
+                  coverUrl = await Widget.dom.attr(imgElementId, "src");
+                   if (coverUrl) {
+                       coverUrl = coverUrl.replace(/\/(s|m|sq)\//, '/l/');
+                   }
+              }
+
+              let description = "";
+              let abstractElementId = Widget.dom.selectFirst(itemId, ".abstract");
+              if (abstractElementId < 0) {
+                  abstractElementId = Widget.dom.selectFirst(itemId, ".card-abstract");
+              }
+               if (abstractElementId >= 0) {
+                   description = await Widget.dom.text(abstractElementId);
+                   description = description.trim().replace(/\n\s*/g, ' ');
+               }
+
+              let rating = undefined;
+              let ratingElementId = Widget.dom.selectFirst(itemId, ".rating .rating_nums");
+              if (ratingElementId < 0) {
+                  ratingElementId = Widget.dom.selectFirst(itemId, ".item-rating .rating_nums");
+              }
+              if (ratingElementId >= 0) {
+                  rating = await Widget.dom.text(ratingElementId);
+                  rating = rating.trim();
+              }
+
+              doubanIds.push({
+                  id: idMatch[1],
+                  type: "douban",
+                  title: title ? title.trim() : "未知标题",
+                  coverUrl: coverUrl || undefined,
+                  description: formatItemDescription({ description: description || undefined, rating: rating }),
+                  rating: rating ? parseFloat(rating) : undefined
+                });
+          } else {
+             console.warn("解析豆列项时未找到 subject ID, Title:", title, "Link:", link);
+          }
+      } else {
+         console.warn("在豆列项中未找到标题链接元素, Item ID:", itemId);
+      }
+  }
+  console.log(`解析到 ${doubanIds.length} 个豆瓣条目`);
+  return doubanIds;
+}
+
+async function loadDoubanItemsFromApi(params = {}) {
+  const { start, limit } = calculatePagination(params);
+  const url = params.url;
+  const apiUrl = `${url}?start=${start}&count=${limit}&updated_at&items_only=1&for_mobile=1`;
+  console.log("请求豆瓣 API:", apiUrl);
+
+  const listIdMatch = params.url.match(/subject_collection\/(\w+)/);
+  const referer = listIdMatch ? `https://m.douban.com/subject_collection/${listIdMatch[1]}/` : 'https://m.douban.com/';
+
+  const response = await Widget.http.get(apiUrl, {
+    headers: {
+      Referer: referer,
+      "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
+    },
+  });
+
+  console.log("豆瓣 API 响应:", response.data);
+  if (response.data && response.data.subject_collection_items) {
+    const items = response.data.subject_collection_items;
+    const doubanIds = items.map((item) => ({
+      id: item.id,
+      type: "douban",
+      title: item.title,
+      coverUrl: item.cover?.url,
+      description: formatItemDescription({
+          description: item.card_subtitle || item.description,
+          rating: item.rating?.value,
+          releaseDate: item.year
+      }),
+      rating: item.rating?.value,
+      releaseDate: item.year
+    }));
+    return doubanIds;
+  }
+  return [];
+}
+
+async function loadDoubanSubjectCollection(params = {}) {
+  const listIdMatch = params.url.match(/subject_collection\/(\w+)/);
+  console.debug("豆瓣合集 ID:", listIdMatch ? listIdMatch[1] : "未知");
+  if (!listIdMatch) throw new Error("无法从 URL 获取豆瓣合集 ID");
+
+  const listId = listIdMatch[1];
+  const { start, limit } = calculatePagination(params);
+  const apiUrl = `https://m.douban.com/rexxar/api/v2/subject_collection/${listId}/items`;
+
+  return await loadDoubanItemsFromApi({
+      ...params,
+      url: apiUrl,
+  });
+}
+
+async function loadDoubanRecommendMovies(params = {}) {
+  return await loadDoubanRecommendItems(params, "movie");
+}
+
+async function loadDoubanRecommendShows(params = {}) {
+  return await loadDoubanRecommendItems(params, "tv");
+}
+
+async function loadDoubanRecommendItems(params = {}, mediaType = "movie") {
+  const funcName = "loadDoubanRecommendItems";
+  const { start, limit } = calculatePagination(params);
+  const category = params.category || "";
+  const subType = params.type || "";
+  const tags = params.tags || "";
+  const minYear = params.min_year || "";
+  const maxYear = params.max_year || "";
+
+  let url;
+  const encodedTags = encodeURIComponent(tags);
+  const encodedSelectedCategories = encodeURIComponent(JSON.stringify(params.selected_categories || {}));
+
+  if (category === "全部" || category === "all") {
+      let recommendUrl = `https://m.douban.com/rexxar/api/v2/${mediaType}/recommend?refresh=0&start=${start}&count=${limit}&selected_categories=${encodedSelectedCategories}&uncollect=false&score_range=0,10`;
+      if (encodedTags) {
+          recommendUrl += `&tags=${encodedTags}`;
+      }
+      let yearRange = "";
+      if (minYear && /\d{4}/.test(minYear)) {
+          yearRange += minYear;
+      }
+      yearRange += ",";
+      if (maxYear && /\d{4}/.test(maxYear)) {
+          yearRange += maxYear;
+      }
+      if (yearRange !== ",") {
+         if (yearRange.startsWith(",") && yearRange.length > 1) yearRange = yearRange.substring(1);
+         if (yearRange.endsWith(",") && yearRange.length > 1) yearRange = yearRange.substring(0, yearRange.length - 1);
+
+         if(yearRange && yearRange !== ",") {
+            recommendUrl += `&year_range=${yearRange}`;
+         }
+      }
+
+      url = recommendUrl;
+  } else {
+      url = `https://m.douban.com/rexxar/api/v2/subject/recent_hot/${mediaType}?start=${start}&count=${limit}&category=${encodeURIComponent(category)}&type=${encodeURIComponent(subType)}`;
+  }
+
+  console.log(`[Douban Recommend] 请求豆瓣推荐 API (${mediaType}): ${url}`);
+
+  try {
+      const response = await Widget.http.get(url, {
+        headers: {
+          Referer: `https://movie.douban.com/explore`,
+          "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
+        },
+      });
+
+      console.log("[Douban Recommend] API 结果 (部分):", JSON.stringify(response.data)?.substring(0,200));
+
+      const items = response.data?.subjects
+                 || response.data?.items
+                 || response.data?.modules?.[0]?.data?.subject_collection_items
+                 || [];
+
+      if (items && items.length > 0) {
+          if (!Array.isArray(items)) throw new Error("推荐 API 返回的项目不是数组");
+
+          const results = items.map((item) => {
+            if (!item || !item.id || !item.title) {
+                console.warn("[Douban Recommend] 跳过无效项目 (缺少 id 或 title):", item);
+                return null;
+            }
+            const rating = item.rating?.value || (item.rate ? parseFloat(item.rate) : undefined);
+            const releaseYear = item.year || item.release_date?.substring(0, 4);
+            const cover = item.cover?.url || item.pic?.normal;
+
+            return {
+                id: String(item.id),
+                type: "douban",
+                title: item.title,
+                coverUrl: cover,
+                description: formatItemDescription({
+                    description: item.card_subtitle || item.description || item.intro,
+                    rating: rating,
+                    releaseDate: releaseYear ? `${releaseYear}-01-01` : undefined
+                }),
+                rating: rating,
+                releaseDate: releaseYear ? `${releaseYear}-01-01` : undefined
+            };
+        }).filter(item => item !== null);
+
+         console.log(`[Douban Recommend] 成功解析并过滤得到 ${results.length} 个有效条目`);
+         if (results.length === 0 && items.length > 0) {
+             console.warn("[Douban Recommend] API 返回了项目但未能成功映射或过滤任何有效条目，检查 API 结构或映射逻辑。")
+         }
+        return results;
+      } else {
+          console.warn("[Douban Recommend] API响应中未找到有效项目列表", response.data);
+          if (items.length === 0 && (response.data?.total === 0 || response.data?.count === 0 || start > (response.data?.total || 0))) {
+              return [];
+          }
+          return [{id:`${funcName}-no-items-${mediaType}`, type:"info", title:"提示", description:"未能从推荐API响应中找到项目列表。"}];
+      }
+  } catch (error) {
+      return [createErrorItem(`${funcName}-fail-${mediaType}-${category}`, `加载豆瓣 ${mediaType} 推荐失败`, error)];
+  }
+}
+
+// === TMDB Functions ===
+async function fetchTmdbData(api, params) {
+    try {
+        const tmdbParams = { ...params };
+        delete tmdbParams.type;
+        delete tmdbParams.time_window;
+
+        const response = await Widget.tmdb.get(api, { params: tmdbParams });
+        
+        if (!response?.results) {
+            throw new Error(response?.status_message || "无效的API响应格式");
+        }
+
+        return response.results.map(item => {
+            const isMovie = api.includes('movie') || item.media_type === 'movie';
+            const mediaType = isMovie ? 'movie' : 'tv';
+            
+            return {
+                id: item.id,
+                type: "tmdb",
+                mediaType: mediaType,
+                title: isMovie ? item.title : item.name,
+                description: formatItemDescription({
+                    description: item.overview,
+                    rating: item.vote_average ? (item.vote_average / 2).toFixed(1) : undefined,
+                    releaseDate: isMovie ? item.release_date : item.first_air_date
+                }),
+                releaseDate: isMovie ? item.release_date : item.first_air_date,
+                backdropPath: item.backdrop_path && `https://image.tmdb.org/t/p/w780${item.backdrop_path}`,
+                posterPath: item.poster_path && `https://image.tmdb.org/t/p/w500${item.poster_path}`,
+                rating: item.vote_average ? (item.vote_average / 2).toFixed(1) : undefined
+            };
+        }).filter(item => item.id && item.title);
+
+    } catch (error) {
+        console.error(`API调用失败: ${api}`, error);
+        return [createErrorItem(api, '数据加载失败', error)];
+    }
+}
+
+async function tmdbNowPlaying(params) {
+    const type = params.type || 'movie';
+    const api = type === 'movie' ? "movie/now_playing" : "tv/on_the_air";
+    return await fetchTmdbData(api, params);
+}
+
+async function tmdbTrending(params) {
+    const timeWindow = params.time_window || 'day';
+    const api = `trending/all/${timeWindow}`;
+    return await fetchTmdbData(api, params);
+}
+
+async function tmdbPopular(params) {
+    const type = params.type || 'movie';
+    const api = type === 'movie' ? `movie/popular` : `tv/popular`;
+    return await fetchTmdbData(api, params);
+}
+
+async function tmdbTopRated(params) {
+    const type = params.type || 'movie';
+    const api = type === 'movie' ? `movie/top_rated` : `tv/top_rated`;
+    return await fetchTmdbData(api, params);
+}
+
+async function tmdbUpcomingMovies(params) {
+    const api = "discover/movie";
+    const getTodayDate = () => {
+        const today = new Date();
+        return today.toISOString().split('T')[0];
+    };
+    
+    const discoverParams = {
+        language: params.language || 'zh-CN',
+        page: params.page || 1,
+        sort_by: 'primary_release_date.asc',
+        'primary_release_date.gte': params['primary_release_date.gte'] || getTodayDate(),
+        with_release_type: params.with_release_type || '2,3'
+    };
+
+    // 可选参数处理
+    if (params['primary_release_date.lte']) discoverParams['primary_release_date.lte'] = params['primary_release_date.lte'];
+    if (params.with_genres) discoverParams.with_genres = params.with_genres;
+    if (params['vote_average.gte']) discoverParams['vote_average.gte'] = params['vote_average.gte'];
+    if (params['vote_count.gte']) discoverParams['vote_count.gte'] = params['vote_count.gte'];
+    if (params.with_keywords) discoverParams.with_keywords = params.with_keywords;
+
+    return await fetchTmdbData(api, discoverParams);
+}
+
+async function tmdbDiscoverByNetwork(params) {
+    const api = "discover/tv";
+    if (!params.with_networks) {
+        return [createErrorItem('network-filter', '参数错误', new Error('请先选择播出平台'))];
+    }
+
+    const discoverParams = {
+        language: params.language || 'zh-CN',
+        page: params.page || 1,
+        with_networks: params.with_networks,
+        ...(params.with_genres && { with_genres: params.with_genres })
+    };
+
+    return await fetchTmdbData(api, discoverParams);
+}
+
+// === IMDB Functions ===
+async function loadImdbCardItems(params = {}) {
+  const url = params.url;
+  if (!url) throw new Error("缺少 IMDB 片单 URL");
+  console.log("请求 IMDB 页面:", url);
+
+  const response = await Widget.http.get(url, {
+    headers: {
+      Referer: "https://www.imdb.com/",
+      "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+      "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
+    },
+  });
+  if (!response || !response.data) throw new Error("获取 IMDB 片单数据失败");
+  console.log("IMDB 页面数据长度:", response.data.length);
+
+  const videoIds = [];
+
+  const ldJsonMatch = response.data.match(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/);
+  if (ldJsonMatch && ldJsonMatch[1]) {
+      try {
+          const json = JSON.parse(ldJsonMatch[1]);
+          console.log("解析到 LD+JSON 数据");
+          if (json && json.itemListElement && Array.isArray(json.itemListElement)) {
+              for (const item of json.itemListElement) {
+                  if (item && item.item && item.item.url) {
+                      const idMatch = item.item.url.match(/(tt\d+)/);
+                      if (idMatch && idMatch[1]) {
+                          videoIds.push({
+                              id: idMatch[1],
+                              type: "imdb",
+                              title: item.item.name || "Unknown Title",
+                              coverUrl: item.item.image || undefined,
+                          });
+                      }
+                  }
+              }
+               console.log(`通过 LD+JSON 解析到 ${videoIds.length} 个条目`);
+          }
+      } catch (e) {
+          console.warn("解析 LD+JSON 失败:", e);
+      }
+  }
+
+  if (videoIds.length === 0) {
+      console.log("LD+JSON 未找到或解析失败，尝试 HTML 抓取");
+      const docId = Widget.dom.parse(response.data);
+      if (docId < 0) throw new Error("解析 IMDB HTML 失败");
+
+      const listItemsSelector = "ul.ipc-metadata-list > li, .lister-list > tr";
+      const itemElementIds = Widget.dom.select(docId, listItemsSelector);
+
+      console.log("找到列表项元素数量:", itemElementIds.length);
+
+      for (const itemId of itemElementIds) {
+          let linkElementId = Widget.dom.selectFirst(itemId, ".ipc-title__text, .titleColumn a");
+          let link = "";
+          let title = "";
+
+          if (linkElementId >= 0) {
+              const titleText = await Widget.dom.text(linkElementId);
+              title = titleText ? titleText.replace(/^\d+\.\s*/, '').trim() : "Unknown Title";
+
+              const titleLinkElementId = Widget.dom.selectFirst(itemId, "a.ipc-title-link-wrapper, .titleColumn a");
+               if (titleLinkElementId >= 0) {
+                   link = await Widget.dom.attr(titleLinkElementId, "href");
+               }
+          }
+
+           if (!link) {
+             const posterLinkElementId = Widget.dom.selectFirst(itemId, ".ipc-poster a, .posterColumn a");
+              if (posterLinkElementId >= 0) {
+                   link = await Widget.dom.attr(posterLinkElementId, "href");
+                   if (!title) {
+                       const imgElementId = Widget.dom.selectFirst(posterLinkElementId, "img");
+                       if (imgElementId >= 0) title = await Widget.dom.attr(imgElementId, "alt");
+                       if (!title) {
+                            let fallbackTitleId = Widget.dom.selectFirst(itemId, ".ipc-title__text, .titleColumn a");
+                            if(fallbackTitleId >= 0) title = await Widget.dom.text(fallbackTitleId);
+                       }
+                       title = title ? title.replace(/^\d+\.\s*/, '').trim() : "Unknown Title";
+                   }
+              }
+          }
+
+          if (link) {
+              const idMatch = link.match(/(tt\d+)/);
+              if (idMatch && idMatch[1]) {
+                  let coverUrl = "";
+                  const imgElementId = Widget.dom.selectFirst(itemId, ".ipc-poster img, .posterColumn img");
+                  if (imgElementId >= 0) {
+                      coverUrl = await Widget.dom.attr(imgElementId, "src");
+                      coverUrl = coverUrl.replace(/@\._V1_.*?\./, '@._V1_FMjpg_UX670_.');
+                  }
+
+                   let description = "";
+                   let rating = undefined;
+                   let rankText = "";
+                   let year = undefined;
+
+                   const infoElementId = Widget.dom.selectFirst(itemId, ".info.tip");
+                   if(infoElementId >= 0) {
+                       description = await Widget.dom.text(infoElementId);
+                       const yearMatch = description.match(/(\d{4})(?:年|-)/);
+                       if(yearMatch) year = yearMatch[1];
+                       description = description.trim().replace(/\n\s*/g, ' | ');
+                   }
+                   const rankElementId = Widget.dom.selectFirst(itemId, ".rank");
+                   if(rankElementId >= 0) rankText = await Widget.dom.text(rankElementId);
+
+                   const ratingElement = Widget.dom.selectFirst(itemId, ".fade.rr");
+                   if(ratingElement >= 0) {
+                       rating = await Widget.dom.text(ratingElement);
+                       rating = rating.trim();
+                   }
+
+                  videoIds.push({
+                      id: idMatch[1],
+                      type: "imdb",
+                      title: title || "Unknown Title",
+                      coverUrl: coverUrl || undefined,
+                      description: formatItemDescription({ description: description.trim() || undefined })
+                    });
+              }
+          }
+      }
+      console.log(`通过 HTML 抓取解析到 ${videoIds.length} 个条目`);
+  }
+
+  if (videoIds.length === 0) {
+      console.warn("未能从 IMDB URL 解析到任何条目");
+  }
+
+  // 分页处理
+  const { start, limit } = calculatePagination(params);
+  const end = start + limit;
+  const pagedVideoIds = videoIds.slice(start, end);
+
+  console.log(`返回分页后的 ${pagedVideoIds.length} 项，起始位置 ${start}，每页 ${limit}`);
+  return pagedVideoIds;
+}
+
+// === Bangumi Functions ===
+async function loadBangumiRankings(params = {}) {
+    const page = parseInt(params.page) || 1;
+    const url = `https://bangumi.tv/anime/browser?sort=rank&page=${page}`;
+    console.log("请求 Bangumi 动画排行页面:", url);
+
+    try {
+        const response = await Widget.http.get(url, {
+             headers: {
+                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+                 "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+                 "Referer": "https://bangumi.tv/anime/browser"
+             }
+        });
+
+        if (!response || !response.data) {
+            throw new Error("获取 Bangumi 排行榜页面失败");
+        }
+
+        const docId = Widget.dom.parse(response.data);
+        if (docId < 0) throw new Error("解析 Bangumi 排行榜 HTML 失败");
+
+        const listItems = Widget.dom.select(docId, "#browserItemList li");
+        console.log(`Bangumi 排行榜: 找到 ${listItems.length} 个列表项`);
+
+        if (listItems.length === 0) {
+            const nextLink = Widget.dom.selectFirst(docId, ".page_inner > .p_cur + a");
+            if (nextLink < 0) {
+                 console.log("Bangumi 排行榜: 已到达末尾或无结果");
+            } else {
+                 console.warn("Bangumi 排行榜: 未找到列表项，但存在下一页链接?");
+            }
+            return [];
+        }
+
+        const results = [];
+        for (const itemId of listItems) {
+             try {
+                 const linkElementId = Widget.dom.selectFirst(itemId, "a.subjectCover");
+                 const titleElementId = Widget.dom.selectFirst(itemId, "h3 a");
+
+                 if (linkElementId >= 0 && titleElementId >= 0) {
+                     const title = await Widget.dom.text(titleElementId);
+                     const link = await Widget.dom.attr(linkElementId, "href");
+                     const idMatch = link ? link.match(/\/subject\/(\d+)/) : null;
+
+                     if (idMatch && idMatch[1]) {
+                         let coverUrl = undefined;
+                         const imgElementId = Widget.dom.selectFirst(linkElementId, "img");
+                         if (imgElementId >= 0) {
+                             coverUrl = await Widget.dom.attr(imgElementId, "src");
+                             if (coverUrl && coverUrl.startsWith('//')) coverUrl = 'https:' + coverUrl;
+                             if (coverUrl) coverUrl = coverUrl.replace(/\/(c|g|s)\//, '/l/');
+                         }
+
+                         let description = "";
+                         let rating = undefined;
+                         let rankText = "";
+                         let currentYear = undefined;
+
+                         const infoElementId = Widget.dom.selectFirst(itemId, ".info.tip");
+                         if(infoElementId >= 0) {
+                             description = await Widget.dom.text(infoElementId);
+                             const yearMatch = description.match(/(\d{4})(?:年|-)/);
+                             if (yearMatch) currentYear = yearMatch[1];
+                             description = description.trim().replace(/\n\s*/g, ' | ');
+                         }
+                         const rankElementId = Widget.dom.selectFirst(itemId, ".rank");
+                         if(rankElementId >= 0) rankText = await Widget.dom.text(rankElementId);
+
+                         const ratingElement = Widget.dom.selectFirst(itemId, ".fade.rr");
+                         if(ratingElement >= 0) {
+                             rating = await Widget.dom.text(ratingElement);
+                             rating = rating.trim();
+                         }
+
+                         const formattedDescription = formatItemDescription({
+                             description: description,
+                             rating: rating,
+                             releaseDate: currentYear ? `${currentYear}-01-01` : undefined
+                         }) + (rankText ? ` | ${rankText.trim()}` : '');
+
+                         results.push({
+                             id: idMatch[1],
+                             type: "bangumi",
+                             title: title.trim(),
+                             coverUrl: coverUrl,
+                             description: formattedDescription,
+                             rating: rating ? parseFloat(rating) : undefined,
+                             releaseDate: currentYear ? `${currentYear}-01-01` : undefined
+                         });
+                     }
+                 }
+            } catch (parseError) {
+                 console.error("Bangumi 浏览: 解析单个条目时出错:", parseError, "HTML Item ID:", itemId);
+            }
+        }
+
+        console.log(`Bangumi 浏览: 成功解析 ${results.length} 个条目`);
+        return results;
+
+    } catch (error) {
+        console.error("加载 Bangumi 浏览页面失败:", error);
+        return [{ id: "error-bangumi-browser", type: "error", title: "加载 Bangumi 浏览失败", description: error.message }];
+    }
+}
+
+async function loadBangumiBrowser(params = {}) {
+    const page = parseInt(params.page) || 1;
+    const tag = params.tag || "";
+    const genre_tag = params.genre_tag || "";
+    const region = params.region || "";
+    const audience = params.audience || "";
+    const year = params.year || "";
+    const type = params.type || "all";
+
+    let basePath = "https://bangumi.tv/anime/browser";
+    const pathSegments = [];
+    const queryParams = [];
+
+    if (tag) pathSegments.push(encodeURIComponent(tag));
+    if (genre_tag) pathSegments.push(encodeURIComponent(genre_tag));
+    if (region) pathSegments.push(encodeURIComponent(region));
+    if (audience) pathSegments.push(encodeURIComponent(audience));
+    if (type !== "all") pathSegments.push(type);
+    if (year && /\d{4}/.test(year)) pathSegments.push("airtime", year);
+
+    if (pathSegments.length > 0) {
+        basePath += "/" + pathSegments.join("/");
+    }
+
+    queryParams.push(`sort=rank`);
+    queryParams.push(`page=${page}`);
+
+    const finalUrl = `${basePath}?${queryParams.join("&")}`;
+
+    console.log("请求 Bangumi 动画浏览页面:", finalUrl);
+
+    try {
+        const response = await Widget.http.get(finalUrl, {
+             headers: {
+                 "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36",
+                 "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
+                 "Referer": "https://bangumi.tv/anime/browser"
+             }
+        });
+
+        if (!response || !response.data) {
+            throw new Error("获取 Bangumi 浏览页面失败");
+        }
+
+        const docId = Widget.dom.parse(response.data);
+        if (docId < 0) throw new Error("解析 Bangumi 浏览 HTML 失败");
+
+        const listItems = Widget.dom.select(docId, "#browserItemList li");
+        console.log(`Bangumi 浏览: 找到 ${listItems.length} 个列表项`);
+
+        if (listItems.length === 0) {
+            const nextLink = Widget.dom.selectFirst(docId, ".page_inner > .p_cur + a");
+            if (nextLink < 0) {
+                 console.log("Bangumi 浏览: 已到达末尾或无结果 (根据当前筛选条件)");
+            } else {
+                 console.warn("Bangumi 浏览: 未找到列表项，但存在下一页链接?");
+            }
+            return [];
+        }
+
+        const results = [];
+        for (const itemId of listItems) {
+             try {
+                 const linkElementId = Widget.dom.selectFirst(itemId, "a.subjectCover");
+                 const titleElementId = Widget.dom.selectFirst(itemId, "h3 a");
+
+                 if (linkElementId >= 0 && titleElementId >= 0) {
+                     const title = await Widget.dom.text(titleElementId);
+                     const link = await Widget.dom.attr(linkElementId, "href");
+                     const idMatch = link ? link.match(/\/subject\/(\d+)/) : null;
+
+                     if (idMatch && idMatch[1]) {
+                         let coverUrl = undefined;
+                         const imgElementId = Widget.dom.selectFirst(linkElementId, "img");
+                         if (imgElementId >= 0) {
+                             coverUrl = await Widget.dom.attr(imgElementId, "src");
+                             if (coverUrl && coverUrl.startsWith('//')) coverUrl = 'https:' + coverUrl;
+                             if (coverUrl) coverUrl = coverUrl.replace(/\/(c|g|s)\//, '/l/');
+                         }
+
+                         let description = "";
+                         let rating = undefined;
+                         let rankText = "";
+                         let currentYear = undefined;
+
+                         const infoElementId = Widget.dom.selectFirst(itemId, ".info.tip");
+                         if(infoElementId >= 0) {
+                             description = await Widget.dom.text(infoElementId);
+                             const yearMatch = description.match(/(\d{4})(?:年|-)/);
+                             if (yearMatch) currentYear = yearMatch[1];
+                             description = description.trim().replace(/\n\s*/g, ' | ');
+                         }
+                         const rankElementId = Widget.dom.selectFirst(itemId, ".rank");
+                         if(rankElementId >= 0) rankText = await Widget.dom.text(rankElementId);
+
+                         const ratingElement = Widget.dom.selectFirst(itemId, ".fade.rr");
+                         if(ratingElement >= 0) {
+                             rating = await Widget.dom.text(ratingElement);
+                             rating = rating.trim();
+                         }
+
+                         const formattedDescription = formatItemDescription({
+                             description: description,
+                             rating: rating,
+                             releaseDate: currentYear ? `${currentYear}-01-01` : undefined
+                         }) + (rankText ? ` | ${rankText.trim()}` : '');
+
+                         results.push({
+                             id: idMatch[1],
+                             type: "bangumi",
+                             title: title.trim(),
+                             coverUrl: coverUrl,
+                             description: formattedDescription,
+                             rating: rating ? parseFloat(rating) : undefined,
+                             releaseDate: currentYear ? `${currentYear}-01-01` : undefined
+                         });
+                     }
+                 }
+            } catch (parseError) {
+                 console.error("Bangumi 浏览: 解析单个条目时出错:", parseError, "HTML Item ID:", itemId);
+            }
+        }
+
+        console.log(`Bangumi 浏览: 成功解析 ${results.length} 个条目`);
+        return results;
+
+    } catch (error) {
+        console.error("加载 Bangumi 浏览页面失败:", error);
+        return [{ id: "error-bangumi-browser", type: "error", title: "加载 Bangumi 浏览失败", description: error.message }];
+    }
+}
+
 // --- END OF COMBINED WIDGET FILE ---
