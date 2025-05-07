@@ -245,7 +245,7 @@ WidgetMetadata = {
 
     // --- 平台筛选模块 ---
     {
-        title: "📺 TMDB 平台类型筛选",
+        title: "📺 TMDB 播出平台",
         description: "按播出平台和内容类型筛选剧集内容",
         requiresWebView: false,
         functionName: "tmdbDiscoverByNetwork",
