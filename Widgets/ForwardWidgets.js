@@ -461,7 +461,7 @@ WidgetMetadata = {
         requiresWebView: false,
         functionName: "loadBangumiBrowser",
         params: [
-            { name: "tag", title: "#️⃣ 标签 (可选)", type: "input", description: "输入单个标签, 如 漫画改, 轻小说改...", value: "", placeholders: [{title:"例如：漫画改", value:"漫画改"}, {title:"原创", value:"原创"}] },
+            { name: "tag", title: " 标签 (可选)", type: "input", description: "输入单个标签, 如 漫画改, 轻小说改...", value: "", placeholders: [{title:"例如：漫画改", value:"漫画改"}, {title:"原创", value:"原创"}] },
             { name: "genre_tag", title: "🎭 题材", type: "enumeration", description: "选择动画题材", value: "", enumOptions: [
                 { title: "全部", value: "" }, { title: "科幻", value: "科幻" }, { title: "喜剧", value: "喜剧" }, { title: "校园", value: "校园" }, { title: "战斗", value: "战斗" }, { title: "恋爱", value: "恋爱" }, { title: "剧情", value: "剧情" }, { title: "日常", value: "日常" }, { title: "机战", value: "机战" }, { title: "运动", value: "运动" }, { title: "悬疑", value: "悬疑" }, { title: "音乐", value: "音乐" }, { title: "治愈", value: "治愈" }, { title: "百合", value: "百合" }, { title: "后宫", value: "后宫" }, { title: "推理", value: "推理" }, { title: "耽美", value: "耽美" }, { title: "冒险", value: "冒险" }, { title: "萌系", value: "萌系" }, { title: "穿越", value: "穿越" }, { title: "玄幻", value: "玄幻" }, { title: "乙女", value: "乙女" }, { title: "历史", value: "历史" }, { title: "武侠", value: "武侠" }, { title: "美食", value: "美食" }, { title: "职场", value: "职场" }
             ] },
