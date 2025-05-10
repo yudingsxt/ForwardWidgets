@@ -1,7 +1,7 @@
 WidgetMetadata = {
   id: "forward.combined.media.lists",
   title: "影视榜单🔍超级聚合",
-  description: "聚合豆瓣、TMDB、IMDB的电影、剧集、动画片单与榜单",
+  description: "聚合豆瓣、TMDB和IMDB的电影、剧集、动画片单与榜单",
   author: "阿米诺斯",
   site: "https://github.com/quantumultxx/FW-Widgets",
   version: "1.2.2",
@@ -363,13 +363,20 @@ WidgetMetadata = {
                 value: "",
                 enumOptions: [
                     { title: "全部类型", value: "" },
+                    { title: "犯罪", value: "80" },
                     { title: "动画", value: "16" },
                     { title: "喜剧", value: "35" },
-                    { title: "犯罪", value: "80" },
                     { title: "剧情", value: "18" },
                     { title: "家庭", value: "10751" },
+                    { title: "儿童", value: "10762" },
                     { title: "悬疑", value: "9648" },
-                    { title: "纪录片", value: "99" }
+                    { title: "真人秀", value: "10764" },
+                    { title: "脱口秀", value: "10767" },
+                     { title: "肥皂剧", value: "10766" },
+                    { title: "纪录片", value: "99" },
+                    { title: "动作与冒险", value: "10759" },
+                    { title: "科幻与奇幻", value: "10765" },
+                    { title: "战争与政治", value: "10768" }
                 ]
             },
             { name: "page", title: "页码", type: "page" },
