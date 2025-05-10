@@ -1,13 +1,19 @@
+// ==UserScript==
+// @name         影视聚合查询组件
+// @version      1.2.3
+// @description  聚合查询豆瓣/TMDB/IMDB影视数据
+// @author       阿米诺斯
+// =============/UserScript=============
 WidgetMetadata = {
   id: "forward.combined.media.lists",
   title: "影视榜单🔍超级聚合",
   description: "聚合豆瓣、TMDB和IMDB的电影、剧集、动画片单与榜单",
   author: "阿米诺斯",
   site: "https://github.com/quantumultxx/FW-Widgets",
-  version: "1.2.2",
+  version: "1.2.3",
   requiredVersion: "0.0.1",
   modules: [
-    // ==================== 豆瓣模块 ====================
+    // =============豆瓣模块=============
     // --- 🔥 实时热点 ---
     {
       title: "🔥 豆瓣电影实时热榜",
@@ -47,27 +53,7 @@ WidgetMetadata = {
       ]
     },
     {
-      title: "🏆 豆瓣一周国内综艺",
-      description: "来自豆瓣的国内综艺周榜",
-      requiresWebView: false,
-      functionName: "loadDoubanCardItems",
-      params: [
-        { name: "url", title: "🔗 列表地址", type: "constant", value: "https://m.douban.com/subject_collection/show_chinese_best_weekly" },
-        { name: "page", title: "页码", type: "page" }
-      ]
-    },
-    {
-      title: "🌏 豆瓣一周国外综艺",
-      description: "来自豆瓣的全球综艺周榜",
-      requiresWebView: false,
-      functionName: "loadDoubanCardItems",
-      params: [
-        { name: "url", title: "🔗 列表地址", type: "constant", value: "https://m.douban.com/subject_collection/show_global_best_weekly" },
-        { name: "page", title: "页码", type: "page" }
-      ]
-    },
-    {
-      title: "📚 豆瓣自定义片单＆榜单",
+      title: "📚 豆瓣自定义片单",
       description: "加载豆瓣官方榜单或用户豆列 (需输入 URL)",
       requiresWebView: false,
       functionName: "loadDoubanCardItems",
@@ -111,10 +97,9 @@ WidgetMetadata = {
         },
         {
           name: "type", 
-          title: "🌍 地区", 
+          title: "🌍 地区  (主要对 热门/最新/高分/冷门 分类有效)", 
           type: "enumeration",
-          description: "按地区筛选 (主要对 热门/最新/高分/冷门 分类有效)",
-          belongTo: { paramName: "category", value: ["热门", "最新", "豆瓣高分", "冷门佳片"] },
+          description: "(主要对 热门/最新/高分/冷门 分类有效)",
           enumOptions: [ 
             { title: "全部", value: "全部" }, 
             { title: "华语", value: "华语" }, 
@@ -126,19 +111,19 @@ WidgetMetadata = {
         },
         {
           name: "tags", 
-          title: "🎭 类型标签 (可选)", 
-          type: "input",
-          description: "输入类型标签(如 喜剧, 爱情...), 仅当分类为'全部'时生效", 
+          title: "🎭 类型  (仅当分类和地区为'全部'时生效)", 
+          type: "enumeration",
+          description: "仅当分类和地区为'全部'时生效", 
           value: "",
-          belongTo: { paramName: "category", value: ["全部"] },
-          placeholders: [
-            { title: "喜剧", value: "喜剧" }, 
+          enumOptions: [
+            { title: "全部", value: "" },
+            
+            { title: "动作", value: "动作" }, 
             { title: "科幻", value: "科幻" }, 
             { title: "爱情", value: "爱情" }, 
-            { title: "动作", value: "动作" }, 
+            { title: "喜剧", value: "喜剧" }, 
             { title: "悬疑", value: "悬疑" }, 
             { title: "动画", value: "动画" }, 
-            { title: "纪录片", value: "纪录片" }, 
             { title: "剧情", value: "剧情" }, 
             { title: "家庭", value: "家庭" }, 
             { title: "犯罪", value: "犯罪" }, 
@@ -147,8 +132,9 @@ WidgetMetadata = {
             { title: "冒险", value: "冒险" }, 
             { title: "武侠", value: "武侠" }, 
             { title: "运动", value: "运动" }, 
-            { title: "古装", value: "古装" }, 
-            { title: "同性", value: "同性" }
+            { title: "古装", value: "古装" },
+            
+            { title: "纪录片", value: "纪录片" }
           ]
         },
         { name: "page", title: "页码", type: "page" },
@@ -157,28 +143,15 @@ WidgetMetadata = {
     },
     {
       title: "👍 豆瓣剧集推荐",
-      description: "按分类、类型浏览豆瓣推荐剧集/综艺",
+      description: "按分类、类型浏览豆瓣推荐剧集",
       requiresWebView: false,
       functionName: "loadDoubanRecommendShows",
       params: [
         {
-          name: "category", 
-          title: "🏷️ 分类", 
-          type: "enumeration",
-          enumOptions: [ 
-            { title: "全部", value: "all" }, 
-            { title: "热门剧集", value: "tv" }, 
-            { title: "热门综艺", value: "show" } 
-          ],
-          value: "all"
-        },
-        {
           name: "type", 
           title: "🎭 类型 (剧集)", 
           type: "enumeration",
-          description: "按类型筛选 (主要对 热门剧集 分类有效)",
-          belongTo: { paramName: "category", value: ["tv"] },
-          enumOptions: [ 
+            enumOptions: [
             { title: "综合", value: "tv" }, 
             { title: "国产剧", value: "tv_domestic" }, 
             { title: "欧美剧", value: "tv_american" }, 
@@ -189,25 +162,12 @@ WidgetMetadata = {
           ],
           value: "tv"
         },
-        {
-          name: "type", 
-          title: "🎭 类型 (综艺)", 
-          type: "enumeration",
-          description: "按类型筛选 (主要对 热门综艺 分类有效)",
-          belongTo: { paramName: "category", value: ["show"] },
-          enumOptions: [ 
-            { title: "综合", value: "show" }, 
-            { title: "国内", value: "show_domestic" }, 
-            { title: "国外", value: "show_foreign" } 
-          ],
-          value: "show"
-        },
         { name: "page", title: "页码", type: "page" },
         { name: "limit", title: "🔢 每页数量", type: "constant", value: "20" }
       ]
     },
 
-    // ==================== TMDB 模块 ====================
+    // =============TMDB模块=============
     // --- 当前与趋势模块 ---
     {
         title: "🎬 TMDB 正在热映",
@@ -253,26 +213,6 @@ WidgetMetadata = {
     },
 
     // --- 常规发现模块 ---
-    {
-        title: "🔥 TMDB 热门内容",
-        description: "当前流行的电影或剧集 (按热度排序)",
-        requiresWebView: false,
-        functionName: "tmdbPopular",
-        params: [
-            { 
-                name: "type", 
-                title: "类型", 
-                type: "enumeration", 
-                enumOptions: [
-                    { title: "电影", value: "movie" },
-                    { title: "剧集", value: "tv" }
-                ], 
-                value: "movie" 
-            },
-            { name: "language", title: "语言", type: "constant", value: "zh-CN" },
-            { name: "page", title: "页码", type: "page" }
-        ]
-    },
     {
         title: "⭐ TMDB 高分内容",
         description: "高分电影或剧集 (按用户评分排序)",
@@ -372,7 +312,7 @@ WidgetMetadata = {
                     { title: "悬疑", value: "9648" },
                     { title: "真人秀", value: "10764" },
                     { title: "脱口秀", value: "10767" },
-                     { title: "肥皂剧", value: "10766" },
+                    { title: "肥皂剧", value: "10766" },
                     { title: "纪录片", value: "99" },
                     { title: "动作与冒险", value: "10759" },
                     { title: "科幻与奇幻", value: "10765" },
@@ -474,7 +414,7 @@ WidgetMetadata = {
         ]
     },
 
-    // ==================== IMDB 模块 ====================
+    // =============IMDB模块=============
     {
       title: "💯 IMDb Top 250 电影",
       description: "IMDb 用户评分最高的 250 部电影",
@@ -520,7 +460,7 @@ WidgetMetadata = {
   ]
 };
 
-// ==================== 辅助函数 ====================
+// ===============辅助函数===============
 function formatItemDescription(item) {
     let description = item.description || '';
     const hasRating = /评分|rating/i.test(description);
@@ -574,7 +514,7 @@ function getCurrentDate() {
     return now.toISOString().split('T')[0];
 }
 
-// ==================== 豆瓣功能函数 ====================
+// ===============豆瓣功能模块===============
 async function loadDoubanCardItems(params = {}) {
   try {
     const url = params.url;
@@ -790,7 +730,7 @@ async function loadDoubanRecommendItems(params = {}, mediaType = "movie") {
   }).filter(item => item !== null);
 }
 
-// ==================== TMDB 功能函数 ====================
+// ===============TMDB功能函数===============
 async function fetchTmdbData(api, params) {
     try {
         const tmdbParams = { ...params };
@@ -837,11 +777,6 @@ async function tmdbTrending(params) {
     return await fetchTmdbData(api, params);
 }
 
-async function tmdbPopular(params) {
-    const type = params.type || 'movie';
-    const api = type === 'movie' ? `movie/popular` : `tv/popular`;
-    return await fetchTmdbData(api, params);
-}
 
 async function tmdbTopRated(params) {
     const type = params.type || 'movie';
@@ -884,7 +819,7 @@ async function tmdbDiscoverByNetwork(params = {}) {
     return await fetchTmdbData(api, discoverParams);
 }
 
-// ==================== IMDB 功能函数 ====================
+// ===============IMDB功能函数===============
 async function loadImdbCardItems(params = {}) {
   const url = params.url;
   if (!url) throw new Error("缺少 IMDB 片单 URL");
