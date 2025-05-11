@@ -1,9 +1,9 @@
-// ==UserScript==
+// =============UserScript=============
 // @name         影视聚合查询组件
 // @version      1.2.3
 // @description  聚合查询豆瓣/TMDB/IMDB影视数据
 // @author       阿米诺斯
-// =============/UserScript=============
+// =============UserScript=============
 WidgetMetadata = {
   id: "forward.combined.media.lists",
   title: "影视榜单🔍超级聚合",
