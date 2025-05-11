@@ -266,7 +266,9 @@ WidgetMetadata = {
                     { title: "东京电视台", value: "94" },
                     { title: "BBC One", value: "332" },
                     { title: "BBC Two", value: "295" },
-                    { title: "NBC", value: "6" }
+                    { title: "NBC", value: "6" },
+                    
+                    { title: "amc+", value: "174" }
                 ]
             },
             {
