@@ -246,8 +246,9 @@ WidgetMetadata = {
                 title: "播出平台",
                 type: "enumeration",
                 description: "选择一个平台以查看其剧集内容",
-                value: "2007",
+                value: "",
                 enumOptions: [
+                    { title: "全部", value: "" },
                     { title: "腾讯视频", value: "2007" },
                     { title: "爱奇艺", value: "1330" },
                     { title: "优酷", value: "1419" },
