@@ -33,7 +33,7 @@
     {
       "id": "imdb",
       "title": "IMDB",
-      "description": "解析IMDB片单，获取视频信息",
+      "description": "IMDB",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
       "author": "pack1r",
