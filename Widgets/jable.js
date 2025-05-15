@@ -176,80 +176,142 @@ WidgetMetadata = {
 };
 
 
+async function search(params = {}) {
+  const url = `https://jable.tv/search/${params.keyword}/?mode=async&function=get_block&block_id=list_videos_videos_list_search_result&q=${params.keyword}`;
+  params.url = url;
+  return await loadPage(params);
+}
+
 async function loadPage(params = {}) {
   const sections = await loadPageSections(params);
-  const items = sections.flatMap((section) => section.items);
+  const items = sections.flatMap((section) => section.childItems);
   return items;
 }
 
 async function loadPageSections(params = {}) {
   try {
     let url = params.url;
-    if (!url) throw new Error("地址不能为空");
-    if (params["sort_by"]) url += `&sort_by=${params.sort_by}`;
-    if (params["from"]) url += `&from=${params.from}`;
-
-    // 获取并解析HTML
+    if (!url) {
+      throw new Error("地址不能为空");
+    }
+    if (params["sort_by"]) {
+      url += `&sort_by=${params.sort_by}`;
+    }
+    if (params["from"]) {
+      url += `&from=${params.from}`;
+    }
+    // 1. 获取HTML内容
+    console.log("=== 获取HTML内容 ===");
     const response = await Widget.http.get(url, {
       headers: {
         "User-Agent":
           "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
-        Accept: "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
+        Accept:
+          "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
       },
     });
 
-    if (!response?.data || typeof response.data !== "string") {
+    if (!response || !response.data || typeof response.data !== "string") {
       throw new Error("无法获取有效的HTML内容");
     }
 
-    const $ = Widget.html.load(response.data);
-    const sections = [];
-    
-    $(".site-content .py-3,.pb-e-lg-40").each((_, sectionElement) => {
-      const $section = $(sectionElement);
-      const items = [];
-      
-      $section.find(".video-img-box").each((_, itemElement) => {
-        const $item = $(itemElement);
-        const url = $item.find(".title a").attr("href") || "";
-        
-        if (url.includes("jable.tv")) {
-          const cover = $item.find("img").attr("data-src") || $item.find("img").attr("src");
-          const video = $item.find("img").attr("data-preview");
-          const title = $item.find(".title a").text().trim();
-          const duration = $item.find(".absolute-bottom-right .label").text().trim();
-          
-          items.push({
+    const htmlContent = response.data;
+    console.log(`获取到HTML内容长度: ${htmlContent.length} 字符`);
+    console.log(htmlContent);
+
+    return parseHtml(htmlContent);
+  } catch (error) {
+    console.error("测试过程出错:", error.message);
+    throw error;
+  }
+}
+
+async function parseHtml(htmlContent) {
+  // 2. 解析HTML
+  console.log("\n=== 解析HTML ===");
+  const $ = Widget.html.load(htmlContent);
+  const sectionSelector = ".site-content .py-3,.pb-e-lg-40";
+  const itemSelector = ".video-img-box";
+  const coverSelector = "img";
+  const durationSelector = ".absolute-bottom-right .label";
+  const titleSelector = ".title a";
+
+  let sections = [];
+  //use cheerio to parse html
+  const sectionElements = $(sectionSelector).toArray();
+  for (const sectionElement of sectionElements) {
+    const $sectionElement = $(sectionElement);
+    var items = [];
+    const sectionTitle = $sectionElement.find(".title-box .h3-md").first();
+    const sectionTitleText = sectionTitle.text();
+    console.log("sectionTitleText:", sectionTitleText);
+    const itemElements = $sectionElement.find(itemSelector).toArray();
+    console.log("itemElements:", itemElements);
+    if (itemElements && itemElements.length > 0) {
+      for (const itemElement of itemElements) {
+        const $itemElement = $(itemElement);
+        const titleId = $itemElement.find(titleSelector).first();
+        console.log("titleId:", titleId.length);
+        const url = titleId.attr("href") || "";
+        console.log("url:", url);
+        if (url && url.includes("jable.tv")) {
+          const durationId = $itemElement.find(durationSelector).first();
+          const coverId = $itemElement.find(coverSelector).first();
+          const cover = coverId.attr("data-src");
+          const video = coverId.attr("data-preview");
+          const title = titleId.text();
+          const duration = durationId.text();
+          const item = {
             id: url,
-            type: "video",
+            type: "url",
             title: title,
             durationText: duration,
-            posterPath: cover,
+            backdropPath: cover,
             previewUrl: video,
-            link: url,
-            metadata: {
-              posterShape: "landscape",
-              mediaType: "video",
-            }
-          });
+            link: url
+          };
+          console.log("item:", item);
+          items.push(item);
         }
-      });
-
-      if (items.length > 0) {
-        sections.push({
-          id: $section.find(".title-box .h3-md").text().trim() || "default-section",
-          type: "section",
-          title: $section.find(".title-box .h3-md").text().trim() || "默认标题",
-          items: items,
-          style: "grid",
-          metadata: { layoutType: "grid" }
-        });
       }
-    });
 
-    return sections;
-  } catch (error) {
-    console.error("解析失败:", error.message);
-    return [];
+      sections.push({
+        id: sectionTitleText,
+        type: "web",
+        title: sectionTitleText,
+        childItems: items,
+      });
+    }
   }
+  console.log("sections:", sections);
+  return sections;
+}
+
+async function loadDetail(link) {
+  const response = await Widget.http.get(link, {
+    headers: {
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    },
+  });
+  //get hls with regex var hlsUrl = 'https://hot-box-gen.mushroomtrack.com/hls/TJHqwWuFPCwYqa4hyv1cCg/1746892414/50000/50377/50377.m3u8';
+  const hlsUrl = response.data.match(/var hlsUrl = '(.*?)';/)[1];
+  if (!hlsUrl) {
+    throw new Error("无法获取有效的HLS URL");
+  }
+  console.log("hlsUrl:", hlsUrl);
+  const item = {
+    id: link,
+    type: "detail",
+    videoUrl: hlsUrl,
+    customHeaders: {
+      "Referer": link,
+      "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36",
+    },
+  };
+  const sections = await parseHtml(response.data);
+  const items = sections.flatMap((section) => section.childItems);
+  if (items.length > 0) {
+    item.childItems = items;
+  }
+  return item;
 }
