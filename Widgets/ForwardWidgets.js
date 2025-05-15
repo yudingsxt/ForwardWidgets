@@ -253,7 +253,7 @@ WidgetMetadata = {
                     { title: "iQiyi", value: "1330" },
                     { title: "Youku", value: "1419" },
                     { title: "Bilibili", value: "1605" },
-                    { title: "MangoTV", value: "1631" },
+                    { title: "MGTV", value: "1631" },
                     { title: "Netflix", value: "213" },
                     { title: "Disney+", value: "2739" },
                     { title: "HBO", value: "49" },
