@@ -16,7 +16,7 @@ WidgetMetadata = {
     // =============豆瓣模块=============
     // --- 🔥 实时热点 ---
     {
-      title: "🔥 豆瓣电影实时热榜",
+      title: "豆瓣电影实时热榜",
       description: "来自豆瓣的当前热门电影榜单",
       requiresWebView: false,
       functionName: "loadDoubanItemsFromApi",
@@ -28,7 +28,7 @@ WidgetMetadata = {
       ]
     },
     {
-      title: "🔥 豆瓣剧集实时热榜",
+      title: "豆瓣剧集实时热榜",
       description: "来自豆瓣的当前热门剧集榜单",
       requiresWebView: false,
       functionName: "loadDoubanItemsFromApi",
@@ -42,7 +42,7 @@ WidgetMetadata = {
 
     // --- 🏆 精选榜单 ---
     {
-      title: "📚 豆瓣 Top 250 电影",
+      title: "豆瓣 Top 250 电影",
       description: "豆瓣评分最高的 250 部电影",
       requiresWebView: false,
       functionName: "loadDoubanCardItems",
@@ -53,7 +53,7 @@ WidgetMetadata = {
       ]
     },
     {
-      title: "📚 豆瓣自定义片单",
+      title: "豆瓣自定义片单",
       description: "加载豆瓣官方榜单或用户豆列 (需输入 URL)",
       requiresWebView: false,
       functionName: "loadDoubanCardItems",
@@ -77,7 +77,7 @@ WidgetMetadata = {
 
     // --- 🎬 探索发现 ---
     {
-      title: "👍 豆瓣电影推荐",
+      title: "豆瓣电影推荐",
       description: "按分类、地区、类型标签浏览豆瓣推荐电影",
       requiresWebView: false,
       functionName: "loadDoubanRecommendMovies",
@@ -97,9 +97,9 @@ WidgetMetadata = {
         },
         {
           name: "type", 
-          title: "🌍 地区  (主要对 热门/最新/高分/冷门 分类有效)", 
+          title: "🌍 地区  (仅对 热门/最新/高分/冷门 分类生效)", 
           type: "enumeration",
-          description: "(主要对 热门/最新/高分/冷门 分类有效)",
+          description: "(仅对 热门/最新/高分/冷门 分类生效)",
           enumOptions: [ 
             { title: "全部", value: "全部" }, 
             { title: "华语", value: "华语" }, 
@@ -111,9 +111,9 @@ WidgetMetadata = {
         },
         {
           name: "tags", 
-          title: "🎭 类型  (仅当分类和地区为'全部'时生效)", 
+          title: "🎭 类型  (仅当分类为'全部'时生效)", 
           type: "enumeration",
-          description: "仅当分类和地区为'全部'时生效", 
+          description: "仅当分类为'全部'时生效", 
           value: "",
           enumOptions: [
             { title: "全部", value: "" },
@@ -142,7 +142,7 @@ WidgetMetadata = {
       ]
     },
     {
-      title: "👍 豆瓣剧集推荐",
+      title: "豆瓣剧集推荐",
       description: "按分类、类型浏览豆瓣推荐剧集",
       requiresWebView: false,
       functionName: "loadDoubanRecommendShows",
@@ -170,7 +170,7 @@ WidgetMetadata = {
     // =============TMDB模块=============
     // --- 当前与趋势模块 ---
     {
-        title: "🎬 TMDB 正在热映",
+        title: "TMDB 正在热映",
         description: "当前影院或流媒体上映的电影/剧集",
         requiresWebView: false,
         functionName: "tmdbNowPlaying",
@@ -190,7 +190,7 @@ WidgetMetadata = {
         ]
     },
     {
-        title: "📈 TMDB 本日热门",
+        title: "TMDB 本日热门",
         description: "今日热门电影与剧集",
         requiresWebView: false,
         functionName: "tmdbTrending",
@@ -201,7 +201,7 @@ WidgetMetadata = {
         ]
     },
     {
-        title: "📊 TMDB 本周热门",
+        title: "TMDB 本周热门",
         description: "本周热门电影与剧集",
         requiresWebView: false,
         functionName: "tmdbTrending",
@@ -214,7 +214,7 @@ WidgetMetadata = {
 
     // --- 常规发现模块 ---
     {
-        title: "⭐ TMDB 高分内容",
+        title: "TMDB 高分内容",
         description: "高分电影或剧集 (按用户评分排序)",
         requiresWebView: false,
         functionName: "tmdbTopRated",
@@ -236,7 +236,7 @@ WidgetMetadata = {
 
     // --- 平台筛选模块---
     {
-        title: "🖥️ TMDB 播出平台",
+        title: "TMDB 播出平台",
         description: "按播出平台和内容类型筛选剧集内容",
         requiresWebView: false,
         functionName: "tmdbDiscoverByNetwork",
@@ -256,14 +256,15 @@ WidgetMetadata = {
                     { title: "芒果TV", value: "1631" },
                     { title: "Netflix", value: "213" },
                     { title: "Disney+", value: "2739" },
-                    { title: "Max", value: "3186" },
+                    { title: "HBO", value: "49" },
+                    { title: "HBO Max", value: "3186" },
                     { title: "Apple TV+", value: "2552" },
                     { title: "Hulu", value: "453" },
-                    { title: "HBO", value: "49" },
-                    { title: "Prime Video", value: "1024" },
+                    { title: "Amazon Prime Video", value: "1024" },
                     { title: "FOX", value: "19" },
                     { title: "派拉蒙", value: "576" },
                     { title: "Paramount+", value: "4330" },
+                    { title: "TV Tokyo", value: "98" },
                     { title: "东京电视台", value: "94" },
                     { title: "BBC One", value: "332" },
                     { title: "BBC Two", value: "295" },
@@ -329,7 +330,7 @@ WidgetMetadata = {
 
     // --- 高级筛选模块 ---
     {
-        title: "📆 TMDB 即将上映",
+        title: "TMDB 即将上映",
         description: "即将上映的电影 (可筛选)",
         requiresWebView: false,
         functionName: "tmdbUpcomingMovies",
@@ -419,7 +420,7 @@ WidgetMetadata = {
 
     // =============IMDB模块=============
     {
-      title: "💯 IMDb Top 250 电影",
+      title: "IMDb Top 250 电影",
       description: "IMDb 用户评分最高的 250 部电影",
       requiresWebView: false,
       functionName: "loadImdbCardItems",
@@ -430,7 +431,7 @@ WidgetMetadata = {
       ]
     },
     {
-      title: "💯 IMDb Top 250 剧集",
+      title: "IMDb Top 250 剧集",
       description: "IMDb 用户评分最高的 250 部剧集",
       requiresWebView: false,
       functionName: "loadImdbCardItems",
@@ -441,7 +442,7 @@ WidgetMetadata = {
       ]
     },
     {
-      title: "💯 IMDB 自定义榜单",
+      title: "IMDB 自定义片单",
       description: "解析 IMDB 热门电影/剧集等网页片单 (需输入 URL)",
       requiresWebView: false,
       functionName: "loadImdbCardItems",
