@@ -5,8 +5,8 @@
   "widgets": [
     {
       "id": "jable",
-      "title": "jable",
-      "description": "获取jable热门影片榜单",
+      "title": "Jable",
+      "description": "获取Jable热门影片榜单",
       "requiredVersion": "0.0.1",
       "version": "1.0.1",
       "author": "nibiru",
