@@ -22,8 +22,8 @@
       "url": "https://raw.githubusercontent.com/bemarkt/scripts/refs/heads/master/provider/Forward/widgets/vod.js"
     },
     {
-      "id": "Jable详细分类",
-      "title": "Jable",
+      "id": "jable",
+      "title": "Jable详细分类",
       "description": "获取Jable分类榜单",
       "requiredVersion": "0.0.1",
       "version": "1.0.2",
