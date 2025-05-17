@@ -1,6 +1,6 @@
 {
   "title": "𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂 ‘𝓼 𝓦𝓲𝓭𝓰𝓮𝓽𝓼",
-  "description": "𝒜 𝒸𝑜𝓁𝓁𝑒𝒸𝓉𝒾𝑜𝓃 𝑜𝒻 𝓌𝒾𝒹𝑔𝑒𝓉𝓈 𝒸𝓇𝑒𝒶𝓉𝑒𝒹 𝒷𝓎 𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂",
+  "description": "汇集豆瓣、猫眼、TMDB和IMDB的各类榜单",
   "icon": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/icon.png",
   "widgets": [
 	 {
@@ -50,7 +50,7 @@
     },
     {
       "id": "forward.combined.media.lists",
-      "title": "影视榜单🔍超级聚合",
+      "title": "影视榜单",
       "description": "获取豆瓣、TMDB和IMDB的影视动画榜单",
       "requiredVersion": "0.0.1",
       "version": "1.2.3",
