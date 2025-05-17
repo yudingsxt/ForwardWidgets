@@ -708,6 +708,10 @@ WidgetMetadata = {
               value: "https://jable.tv/tags/housewife/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
+              title: "家庭教师", 
+              value: "https://jable.tv/tags/private-teacher/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
               title: "搜查官", 
               value: "https://jable.tv/tags/detective/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
