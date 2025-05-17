@@ -105,7 +105,7 @@ WidgetMetadata = {
       params: [
         {
           name: "url",
-          title: "选择角色",
+          title: "选择女优",
           type: "enumeration",
           enumOptions: [
             { 
@@ -331,7 +331,7 @@ WidgetMetadata = {
       params: [
         {
           name: "url",
-          title: "选择角色",
+          title: "选择衣着",
           type: "enumeration",
           enumOptions: [
             { 
@@ -424,7 +424,7 @@ WidgetMetadata = {
       params: [
         {
           name: "url",
-          title: "选择角色",
+          title: "选择剧情",
           type: "enumeration",
           enumOptions: [
             { 
@@ -506,7 +506,7 @@ WidgetMetadata = {
       params: [
         {
           name: "url",
-          title: "选择角色",
+          title: "选择地点",
           type: "enumeration",
           enumOptions: [
             { 
@@ -587,7 +587,7 @@ WidgetMetadata = {
       params: [
         {
           name: "url",
-          title: "选择角色",
+          title: "选择身材",
           type: "enumeration",
           enumOptions: [
             { 
@@ -739,8 +739,130 @@ WidgetMetadata = {
         },
         { name: "from", title: "页码", type: "page", description: "页码", value: "1" },
       ],
+    },
+                // 交合模块
+    {
+      title: "选择交合",
+      description: "按交合分类浏览影片",
+      requiresWebView: false,
+      functionName: "loadPage",
+      params: [
+        {
+          name: "url",
+          title: "选择交合",
+          type: "enumeration",
+          enumOptions: [
+            { 
+              title: "颜射", 
+              value: "https://jable.tv/tags/facial/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "足交", 
+              value: "https://jable.tv/tags/footjob/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "痉挛", 
+              value: "https://jable.tv/tags/spasms/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "潮吹", 
+              value: "https://jable.tv/tags/squirting/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "深喉", 
+              value: "https://jable.tv/tags/deep-throat/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "接吻", 
+              value: "https://jable.tv/tags/kiss/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "口爆", 
+              value: "https://jable.tv/tags/cum-in-mouth/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "口交", 
+              value: "https://jable.tv/tags/blowjob/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "乳交", 
+              value: "https://jable.tv/tags/tit-wank/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "中出", 
+              value: "https://jable.tv/tags/creampie/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+          ],
+          value: "https://jable.tv/tags/facial/?mode=async&function=get_block&block_id=list_videos_common_videos_list",
+        },
+        {
+          name: "sort_by",
+          title: "排序",
+          type: "enumeration",
+          description: "排序",
+          enumOptions: [
+            { title: "最新发布", value: "post_date" },
+            { title: "最多观看", value: "video_viewed" },
+            { title: "最多收藏", value: "most_favourited" },
+          ],
+        },
+        { name: "from", title: "页码", type: "page", description: "页码", value: "1" },
+      ],
+    },
+                // 杂项模块
+    {
+      title: "选择杂项",
+      description: "按杂项分类浏览影片",
+      requiresWebView: false,
+      functionName: "loadPage",
+      params: [
+        {
+          name: "url",
+          title: "选择杂项",
+          type: "enumeration",
+          enumOptions: [
+            { 
+              title: "录像", 
+              value: "https://jable.tv/tags/video-recording/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "综艺", 
+              value: "https://jable.tv/tags/variety-show/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "感谢祭", 
+              value: "https://jable.tv/tags/thanksgiving/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "节日主题", 
+              value: "https://jable.tv/tags/festival/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "四小时以上", 
+              value: "https://jable.tv/tags/more-than-4-hours/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "处女作/隐退作", 
+              value: "https://jable.tv/tags/debut-retires/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+          ],
+          value: "https://jable.tv/tags/video-recording/?mode=async&function=get_block&block_id=list_videos_common_videos_list",
+        },
+        {
+          name: "sort_by",
+          title: "排序",
+          type: "enumeration",
+          description: "排序",
+          enumOptions: [
+            { title: "最新发布", value: "post_date" },
+            { title: "最多观看", value: "video_viewed" },
+            { title: "最多收藏", value: "most_favourited" },
+          ],
+        },
+        { name: "from", title: "页码", type: "page", description: "页码", value: "1" },
+      ],
     },    
-    // 影片主题模块
+                // 主题模块
     {
       title: "影片主题",
       description: "按主题分类浏览影片",
