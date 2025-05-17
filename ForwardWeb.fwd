@@ -6,7 +6,7 @@
     {
       "id": "jable",
       "title": "Jable",
-      "description": "获取Jable各类榜单",
+      "description": "获取Jable分类榜单",
       "requiredVersion": "0.0.1",
       "version": "1.0.2",
       "author": "nibiru",
