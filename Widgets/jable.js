@@ -125,7 +125,7 @@ WidgetMetadata = {
               value: "https://jable.tv/models/2958338aa4f78c0afb071e2b8a6b5f1b/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
-              title: "大槻ひびき", 
+              title: "大槻响", 
               value: "https://jable.tv/models/hibiki-otsuki/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
@@ -137,20 +137,52 @@ WidgetMetadata = {
               value: "https://jable.tv/models/julia/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
-              title: "明里つむぎ", 
+              title: "明里䌷", 
               value: "https://jable.tv/models/tsumugi-akari/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
-              title: "桃乃木かな", 
+              title: "桃乃木香奈", 
               value: "https://jable.tv/models/momonogi-kana/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
-              title: "水戸かな", 
+              title: "水户香奈", 
               value: "https://jable.tv/models/kana-mito/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
               title: "篠田ゆう", 
               value: "https://jable.tv/s1/models/shinoda-yuu/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "枫可怜", 
+              value: "https://jable.tv/models/kaede-karen/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "吉沢明歩", 
+              value: "https://jable.tv/models/akiho-yoshizawa/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "羽月希", 
+              value: "https://jable.tv/models/21e145d3f4d7c8c818fc7eae19342a7a/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "美谷朱里 ", 
+              value: "https://jable.tv/s1/models/mitani-akari/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "山岸逢花", 
+              value: "https://jable.tv/models/yamagishi-aika/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "佐佐木明希", 
+              value: "https://jable.tv/models/sasaki-aki/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "神木麗", 
+              value: "https://jable.tv/models/ef9b1ab9a21b58d6ee4d7d97ab883288/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "七泽美亚", 
+              value: "https://jable.tv/models/nanasawa-mia/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
           ],
           value: "",
