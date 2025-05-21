@@ -9,7 +9,7 @@ WidgetMetadata = {
   modules: [
     // 热门影片模块
     {
-      title: "热门影片",
+      title: "热门",
       description: "热门影片",
       requiresWebView: false,
       functionName: "loadPage",
@@ -39,7 +39,7 @@ WidgetMetadata = {
     },
     // 最新上市模块
     {
-      title: "最新上市",
+      title: "最新",
       description: "最新上市影片",
       requiresWebView: false,
       functionName: "loadPage",
@@ -67,9 +67,9 @@ WidgetMetadata = {
       ],
     },
 
-        // 中文字幕模块
+        // 中文模块
     {
-      title: "中文字幕",
+      title: "中文",
       description: "中文字幕影片",
       requiresWebView: false,
       functionName: "loadPage",
@@ -98,7 +98,7 @@ WidgetMetadata = {
     },
                 // 女优模块
     {
-      title: "选择女优",
+      title: "女优",
       description: "按女优分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
@@ -332,7 +332,7 @@ WidgetMetadata = {
 
         // 衣着模块
     {
-      title: "选择衣着",
+      title: "衣着",
       description: "按衣着分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
@@ -425,7 +425,7 @@ WidgetMetadata = {
     },
                 // 剧情模块
     {
-      title: "选择剧情",
+      title: "剧情",
       description: "按剧情分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
@@ -507,7 +507,7 @@ WidgetMetadata = {
 
                 // 地点模块
     {
-      title: "选择地点",
+      title: "地点",
       description: "按地点分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
@@ -588,7 +588,7 @@ WidgetMetadata = {
     },
                 // 身材模块
     {
-      title: "选择身材",
+      title: "身材",
       description: "按身材分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
@@ -665,7 +665,7 @@ WidgetMetadata = {
     },    
                 // 角色模块
     {
-      title: "选择角色",
+      title: "角色",
       description: "按角色分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
@@ -750,7 +750,7 @@ WidgetMetadata = {
     },
                 // 交合模块
     {
-      title: "选择交合",
+      title: "交合",
       description: "按交合分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
@@ -817,62 +817,9 @@ WidgetMetadata = {
         { name: "from", title: "页码", type: "page", description: "页码", value: "1" },
       ],
     },
-                // 杂项模块
+                    // 主题模块
     {
-      title: "选择杂项",
-      description: "按杂项分类浏览影片",
-      requiresWebView: false,
-      functionName: "loadPage",
-      params: [
-        {
-          name: "url",
-          title: "选择杂项",
-          type: "enumeration",
-          enumOptions: [
-            { 
-              title: "录像", 
-              value: "https://jable.tv/tags/video-recording/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
-            },
-            { 
-              title: "综艺", 
-              value: "https://jable.tv/tags/variety-show/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
-            },
-            { 
-              title: "感谢祭", 
-              value: "https://jable.tv/tags/thanksgiving/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
-            },
-            { 
-              title: "节日主题", 
-              value: "https://jable.tv/tags/festival/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
-            },
-            { 
-              title: "四小时以上", 
-              value: "https://jable.tv/tags/more-than-4-hours/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
-            },
-            { 
-              title: "处女作/隐退作", 
-              value: "https://jable.tv/tags/debut-retires/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
-            },
-          ],
-          value: "https://jable.tv/tags/video-recording/?mode=async&function=get_block&block_id=list_videos_common_videos_list",
-        },
-        {
-          name: "sort_by",
-          title: "排序",
-          type: "enumeration",
-          description: "排序",
-          enumOptions: [
-            { title: "最新发布", value: "post_date" },
-            { title: "最多观看", value: "video_viewed" },
-            { title: "最多收藏", value: "most_favourited" },
-          ],
-        },
-        { name: "from", title: "页码", type: "page", description: "页码", value: "1" },
-      ],
-    },    
-                // 主题模块
-    {
-      title: "影片主题",
+      title: "主题",
       description: "按主题分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
@@ -887,7 +834,7 @@ WidgetMetadata = {
               value: "https://jable.tv/categories/roleplay/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
-              title: "制度诱惑", 
+              title: "制服诱惑", 
               value: "https://jable.tv/categories/uniform/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
@@ -943,6 +890,59 @@ WidgetMetadata = {
         { name: "from", title: "页码", type: "page", description: "页码", value: "1" },
       ],
     },
+                // 杂项模块
+    {
+      title: "杂项",
+      description: "按杂项分类浏览影片",
+      requiresWebView: false,
+      functionName: "loadPage",
+      params: [
+        {
+          name: "url",
+          title: "选择杂项",
+          type: "enumeration",
+          enumOptions: [
+            { 
+              title: "录像", 
+              value: "https://jable.tv/tags/video-recording/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "综艺", 
+              value: "https://jable.tv/tags/variety-show/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "感谢祭", 
+              value: "https://jable.tv/tags/thanksgiving/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "节日主题", 
+              value: "https://jable.tv/tags/festival/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "四小时以上", 
+              value: "https://jable.tv/tags/more-than-4-hours/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "处女作/隐退作", 
+              value: "https://jable.tv/tags/debut-retires/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+          ],
+          value: "https://jable.tv/tags/video-recording/?mode=async&function=get_block&block_id=list_videos_common_videos_list",
+        },
+        {
+          name: "sort_by",
+          title: "排序",
+          type: "enumeration",
+          description: "排序",
+          enumOptions: [
+            { title: "最新发布", value: "post_date" },
+            { title: "最多观看", value: "video_viewed" },
+            { title: "最多收藏", value: "most_favourited" },
+          ],
+        },
+        { name: "from", title: "页码", type: "page", description: "页码", value: "1" },
+      ],
+    },    
   ],
 };
 
