@@ -58,7 +58,7 @@ WidgetMetadata = {
           type: "enumeration",
           description: "排序",
           enumOptions: [
-            { title: "最新发布", value: "post_date" },
+            { title: "最新发布", value: "latest-updates" },
             { title: "最多观看", value: "video_viewed" },
             { title: "最多收藏", value: "most_favourited" },
           ],
