@@ -28,10 +28,10 @@ WidgetMetadata = {
           type: "enumeration",
           description: "排序",
           enumOptions: [
-            { title: "所有时间", value: "video_viewed" },
-            { title: "本月热门", value: "video_viewed_month" },
-            { title: "本周热门", value: "video_viewed_week" },
             { title: "今日热门", value: "video_viewed_today" },
+            { title: "本周热门", value: "video_viewed_week" },
+            { title: "本月热门", value: "video_viewed_month" },
+            { title: "所有时间", value: "video_viewed" },
           ],
         },
         { name: "from", title: "页码", type: "page", description: "页码", value: "1" },
