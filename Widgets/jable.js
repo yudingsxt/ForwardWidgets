@@ -1,13 +1,13 @@
 WidgetMetadata = {
   id: "jable",
-  title: "Jable详细分类",
+  title: "Jable全站分类",
   description: "获取Jable分类榜单",
   author: "nibiru",
   site: "https://github.com/quantumultxx/FW-Widgets",
   version: "1.0.2",
   requiredVersion: "0.0.1",
   modules: [
-    // 热门影片模块
+    // 热门模块
     {
       title: "热门",
       description: "热门影片",
@@ -37,7 +37,7 @@ WidgetMetadata = {
         { name: "from", title: "页码", type: "page", description: "页码", value: "1" },
       ],
     },
-    // 最新上市模块
+    // 最新模块
     {
       title: "最新",
       description: "最新上市影片",
