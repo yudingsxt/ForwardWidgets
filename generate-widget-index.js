@@ -3,7 +3,7 @@ const path = require('path');
 
 // 配置目录路径
 const WIDGETS_DIR = './widgets'; // 调整为你的小部件目录路径
-const OUTPUT_FILE = './pack1r.fwd';
+const OUTPUT_FILE = './ForwardWidgets.fwd';
 
 // 创建临时目录来存放预处理的文件
 const TEMP_DIR = path.join(__dirname, 'temp_widgets');
