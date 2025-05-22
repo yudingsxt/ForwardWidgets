@@ -7,9 +7,9 @@
       "id": "bangumi_charts_tmdb_v4_final",
       "title": "Bangumi 热门榜单",
       "description": "从Bangumi获取榜单，匹配TMDB资源。",
-      "author": "Autism", 
-      "version"": "1.0.0", 
-      "requiredVersion": "0.0.1",
+      "requiredVersion": "0.0.1"
+      "version": "1.0.0", 
+      "author": "Autism",
       "url": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/Widgets/Bangumi.js"
     },
     {
