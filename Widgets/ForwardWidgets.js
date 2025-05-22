@@ -21,8 +21,14 @@ WidgetMetadata = {
       requiresWebView: false,
       functionName: "loadDoubanItemsFromApi",
       params: [
-        { name: "url", title: "🔗 列表地址", type: "constant", value: "https://m.douban.com/rexxar/api/v2/subject_collection/movie_real_time_hotest/items" },
-        { name: "type", title: "🎭 类型", type: "constant", value: "movie" },
+        { name: "url", 
+          title: "🔗 列表地址", 
+          type: "constant", 
+          value: "https://m.douban.com/rexxar/api/v2/subject_collection/movie_real_time_hotest/items" },
+        { name: "type", 
+          title: "🎭 类型", 
+          type: "constant", 
+          value: "movie" },
         { name: "page", title: "页码", type: "page" },
         { name: "limit", title: "🔢 每页数量", type: "constant", value: "20" }
       ]
@@ -33,8 +39,14 @@ WidgetMetadata = {
       requiresWebView: false,
       functionName: "loadDoubanItemsFromApi",
       params: [
-        { name: "url", title: "🔗 列表地址", type: "constant", value: "https://m.douban.com/rexxar/api/v2/subject_collection/tv_real_time_hotest/items" },
-        { name: "type", title: "🎭 类型", type: "constant", value: "tv" },
+        { name: "url", 
+          title: "🔗 列表地址", 
+          type: "constant", 
+          value: "https://m.douban.com/rexxar/api/v2/subject_collection/tv_real_time_hotest/items" },
+        { name: "type", 
+          title: "🎭 类型", 
+          type: "constant", 
+          value: "tv" },
         { name: "page", title: "页码", type: "page" },
         { name: "limit", title: "🔢 每页数量", type: "constant", value: "20" }
       ]
@@ -47,7 +59,10 @@ WidgetMetadata = {
       requiresWebView: false,
       functionName: "loadDoubanCardItems",
       params: [
-        { name: "url", title: "🔗 列表地址", type: "constant", value: "https://m.douban.com/subject_collection/movie_top250" },
+        { name: "url", 
+          title: "🔗 列表地址", 
+          type: "constant", 
+          value: "https://m.douban.com/subject_collection/movie_top250" },
         { name: "page", title: "页码", type: "page" },
         { name: "limit", title: "🔢 每页数量", type: "constant", value: "20" }
       ]
@@ -64,10 +79,14 @@ WidgetMetadata = {
           type: "input", 
           description: "输入豆瓣片单或榜单地址 (subject_collection 或 doulist)",
           placeholders: [
-            { title: "一周电影口碑榜", value: "https://m.douban.com/subject_collection/movie_weekly_best" },
-            { title: "一周华语口碑剧集榜", value: "https://m.douban.com/subject_collection/tv_chinese_best_weekly" },
-            { title: "一周全球口碑剧集榜", value: "https://m.douban.com/subject_collection/tv_global_best_weekly" },
-            { title: "第97届奥斯卡 (2025)", value: "https://m.douban.com/subject_collection/EC7I7ZDRA?type=rank" }
+            { title: "一周电影口碑榜", 
+              value: "https://m.douban.com/subject_collection/movie_weekly_best" },
+            { title: "一周华语口碑剧集榜", 
+              value: "https://m.douban.com/subject_collection/tv_chinese_best_weekly" },
+            { title: "一周全球口碑剧集榜", 
+              value: "https://m.douban.com/subject_collection/tv_global_best_weekly" },
+            { title: "第97届奥斯卡 (2025)", 
+              value: "https://m.douban.com/subject_collection/EC7I7ZDRA?type=rank" }
           ]
         },
         { name: "page", title: "页码", type: "page" },
@@ -152,13 +171,20 @@ WidgetMetadata = {
           title: "🎭 类型 (剧集)", 
           type: "enumeration",
             enumOptions: [
-            { title: "综合", value: "tv" }, 
-            { title: "国产剧", value: "tv_domestic" }, 
-            { title: "欧美剧", value: "tv_american" }, 
-            { title: "日剧", value: "tv_japanese" }, 
-            { title: "韩剧", value: "tv_korean" }, 
-            { title: "动画", value: "tv_animation" }, 
-            { title: "纪录片", value: "tv_documentary" } 
+            { title: "综合", 
+              value: "tv" }, 
+            { title: "国产剧", 
+              value: "tv_domestic" }, 
+            { title: "欧美剧", 
+              value: "tv_american" }, 
+            { title: "日剧", 
+              value: "tv_japanese" }, 
+            { title: "韩剧", 
+              value: "tv_korean" }, 
+            { title: "动画", 
+              value: "tv_animation" }, 
+            { title: "纪录片", 
+              value: "tv_documentary" } 
           ],
           value: "tv"
         },
@@ -180,8 +206,10 @@ WidgetMetadata = {
                 title: "类型", 
                 type: "enumeration", 
                 enumOptions: [
-                    { title: "电影", value: "movie" },
-                    { title: "剧集", value: "tv" }
+                    { title: "电影", 
+                      value: "movie" },
+                    { title: "剧集", 
+                      value: "tv" }
                 ], 
                 value: "movie" 
             },
@@ -195,7 +223,10 @@ WidgetMetadata = {
         requiresWebView: false,
         functionName: "tmdbTrending",
         params: [
-            { name: "time_window", title: "时间", type: "constant", value: "day" },
+            { name: "time_window", 
+              title: "时间", 
+              type: "constant", 
+              value: "day" },
             { name: "language", title: "语言", type: "constant", value: "zh-CN" },
             { name: "page", title: "页码", type: "page" }
         ]
@@ -206,7 +237,10 @@ WidgetMetadata = {
         requiresWebView: false,
         functionName: "tmdbTrending",
         params: [
-            { name: "time_window", title: "时间", type: "constant", value: "week" },
+            { name: "time_window", 
+              title: "时间", 
+              type: "constant", 
+              value: "week" },
             { name: "language", title: "语言", type: "constant", value: "zh-CN" },
             { name: "page", title: "页码", type: "page" }
         ]
@@ -224,8 +258,10 @@ WidgetMetadata = {
                 title: "类型", 
                 type: "enumeration", 
                 enumOptions: [
-                    { title: "电影", value: "movie" },
-                    { title: "剧集", value: "tv" }
+                    { title: "电影", 
+                      value: "movie" },
+                    { title: "剧集", 
+                      value: "tv" }
                 ], 
                 value: "movie" 
             },
@@ -359,10 +395,14 @@ WidgetMetadata = {
                 value: "2,3",
                 enumOptions: [ 
                     { title: "影院上映 (优先)", value: "2,3" },
-                    { title: "全部渠道", value: "" }, 
-                    { title: "数字发行", value: "4" }, 
-                    { title: "实体发行", value: "5" }, 
-                    { title: "电视播出", value: "6" }
+                    { title: "全部渠道", 
+                      value: "" }, 
+                    { title: "数字发行", 
+                      value: "4" }, 
+                    { title: "实体发行", 
+                      value: "5" }, 
+                    { title: "电视播出", 
+                      value: "6" }
                 ] 
             },
             { 
@@ -424,7 +464,10 @@ WidgetMetadata = {
       requiresWebView: false,
       functionName: "loadImdbCardItems",
       params: [
-        { name: "url", title: "🔗 列表地址", type: "constant", value: "https://www.imdb.com/chart/top/?ref_=nv_mv_250" },
+        { name: "url", 
+          title: "🔗 列表地址", 
+          type: "constant", 
+          value: "https://www.imdb.com/chart/top/?ref_=nv_mv_250" },
         { name: "page", title: "页码", type: "page" },
         { name: "limit", title: "🔢 每页数量", type: "constant", value: "20" }
       ]
@@ -435,7 +478,10 @@ WidgetMetadata = {
       requiresWebView: false,
       functionName: "loadImdbCardItems",
       params: [
-        { name: "url", title: "🔗 列表地址", type: "constant", value: "https://www.imdb.com/chart/toptv/?ref_=nv_tvv_250" },
+        { name: "url", 
+          title: "🔗 列表地址", 
+          type: "constant", 
+          value: "https://www.imdb.com/chart/toptv/?ref_=nv_tvv_250" },
         { name: "page", title: "页码", type: "page" },
         { name: "limit", title: "🔢 每页数量", type: "constant", value: "20" }
       ]
@@ -452,8 +498,10 @@ WidgetMetadata = {
           type: "input", 
           description: "输入 IMDB 片单或榜单地址",
           placeholders: [
-            { title: "时下热门电影", value: "https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm" },
-            { title: "时下热门剧集", value: "https://www.imdb.com/chart/tvmeter/?ref_=nv_tvv_mptv" }
+            { title: "时下热门电影", 
+              value: "https://www.imdb.com/chart/moviemeter/?ref_=nv_mv_mpm" },
+            { title: "时下热门剧集", 
+              value: "https://www.imdb.com/chart/tvmeter/?ref_=nv_tvv_mptv" }
           ]
         },
         { name: "page", title: "页码", type: "page" },
