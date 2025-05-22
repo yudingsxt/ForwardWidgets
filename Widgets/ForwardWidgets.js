@@ -1,6 +1,6 @@
 // =============UserScript=============
 // @name         影视聚合查询组件
-// @version      1.2.4
+// @version      1.2.5
 // @description  聚合查询豆瓣/TMDB/IMDB影视数据
 // @author       阿米诺斯
 // =============UserScript=============
@@ -10,7 +10,7 @@ WidgetMetadata = {
   description: "聚合豆瓣、TMDB、IMDB和Bangumi的电影、剧集、动画片单与榜单",
   author: "阿米诺斯",
   site: "https://github.com/quantumultxx/FW-Widgets",
-  version: "1.2.4",
+  version: "1.2.5",
   requiredVersion: "0.0.1",
   modules: [
     // =============豆瓣模块=============
