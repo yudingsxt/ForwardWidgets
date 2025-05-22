@@ -67,7 +67,7 @@ function extractWidgetMetadata(filePath) {
     // 提取所需字段
     const { id, title, description, requiredVersion, version, author } = metadata;
     
-    const url = `https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/${fileName}`
+    const url = `https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/widgets/${fileName}`
 
     return { id, title, description, requiredVersion, version, author, url };
   } catch (error) {
@@ -96,7 +96,7 @@ async function main() {
     const metadata = {
       title: 'pack1r\'s Widgets',
       description: 'A collection of widgets created by pack1r',
-      icon: 'https://github.com/pack1r/ForwardWidgets/raw/main/icon.png',
+      icon: 'https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/icon.png',
       widgets: widgetIndex
     }
     
