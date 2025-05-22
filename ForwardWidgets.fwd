@@ -8,7 +8,7 @@
       "title": "Bangumi 热门榜单",
       "description": "从Bangumi获取榜单，匹配TMDB资源。",
       "requiredVersion": "0.0.1",
-      "version": "1.0.0", 
+      "version": "1.0.1", 
       "author": "Autism",
       "url": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/Widgets/Bangumi.js"
     },
