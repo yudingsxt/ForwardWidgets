@@ -1,6 +1,6 @@
 {
   "title": "𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂 ‘𝓼 𝓦𝓲𝓭𝓰𝓮𝓽𝓼",
-  "description": "汇集豆瓣、猫眼、TMDB和IMDB的各类榜单",
+  "description": "汇集豆瓣、TMDB、IMDB、猫眼和Bangumi的各类榜单",
   "icon": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/icon.png",
   "widgets": [
     {
