@@ -94,8 +94,8 @@ async function main() {
     // 处理每个文件并提取元数据
     const widgetIndex = files.map(extractWidgetMetadata).filter(Boolean);
     const metadata = {
-      title: 'pack1r\'s Widgets',
-      description: 'A collection of widgets created by pack1r',
+      title: '𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂's 𝓦𝓲𝓭𝓰𝓮𝓽𝓼',
+      description: '汇集豆瓣、TMDB、IMDB、猫眼和Bangumi的各类榜单',
       icon: 'https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/icon.png',
       widgets: widgetIndex
     }
