@@ -300,7 +300,6 @@ WidgetMetadata = {
                     { title: "FOX", value: "19" },
                     { title: "Paramount", value: "576" },
                     { title: "Paramount+", value: "4330" },
-                    { title: "Tokyo MX", value: "614" },
                     { title: "TV Tokyo", value: "94" },
                     { title: "BBC One", value: "332" },
                     { title: "BBC Two", value: "295" },
@@ -360,6 +359,83 @@ WidgetMetadata = {
                 ]
             },
             { name: "page", title: "页码", type: "page" },
+            { name: "language", title: "语言", type: "language", value: "zh-CN" }
+        ]
+    },
+    // --- 出品公司模块 ---
+    {
+      id: "companies",
+      title: "TMDB 出品公司",
+      functionName: "tmdbCompanies",
+      params: [
+        {
+          name: "with_companies",
+          title: "出品公司",
+          type: "enumeration",
+          enumOptions: [
+            {
+              title: "迪士尼(Disney)",
+              value: "2",
+            },
+            {
+              title: "华纳兄弟(Warner Bros)",
+              value: "174",
+            },
+            {
+              title: "哥伦比亚影业(Columbia)",
+              value: "5",
+            },
+            {
+              title: "索尼影业(Sony)",
+              value: "34",
+            },
+            {
+              title: "环球影业(Universal)",
+              value: "33",
+            },
+            {
+              title: "派拉蒙影业(Paramount",
+              value: "4",
+            },
+            {
+              title: "二十世纪影业(20th Century)",
+              value: "25",
+            },
+            {
+              title: "漫威影业(Marvel)",
+              value: "420",
+            },
+            {
+              title: "中国电影集团公司",
+              value: "14714",
+            },
+            {
+              title: "東宝株式会社(Toho)",
+              value: "882",
+            },
+            {
+              title: "BBC",
+              value: "3324",
+            },
+            {
+              title: "印度",
+              value: "1569",
+            },
+            {
+              title: "A24",
+              value: "41077",
+            },
+            {
+              title: "Blumhouse",
+              value: "3172",
+            },
+            {
+              title: "Working Title Films",
+              value: "10163",
+            }
+          ]
+        },
+        { name: "page", title: "页码", type: "page" },
             { name: "language", title: "语言", type: "language", value: "zh-CN" }
         ]
     },
@@ -1031,6 +1107,25 @@ async function tmdbDiscoverByNetwork(params = {}) {
     };
     return await fetchTmdbData(api, discoverParams);
 }
+
+async function tmdbCompanies(params = {}) {
+  try {
+    const api = "discover/movie";
+    
+    const cleanParams = {
+      page: params.page || 1,
+      language: params.language || "zh-CN",
+      with_companies: params.with_companies, 
+      sort_by: "popularity.desc"
+    };
+
+    return await fetchTmdbData(api, cleanParams);
+  } catch (error) {
+    console.error('公司数据加载失败:', error);
+    return [createErrorItem('companies', '公司数据加载失败', error)];
+  }
+}
+
 
 //===============IMDB功能函数===============
 async function loadImdbCardItems(params = {}) {
