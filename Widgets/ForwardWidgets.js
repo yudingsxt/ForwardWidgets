@@ -406,12 +406,12 @@ WidgetMetadata = {
               value: "420",
             },
             {
-              title: "中国电影集团公司",
-              value: "14714",
-            },
-            {
               title: "東宝株式会社(Toho)",
               value: "882",
+            },
+            {
+              title: "中国电影集团公司",
+              value: "14714",
             },
             {
               title: "BBC",
