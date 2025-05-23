@@ -394,7 +394,7 @@ WidgetMetadata = {
               value: "33",
             },
             {
-              title: "派拉蒙影业(Paramount",
+              title: "派拉蒙影业(Paramount)",
               value: "4",
             },
             {
