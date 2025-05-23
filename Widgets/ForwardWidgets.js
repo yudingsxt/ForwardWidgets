@@ -372,7 +372,11 @@ WidgetMetadata = {
           name: "with_companies",
           title: "出品公司",
           type: "enumeration",
+          description: "选择一个公司以查看其剧集内容",
+                value: "",
           enumOptions: [
+            { title: "全部", 
+              value: "" },
             {
               title: "迪士尼(Disney)",
               value: "2",
@@ -448,6 +452,35 @@ WidgetMetadata = {
 
                     { title: "评分最高", value: "vote_average.desc" },
                     { title: "最多投票", value: "vote_count.desc" }
+                ]
+            },
+            {
+                name: "with_genres",
+                title: "内容类型",
+                type: "enumeration",
+                description: "选择要筛选的内容类型",
+                value: "",
+                enumOptions: [
+                    { title: "全部类型", value: "" },
+                    { title: "冒险", value: "12" },
+                    { title: "剧情", value: "18" },
+                    { title: "动作", value: "28" },
+                    { title: "动画", value: "16" },
+                    { title: "历史", value: "36" },
+                    { title: "喜剧", value: "35" },
+                    { title: "奇幻", value: "14" },
+                    { title: "家庭", value: "10751" },
+                    { title: "恐怖", value: "27" },
+                    { title: "悬疑", value: "9648" },
+                    { title: "惊悚", value: "53" },
+                    { title: "战争", value: "10752" },
+                    { title: "爱情", value: "10749" },
+                    { title: "犯罪", value: "80" },
+                    { title: "科幻", value: "878" },
+                    { title: "记录", value: "99" },
+                    { title: "西部", value: "37" },
+                    { title: "音乐", value: "10402" },
+                    { title: "电视电影", value: "10770" }
                 ]
             },
             {
@@ -1134,29 +1167,43 @@ async function tmdbDiscoverByNetwork(params = {}) {
     return await fetchTmdbData(api, discoverParams);
 }
 
+
+
 async function tmdbCompanies(params = {}) {
   try {
     const api = "discover/movie";
-    
+    const withCompanies = String(params.with_companies || '').trim();
+
     const cleanParams = {
       page: params.page || 1,
       language: params.language || "zh-CN",
-      with_companies: params.with_companies, 
-      sort_by: params.sort_by,
-        ...(params.air_status === 'released' && { 
-            'primary_release_date.lte': getCurrentDate() 
-        }),
-        ...(params.air_status === 'upcoming' && { 
-            'primary_release_date.gte': getCurrentDate() 
-        }),
+      sort_by: params.sort_by || "primary_release_date.desc",
     };
 
+    if (withCompanies) {
+      cleanParams.with_companies = withCompanies;
+    }
+
+    const currentDate = getCurrentDate();
+    if (params.air_status === 'released') {
+      cleanParams['primary_release_date.lte'] = currentDate;
+    } else if (params.air_status === 'upcoming') {
+      cleanParams['primary_release_date.gte'] = currentDate;
+    }
+
+    if (params.with_genres) {
+      cleanParams.with_genres = String(params.with_genres).trim();
+    }
+
+    console.log('TMDB请求参数:', cleanParams);
     return await fetchTmdbData(api, cleanParams);
+    
   } catch (error) {
     console.error('公司数据加载失败:', error);
-    return [createErrorItem('companies', '公司数据加载失败', error)];
+    return [createErrorItem('companies', '数据加载失败', error)];
   }
 }
+
 
 
 //===============IMDB功能函数===============
