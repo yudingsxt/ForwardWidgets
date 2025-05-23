@@ -300,6 +300,7 @@ WidgetMetadata = {
                     { title: "FOX", value: "19" },
                     { title: "Paramount", value: "576" },
                     { title: "Paramount+", value: "4330" },
+                    { title: "Tokyo MX", value: "614" },
                     { title: "TV Tokyo", value: "94" },
                     { title: "BBC One", value: "332" },
                     { title: "BBC Two", value: "295" },
