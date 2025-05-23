@@ -444,7 +444,7 @@ WidgetMetadata = {
                 title: "排序方式",
                 type: "enumeration",
                 description: "选择内容排序方式,默认上映时间↓",
-                value: "first_air_date.desc",
+                value: "primary_release_date.desc",
                 enumOptions: [
                     { title: "上映时间↓", value: "primary_release_date.desc" },
                     { title: "上映时间↑", value: "primary_release_date.asc" },
