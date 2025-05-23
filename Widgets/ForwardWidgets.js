@@ -435,7 +435,33 @@ WidgetMetadata = {
             }
           ]
         },
-        { name: "page", title: "页码", type: "page" },
+        {
+                name: "sort_by",
+                title: "排序方式",
+                type: "enumeration",
+                description: "选择内容排序方式,默认上映时间↓",
+                value: "first_air_date.desc",
+                enumOptions: [
+                    { title: "上映时间↓", value: "primary_release_date.desc" },
+                    { title: "上映时间↑", value: "primary_release_date.asc" },
+                    { title: "人气最高", value: "popularity.desc" },
+
+                    { title: "评分最高", value: "vote_average.desc" },
+                    { title: "最多投票", value: "vote_count.desc" }
+                ]
+            },
+            {
+                name: "air_status",
+                title: "上映状态",
+                type: "enumeration",
+                description: "默认已上映",
+                value: "released",
+                enumOptions: [
+                    { title: "已上映", value: "released" },
+                    { title: "未上映", value: "upcoming" }
+                ]
+            },
+            { name: "page", title: "页码", type: "page" },
             { name: "language", title: "语言", type: "language", value: "zh-CN" }
         ]
     },
@@ -1116,7 +1142,13 @@ async function tmdbCompanies(params = {}) {
       page: params.page || 1,
       language: params.language || "zh-CN",
       with_companies: params.with_companies, 
-      sort_by: "popularity.desc"
+      sort_by: params.sort_by,
+        ...(params.air_status === 'released' && { 
+            'primary_release_date.lte': getCurrentDate() 
+        }),
+        ...(params.air_status === 'upcoming' && { 
+            'primary_release_date.gte': getCurrentDate() 
+        }),
     };
 
     return await fetchTmdbData(api, cleanParams);
