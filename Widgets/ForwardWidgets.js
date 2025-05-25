@@ -1103,8 +1103,8 @@ async function fetchTmdbData(api, params) {
                     releaseDate: isMovie ? item.release_date : item.first_air_date
                 }),
                 releaseDate: isMovie ? item.release_date : item.first_air_date,
-                backdropPath: item.backdrop_path && `https://image.tmdb.org/t/p/w780${item.backdrop_path}`,
-                posterPath: item.poster_path && `https://image.tmdb.org/t/p/w500${item.poster_path}`,
+                backdropPath: item.backdrop_path && `https://image.tmdb.org/t/p/original${item.backdrop_path}`,
+                posterPath: item.poster_path && `https://image.tmdb.org/t/p/original${item.poster_path}`,
                 rating: item.vote_average ? (item.vote_average / 2).toFixed(1) : undefined
             };
         })
