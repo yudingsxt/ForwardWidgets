@@ -1,7 +1,7 @@
 // =============UserScript=============
 // @name         影视聚合查询组件
 // @version      1.2.5
-// @description  聚合查询豆瓣/TMDB/IMDB影视数据
+// @description  聚合查询豆瓣/TMDB/IMDB/BGM影视数据
 // @author       阿米诺斯
 // =============UserScript=============
 WidgetMetadata = {
@@ -1088,7 +1088,8 @@ async function fetchTmdbData(api, params) {
         if (!response?.results) {
             throw new Error(response?.status_message || "无效的API响应格式");
         }
-        return response.results.map(item => {
+        return response.results
+        .map(item => {
             const isMovie = api.includes('movie') || item.media_type === 'movie';
             const mediaType = isMovie ? 'movie' : 'tv';
             return {
@@ -1106,7 +1107,12 @@ async function fetchTmdbData(api, params) {
                 posterPath: item.poster_path && `https://image.tmdb.org/t/p/w500${item.poster_path}`,
                 rating: item.vote_average ? (item.vote_average / 2).toFixed(1) : undefined
             };
-        }).filter(item => item.id && item.title);
+        })
+        .filter(item => 
+            item.id && 
+            item.title && 
+            item.posterPath
+        );
     } catch (error) {
         console.error(`API调用失败: ${api}`, error);
         return [createErrorItem(api, '数据加载失败', error)];
@@ -1167,8 +1173,6 @@ async function tmdbDiscoverByNetwork(params = {}) {
     return await fetchTmdbData(api, discoverParams);
 }
 
-
-
 async function tmdbCompanies(params = {}) {
   try {
     const api = "discover/movie";
@@ -1203,8 +1207,6 @@ async function tmdbCompanies(params = {}) {
     return [createErrorItem('companies', '数据加载失败', error)];
   }
 }
-
-
 
 //===============IMDB功能函数===============
 async function loadImdbCardItems(params = {}) {
