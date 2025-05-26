@@ -31,15 +31,6 @@
       "url": "https://raw.githubusercontent.com/bemarkt/scripts/refs/heads/master/provider/Forward/widgets/vod.js"
     },
     {
-      "id": "ti.bemarkt.javday",
-      "title": "JAVDay",
-      "description": "获取 JAVDay 推荐",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.1",
-      "author": "Ti",
-      "url": "https://gist.githubusercontent.com/bemarkt/17e04f66b772d4ab9ab839c12a8ad608/raw/javday.js"
-    },
-    {
       "id": "jable",
       "title": "Jable全站分类",
       "description": "获取Jable分类榜单",
