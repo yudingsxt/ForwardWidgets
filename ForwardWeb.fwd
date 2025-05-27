@@ -4,6 +4,15 @@
   "icon": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/icon.png",
   "widgets": [
     {
+      "id": "tv_live",
+      "title": "电视台",
+      "description": "获取热门电视直播频道",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.0",
+      "author": "两块",
+      "url": "https://raw.githubusercontent.com/2kuai/ForwardWidgets/refs/heads/main/Widgets/TvLive.js"
+    },
+    {
       "id": "live",
       "title": "直播(电视+网络)",
       "description": "解析直播订阅链接【五折码：CHEAP.5;七折码：CHEAP】",
@@ -35,7 +44,7 @@
       "title": "Jable全站分类",
       "description": "获取Jable分类榜单",
       "requiredVersion": "0.0.1",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "author": "nibiru",
       "url": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/Widgets/jable.js"
     }
