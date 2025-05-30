@@ -41,8 +41,8 @@
     },
     {
       "id": "jable",
-      "title": "Jable全站分类",
-      "description": "获取Jable分类榜单",
+      "title": "Jable",
+      "description": "获取Jable全站视频",
       "requiredVersion": "0.0.1",
       "version": "1.0.5",
       "author": "nibiru",
