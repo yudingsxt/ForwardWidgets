@@ -44,7 +44,7 @@
       "title": "Jable全站分类",
       "description": "获取Jable分类榜单",
       "requiredVersion": "0.0.1",
-      "version": "1.0.4",
+      "version": "1.0.5",
       "author": "nibiru",
       "url": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/Widgets/jable.js"
     }
