@@ -33,7 +33,7 @@
     {
       "id": "ti.bemarkt.vod.maccms",
       "title": "VOD",
-      "description": "获取 VOD 影视数据",
+      "description": "获取苹果CMS的VOD视频列表和搜索结果",
       "requiredVersion": "0.0.1",
       "version": "1.0.0",
       "author": "Ti",
