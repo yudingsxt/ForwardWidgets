@@ -1,6 +1,6 @@
 // =============UserScript=============
 // @name         影视聚合查询组件
-// @version      1.2.5
+// @version      1.2.6
 // @description  聚合查询豆瓣/TMDB/IMDB/BGM影视数据
 // @author       阿米诺斯
 // =============UserScript=============
@@ -10,7 +10,7 @@ WidgetMetadata = {
   description: "聚合豆瓣、TMDB、IMDB和Bangumi的电影、剧集、动画片单与榜单",
   author: "阿米诺斯",
   site: "https://github.com/quantumultxx/FW-Widgets",
-  version: "1.2.5",
+  version: "1.2.6",
   requiredVersion: "0.0.1",
   modules: [
     // =============豆瓣模块=============
@@ -112,13 +112,16 @@ WidgetMetadata = {
             { title: "豆瓣高分", value: "豆瓣高分" }, 
             { title: "冷门佳片", value: "冷门佳片" } 
           ],
-          value: "全部"
         },
         {
           name: "type", 
-          title: "🌍 地区  (仅对 热门/最新/高分/冷门 分类生效)", 
+          title: "🌍 地区", 
           type: "enumeration",
-          description: "(仅对 热门/最新/高分/冷门 分类生效)",
+          value: "全部",
+          belongTo: {
+          paramName: "category",
+          value: ["热门","最新","豆瓣高分","冷门佳片"],
+                    },
           enumOptions: [ 
             { title: "全部", value: "全部" }, 
             { title: "华语", value: "华语" }, 
@@ -126,14 +129,16 @@ WidgetMetadata = {
             { title: "韩国", value: "韩国" }, 
             { title: "日本", value: "日本" } 
           ],
-          value: "全部"
         },
         {
           name: "tags", 
-          title: "🎭 类型  (仅当分类为'全部'时生效)", 
+          title: "🎭 类型", 
           type: "enumeration",
-          description: "仅当分类为'全部'时生效", 
           value: "",
+          belongTo: {
+          paramName: "category",
+          value: ["全部"],
+                    },
           enumOptions: [
             { title: "全部", value: "" },
             
@@ -156,6 +161,18 @@ WidgetMetadata = {
             { title: "纪录片", value: "纪录片" }
           ]
         },
+        {
+      name: "sort_by",
+      title: "🔢 排序",
+      type: "enumeration",
+      value: "T",
+      enumOptions: [
+        { title: "综合排序", value: "T" },
+        { title: "近期热度", value: "U" },
+        { title: "首映时间", value: "R" },
+        { title: "高分优选", value: "S" }
+           ]
+        },
         { name: "page", title: "页码", type: "page" },
         { name: "limit", title: "🔢 每页数量", type: "constant", value: "20" }
       ]
@@ -168,7 +185,7 @@ WidgetMetadata = {
       params: [
         {
           name: "type", 
-          title: "🎭 类型 (剧集)", 
+          title: "🎭 类型", 
           type: "enumeration",
             enumOptions: [
             { title: "综合", 
@@ -203,7 +220,7 @@ WidgetMetadata = {
         params: [
             { 
                 name: "type", 
-                title: "类型", 
+                title: "🎭类型", 
                 type: "enumeration", 
                 enumOptions: [
                     { title: "电影", 
@@ -255,7 +272,7 @@ WidgetMetadata = {
         params: [
             { 
                 name: "type", 
-                title: "类型", 
+                title: "🎭类型", 
                 type: "enumeration", 
                 enumOptions: [
                     { title: "电影", 
@@ -283,6 +300,10 @@ WidgetMetadata = {
                 type: "enumeration",
                 description: "选择一个平台以查看其剧集内容",
                 value: "",
+                belongTo: {
+                paramName: "air_status",
+                value: ["released","upcoming"],
+                          },
                 enumOptions: [
                     { title: "全部", value: "" },
                     { title: "Tencent", value: "2007" },
@@ -309,37 +330,15 @@ WidgetMetadata = {
                 ]
             },
             {
-                name: "sort_by",
-                title: "排序方式",
-                type: "enumeration",
-                description: "选择内容排序方式,默认上映时间↓",
-                value: "first_air_date.desc",
-                enumOptions: [
-                    { title: "上映时间↓", value: "first_air_date.desc" },
-                    { title: "上映时间↑", value: "first_air_date.asc" },
-                    { title: "人气最高", value: "popularity.desc" },
-
-                    { title: "评分最高", value: "vote_average.desc" },
-                    { title: "最多投票", value: "vote_count.desc" }
-                ]
-            },
-            {
-                name: "air_status",
-                title: "上映状态",
-                type: "enumeration",
-                description: "默认已上映",
-                value: "released",
-                enumOptions: [
-                    { title: "已上映", value: "released" },
-                    { title: "未上映", value: "upcoming" }
-                ]
-            },
-            {
                 name: "with_genres",
-                title: "内容类型",
+                title: "🎭内容类型",
                 type: "enumeration",
                 description: "选择要筛选的内容类型",
                 value: "",
+                belongTo: {
+                paramName: "air_status",
+                value: ["released","upcoming"],
+                          },
                 enumOptions: [
                     { title: "全部类型", value: "" },
                     { title: "犯罪", value: "80" },
@@ -358,6 +357,32 @@ WidgetMetadata = {
                     { title: "战争与政治", value: "10768" }
                 ]
             },
+            {
+                name: "air_status",
+                title: "上映状态",
+                type: "enumeration",
+                description: "默认已上映",
+                value: "released",
+                enumOptions: [
+                    { title: "已上映", value: "released" },
+                    { title: "未上映", value: "upcoming" }
+                ]
+            },
+            {
+                name: "sort_by",
+                title: "🔢 排序方式",
+                type: "enumeration",
+                description: "选择内容排序方式,默认上映时间↓",
+                value: "first_air_date.desc",
+                enumOptions: [
+                    { title: "上映时间↓", value: "first_air_date.desc" },
+                    { title: "上映时间↑", value: "first_air_date.asc" },
+                    { title: "人气最高", value: "popularity.desc" },
+
+                    { title: "评分最高", value: "vote_average.desc" },
+                    { title: "最多投票", value: "vote_count.desc" }
+                ]
+            },
             { name: "page", title: "页码", type: "page" },
             { name: "language", title: "语言", type: "language", value: "zh-CN" }
         ]
@@ -372,45 +397,49 @@ WidgetMetadata = {
           name: "with_companies",
           title: "出品公司",
           type: "enumeration",
+          value: "",
           description: "选择一个公司以查看其剧集内容",
-                value: "",
+                belongTo: {
+                paramName: "air_status",
+                value: ["released","upcoming"],
+                          },
           enumOptions: [
             { title: "全部", 
               value: "" },
             {
-              title: "迪士尼(Disney)",
+              title: "Disney",
               value: "2",
             },
             {
-              title: "华纳兄弟(Warner Bros)",
+              title: "Warner Bros",
               value: "174",
             },
             {
-              title: "哥伦比亚影业(Columbia)",
+              title: "Columbia",
               value: "5",
             },
             {
-              title: "索尼影业(Sony)",
+              title: "Sony",
               value: "34",
             },
             {
-              title: "环球影业(Universal)",
+              title: "Universal",
               value: "33",
             },
             {
-              title: "派拉蒙影业(Paramount)",
+              title: "Paramount",
               value: "4",
             },
             {
-              title: "二十世纪影业(20th Century)",
+              title: "20th Century",
               value: "25",
             },
             {
-              title: "漫威影业(Marvel)",
+              title: "Marvel",
               value: "420",
             },
             {
-              title: "東宝株式会社(Toho)",
+              title: "Toho",
               value: "882",
             },
             {
@@ -440,26 +469,15 @@ WidgetMetadata = {
           ]
         },
         {
-                name: "sort_by",
-                title: "排序方式",
-                type: "enumeration",
-                description: "选择内容排序方式,默认上映时间↓",
-                value: "primary_release_date.desc",
-                enumOptions: [
-                    { title: "上映时间↓", value: "primary_release_date.desc" },
-                    { title: "上映时间↑", value: "primary_release_date.asc" },
-                    { title: "人气最高", value: "popularity.desc" },
-
-                    { title: "评分最高", value: "vote_average.desc" },
-                    { title: "最多投票", value: "vote_count.desc" }
-                ]
-            },
-            {
                 name: "with_genres",
-                title: "内容类型",
+                title: "🎭内容类型",
                 type: "enumeration",
                 description: "选择要筛选的内容类型",
                 value: "",
+                belongTo: {
+                paramName: "air_status",
+                value: ["released","upcoming"],
+                          },
                 enumOptions: [
                     { title: "全部类型", value: "" },
                     { title: "冒险", value: "12" },
@@ -492,6 +510,21 @@ WidgetMetadata = {
                 enumOptions: [
                     { title: "已上映", value: "released" },
                     { title: "未上映", value: "upcoming" }
+                ]
+            },
+            {
+                name: "sort_by",
+                title: "🔢 排序方式",
+                type: "enumeration",
+                description: "选择内容排序方式,默认上映时间↓",
+                value: "primary_release_date.desc",
+                enumOptions: [
+                    { title: "上映时间↓", value: "primary_release_date.desc" },
+                    { title: "上映时间↑", value: "primary_release_date.asc" },
+                    { title: "人气最高", value: "popularity.desc" },
+
+                    { title: "评分最高", value: "vote_average.desc" },
+                    { title: "最多投票", value: "vote_count.desc" }
                 ]
             },
             { name: "page", title: "页码", type: "page" },
@@ -543,7 +576,7 @@ WidgetMetadata = {
             },
             { 
                 name: "with_genres", 
-                title: "类型筛选", 
+                title: "🎭类型筛选", 
                 type: "enumeration", 
                 description: "选择电影类型", 
                 value: "",
@@ -1037,45 +1070,60 @@ async function loadDoubanRecommendItems(params = {}, mediaType = "movie") {
   const category = params.category || "";
   const subType = params.type || "";
   const tags = params.tags || "";
+  const sortBy = params.sort_by || "T";
   const encodedTags = encodeURIComponent(tags);
+  
   let url;
   if (category === "全部" || category === "all") {
-      let recommendUrl = `https://m.douban.com/rexxar/api/v2/${mediaType}/recommend?refresh=0&start=${start}&count=${limit}&selected_categories=${encodeURIComponent(JSON.stringify(params.selected_categories || {}))}&uncollect=false&score_range=0,10`;
-      if (encodedTags) {
-          recommendUrl += `&tags=${encodedTags}`;
-      }
-      url = recommendUrl;
+    url = `https://m.douban.com/rexxar/api/v2/${mediaType}/recommend?refresh=0&start=${start}&count=${limit}&selected_categories=${encodeURIComponent(JSON.stringify(params.selected_categories || {}))}&uncollect=false&score_range=0,10`;
+    if (encodedTags) url += `&tags=${encodedTags}`;
+    url += `&sort=${sortBy}`; 
   } else {
-      url = `https://m.douban.com/rexxar/api/v2/subject/recent_hot/${mediaType}?start=${start}&count=${limit}&category=${encodeURIComponent(category)}&type=${encodeURIComponent(subType)}`;
+    url = `https://m.douban.com/rexxar/api/v2/subject/recent_hot/${mediaType}?start=${start}&count=${limit}&category=${encodeURIComponent(category)}&type=${encodeURIComponent(subType)}&sort=${sortBy}`;
   }
+
   const response = await Widget.http.get(url, {
     headers: {
       Referer: `https://movie.douban.com/explore`,
       "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Mobile/15E148 Safari/604.1",
     },
   });
-  const items = response.data?.subjects
-             || response.data?.items
-             || response.data?.modules?.[0]?.data?.subject_collection_items
-             || [];
+
+  const items = response.data?.subjects || response.data?.items || [];
   return items.map((item) => {
     const rating = item.rating?.value || (item.rate ? parseFloat(item.rate) : undefined);
     const releaseYear = item.year || item.release_date?.substring(0, 4);
     const cover = item.cover?.url || item.pic?.normal;
+    
+    let dynamicDesc = "";
+    switch(sortBy) {
+      case "U":
+        dynamicDesc = "近期热度排序";
+        break;
+      case "R":
+        dynamicDesc = `首映时间: ${releaseYear || '未知'}`;
+        break;
+      case "S":
+        dynamicDesc = `评分: ${rating?.toFixed(1) || '无'}`;
+        break;
+      default: // T
+        dynamicDesc = item.card_subtitle || item.description || "";
+    }
+
     return {
-        id: String(item.id),
-        type: "douban",
-        title: item.title,
-        coverUrl: cover,
-        description: formatItemDescription({
-            description: item.card_subtitle || item.description || item.intro,
-            rating: rating,
-            releaseDate: releaseYear ? `${releaseYear}-01-01` : undefined
-        }),
+      id: String(item.id),
+      type: "douban",
+      title: item.title,
+      coverUrl: cover,
+      description: formatItemDescription({
+        description: dynamicDesc,
         rating: rating,
         releaseDate: releaseYear ? `${releaseYear}-01-01` : undefined
+      }),
+      rating: rating,
+      releaseDate: releaseYear ? `${releaseYear}-01-01` : undefined
     };
-  }).filter(item => item !== null);
+  });
 }
 
 //===============TMDB功能函数===============
