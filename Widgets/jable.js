@@ -4,7 +4,7 @@ WidgetMetadata = {
   description: "获取Jable分类榜单",
   author: "nibiru",
   site: "https://github.com/quantumultxx/FW-Widgets",
-  version: "1.0.3",
+  version: "1.0.5",
   requiredVersion: "0.0.1",
   modules: [
     // 热门模块
