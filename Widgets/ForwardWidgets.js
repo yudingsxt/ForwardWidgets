@@ -325,8 +325,9 @@ WidgetMetadata = {
                     { title: "BBC One", value: "332" },
                     { title: "BBC Two", value: "295" },
                     { title: "NBC", value: "6" },
-                    
-                    { title: "AMC+", value: "174" }
+                    { title: "AMC+", value: "174" },
+                    { title: "We TV", value: "3732" },
+                    { title: "Viu TV", value: "2146" }
                 ]
             },
             {
