@@ -1,0 +1,8 @@
+{
+	"name":"Forward", 
+	"description":"",  
+	"icons":
+		[
+			{"name":"disney", "url":"https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/icon/disney.png"},
+          ]
+}
