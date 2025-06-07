@@ -40,6 +40,15 @@
       "url": "https://raw.githubusercontent.com/bemarkt/scripts/refs/heads/master/provider/Forward/widgets/vod.js"
     },
     {
+      "id": "91porn",
+      "title": "91Porn",
+      "description": "",
+      "requiredVersion": "0.0.1",
+      "version": "0.0.1",
+      "author": "",
+      "url": "https://github.com/baranwang/forward-widget/releases/latest/download/91porn.js"
+    },
+    {
       "id": "jable",
       "title": "Jable",
       "description": "获取Jable全站视频",
