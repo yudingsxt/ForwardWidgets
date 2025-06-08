@@ -49,6 +49,15 @@
       "url": "https://gist.githubusercontent.com/bemarkt/17e04f66b772d4ab9ab839c12a8ad608/raw/javrate.js"
     },
     {
+      "id": "ti.bemarkt.javday",
+      "title": "JAVDay",
+      "description": "获取 JAVDay 推荐",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.0",
+      "author": "Ti",
+      "url": "https://gist.githubusercontent.com/bemarkt/17e04f66b772d4ab9ab839c12a8ad608/raw/javday.js"
+    },
+    {
       "id": "Pornhub",
       "title": "Pornhub",
       "description": "在线观看Pornhub",
