@@ -17,7 +17,7 @@
       "title": "直播(电视+网络)",
       "description": "解析直播订阅链接【五折码：CHEAP.5;七折码：CHEAP】",
       "requiredVersion": "0.0.1",
-      "version": "1.0.7",
+      "version": "1.0.8",
       "author": "huangxd",
       "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/live.js"
     },
@@ -42,9 +42,9 @@
     {
       "id": "91porn",
       "title": "91Porn",
-      "description": "获取 91Porn 列表/视频",
+      "description": "获取 91Porn 视频",
       "requiredVersion": "0.0.1",
-      "version": "0.3.0",
+      "version": "0.5.0",
       "author": "Baran",
       "url": "https://github.com/baranwang/forward-widget/releases/latest/download/91porn.js"
     },
