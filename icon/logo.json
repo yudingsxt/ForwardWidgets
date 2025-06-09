@@ -1,0 +1,10 @@
+{
+  "name": "平台logo",
+  "description": "自用",
+  "icons": [
+    {
+      "name": "腾讯视频",
+      "url": "https://raw.githubusercontent.com/quantumultxx/FW-Widgets/refs/heads/main/icon/tx.png"
+    }
+  ]
+}
