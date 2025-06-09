@@ -22,6 +22,15 @@
       "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/imdb.js"
     },
     {
+      "id": "imdb_discovery_v1",
+      "title": "IMDb 分类资源 (v1)",
+      "description": "聚合 IMDb 热门影视资源",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.2",
+      "author": "Autism",
+      "url": "https://raw.githubusercontent.com/opix-maker/Forward/refs/heads/main/js/IMDb.js"
+    },
+    {
       "id": "bangumi_charts_tmdb_v3",
       "title": "Bangumi 热门榜单",
       "description": "从Bangumi获取近期热门、每日放送数据，支持榜单筛选，智能匹配TMDB数据。",
