@@ -12,6 +12,7 @@ WidgetMetadata = {
   site: "https://github.com/quantumultxx/FW-Widgets",
   version: "1.2.6",
   requiredVersion: "0.0.1",
+  detailCacheDuration: 60,
   modules: [
     // =============豆瓣模块=============
     // --- 🔥 实时热点 ---
@@ -20,6 +21,7 @@ WidgetMetadata = {
       description: "来自豆瓣的当前热门电影榜单",
       requiresWebView: false,
       functionName: "loadDoubanItemsFromApi",
+	  cacheDuration: 3600,
       params: [
         { name: "url", 
           title: "🔗 列表地址", 
@@ -38,6 +40,7 @@ WidgetMetadata = {
       description: "来自豆瓣的当前热门剧集榜单",
       requiresWebView: false,
       functionName: "loadDoubanItemsFromApi",
+	  cacheDuration: 3600,
       params: [
         { name: "url", 
           title: "🔗 列表地址", 
@@ -58,6 +61,7 @@ WidgetMetadata = {
       description: "豆瓣评分最高的 250 部电影",
       requiresWebView: false,
       functionName: "loadDoubanCardItems",
+	  cacheDuration: 3600,
       params: [
         { name: "url", 
           title: "🔗 列表地址", 
@@ -72,6 +76,7 @@ WidgetMetadata = {
       description: "加载豆瓣官方榜单或用户豆列 (需输入 URL)",
       requiresWebView: false,
       functionName: "loadDoubanCardItems",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url", 
@@ -100,6 +105,7 @@ WidgetMetadata = {
       description: "按分类、地区、类型标签浏览豆瓣推荐电影",
       requiresWebView: false,
       functionName: "loadDoubanRecommendMovies",
+	  cacheDuration: 3600,
       params: [
         {
           name: "category", 
@@ -180,6 +186,7 @@ WidgetMetadata = {
       description: "按分类、类型浏览豆瓣推荐剧集",
       requiresWebView: false,
       functionName: "loadDoubanRecommendShows",
+	  cacheDuration: 3600,
       params: [
         {
           name: "type", 
@@ -208,6 +215,7 @@ WidgetMetadata = {
         description: "当前影院或流媒体上映的电影/剧集",
         requiresWebView: false,
         functionName: "tmdbNowPlaying",
+		cacheDuration: 3600,
         params: [
             { 
                 name: "type", 
@@ -228,6 +236,7 @@ WidgetMetadata = {
         description: "今日热门电影与剧集",
         requiresWebView: false,
         functionName: "tmdbTrending",
+		cacheDuration: 3600,
         params: [
             { name: "time_window", 
               title: "时间", 
@@ -242,6 +251,7 @@ WidgetMetadata = {
         description: "本周热门电影与剧集",
         requiresWebView: false,
         functionName: "tmdbTrending",
+		cacheDuration: 3600,
         params: [
             { name: "time_window", 
               title: "时间", 
@@ -258,6 +268,7 @@ WidgetMetadata = {
         description: "高分电影或剧集 (按用户评分排序)",
         requiresWebView: false,
         functionName: "tmdbTopRated",
+		cacheDuration: 3600,
         params: [
             { 
                 name: "type", 
@@ -280,6 +291,7 @@ WidgetMetadata = {
         description: "按播出平台和内容类型筛选剧集内容",
         requiresWebView: false,
         functionName: "tmdbDiscoverByNetwork",
+		cacheDuration: 3600,
         params: [
             {
                 name: "with_networks",
@@ -380,6 +392,7 @@ WidgetMetadata = {
       id: "companies",
       title: "TMDB 出品公司",
       functionName: "tmdbCompanies",
+	  cacheDuration: 3600,
       params: [
         {
           name: "with_companies",
@@ -479,6 +492,7 @@ WidgetMetadata = {
         description: "即将上映的电影 (可筛选)",
         requiresWebView: false,
         functionName: "tmdbUpcomingMovies",
+		cacheDuration: 3600,
         params: [
             { name: "language", title: "语言", type: "language", value: "zh-CN" },
             { 
@@ -569,6 +583,7 @@ WidgetMetadata = {
       description: "IMDb 用户评分最高的 250 部电影",
       requiresWebView: false,
       functionName: "loadImdbCardItems",
+	  cacheDuration: 3600,
       params: [
         { name: "url", 
           title: "🔗 列表地址", 
@@ -583,6 +598,7 @@ WidgetMetadata = {
       description: "IMDb 用户评分最高的 250 部剧集",
       requiresWebView: false,
       functionName: "loadImdbCardItems",
+	  cacheDuration: 3600,
       params: [
         { name: "url", 
           title: "🔗 列表地址", 
@@ -597,6 +613,7 @@ WidgetMetadata = {
       description: "解析 IMDB 热门电影/剧集等网页片单 (需输入 URL)",
       requiresWebView: false,
       functionName: "loadImdbCardItems",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url", 
@@ -620,6 +637,7 @@ WidgetMetadata = {
     description: "浏览近期热门动画",
     requiresWebView: false,
     functionName: "fetchRecentHot_bg",
+	cacheDuration: 3600,
     params: [
         { name: "page", title: "页码", type: "page" }
     ]
@@ -629,6 +647,7 @@ WidgetMetadata = {
     description: "按年份、季度/全年、标签、分类、题材、地区、受众等浏览动画排行，并可按作品名筛选",
     requiresWebView: false,
     functionName: "fetchAirtimeRanking_bg",
+	cacheDuration: 3600,
     params: [
         { 
             name: "type", 
@@ -785,6 +804,7 @@ WidgetMetadata = {
     requiresWebView: false,
     functionName: "fetchDailyCalendarApi_bg",
     sectionMode: false,
+	cacheDuration: 3600,
     params: [
         {
             name: "filterType",
@@ -848,6 +868,7 @@ WidgetMetadata = {
     description: "按标签、年份、月份浏览动画列表，支持排序和分页。",
     requiresWebView: false,
     functionName: "fetchBangumiTagPage_bg",
+	cacheDuration: 3600,
     params: [
         {
             name: "tag_keyword", 
