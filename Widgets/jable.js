@@ -6,6 +6,7 @@ WidgetMetadata = {
   site: "https://github.com/quantumultxx/FW-Widgets",
   version: "1.0.6",
   requiredVersion: "0.0.1",
+  detailCacheDuration: 60,
   modules: [
     // 搜索模块
     {
@@ -13,6 +14,7 @@ WidgetMetadata = {
       description: "搜索",
       requiresWebView: false,
       functionName: "search",
+	  cacheDuration: 3600,
       params: [
         {
           name: "keyword",
@@ -41,6 +43,7 @@ WidgetMetadata = {
       description: "热门影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
@@ -71,6 +74,7 @@ WidgetMetadata = {
       description: "最新上市影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
@@ -101,6 +105,7 @@ WidgetMetadata = {
       description: "中文字幕影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
@@ -130,6 +135,7 @@ WidgetMetadata = {
       description: "按女优分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
@@ -412,6 +418,7 @@ WidgetMetadata = {
       description: "按衣着分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
@@ -509,6 +516,7 @@ WidgetMetadata = {
       description: "按剧情分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
@@ -594,6 +602,7 @@ WidgetMetadata = {
       description: "按地点分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
@@ -679,6 +688,7 @@ WidgetMetadata = {
       description: "按身材分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
@@ -760,6 +770,7 @@ WidgetMetadata = {
       description: "按角色分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
@@ -849,6 +860,7 @@ WidgetMetadata = {
       description: "按交合分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
@@ -922,6 +934,7 @@ WidgetMetadata = {
       description: "按玩法分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
@@ -1015,6 +1028,7 @@ WidgetMetadata = {
       description: "按主题分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
@@ -1092,6 +1106,7 @@ WidgetMetadata = {
       description: "按杂项分类浏览影片",
       requiresWebView: false,
       functionName: "loadPage",
+	  cacheDuration: 3600,
       params: [
         {
           name: "url",
