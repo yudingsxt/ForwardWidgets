@@ -71,7 +71,7 @@
       "title": "IMDb 分类资源 (v1)",
       "description": "聚合 IMDb 热门影视资源",
       "requiredVersion": "0.0.1",
-      "version": "1.0.2",
+      "version": "1.0.3",
       "author": "Autism",
       "url": "https://raw.githubusercontent.com/opix-maker/Forward/refs/heads/main/js/IMDb.js"
     },
