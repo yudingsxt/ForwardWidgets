@@ -26,7 +26,7 @@
       "title": "Pornhub",
       "description": "在线观看Pornhub",
       "requiredVersion": "1.0.1",
-      "version": "0.0.1",
+      "version": "1.0.1",
       "author": "海带",
       "url": "https://raw.githubusercontent.com/Madai-v/ForwardWidgets/refs/heads/main/Widgets/ph.js"
     },
@@ -35,7 +35,7 @@
       "title": "JAVDay",
       "description": "获取 JAVDay 推荐",
       "requiredVersion": "1.0.1",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "author": "Ti",
       "url": "https://gist.githubusercontent.com/bemarkt/17e04f66b772d4ab9ab839c12a8ad608/raw/javday.js"
     },
