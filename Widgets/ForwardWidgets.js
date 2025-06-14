@@ -7,7 +7,7 @@
 WidgetMetadata = {
   id: "forward.combined.media.lists",
   title: "影视榜单",
-  description: "聚合豆瓣、TMDB、IMDB和Bangumi的电影、剧集、动画片单与榜单",
+  description: "聚合豆瓣、TMDB、IMDB和Bangumi的 影视动画榜单。",
   author: "阿米诺斯",
   site: "https://github.com/quantumultxx/FW-Widgets",
   version: "1.2.6",
