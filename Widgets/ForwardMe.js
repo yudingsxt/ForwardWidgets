@@ -514,34 +514,33 @@ WidgetMetadata = {
           },
           enumOptions: [
             { title: "全部", value: "" },
-            { title: "动作", value: "动作" }, 
-            { title: "科幻", value: "科幻" }, 
-            { title: "爱情", value: "爱情" }, 
-            { title: "喜剧", value: "喜剧" }, 
-            { title: "悬疑", value: "悬疑" }, 
-            { title: "动画", value: "动画" }, 
-            { title: "剧情", value: "剧情" }, 
-            { title: "家庭", value: "家庭" }, 
-            { title: "犯罪", value: "犯罪" }, 
-            { title: "歌舞", value: "歌舞" }, 
-            { title: "传记", value: "传记" }, 
-            { title: "冒险", value: "冒险" }, 
-            { title: "武侠", value: "武侠" }, 
-            { title: "运动", value: "运动" }, 
+            { title: "动作", value: "动作" },
+            { title: "科幻", value: "科幻" },
+            { title: "灾难", value: "灾难" },
+            { title: "爱情", value: "爱情" },
+            { title: "喜剧", value: "喜剧" },
+            { title: "悬疑", value: "悬疑" },
+            { title: "犯罪", value: "犯罪" },
+            { title: "冒险", value: "冒险" },
+            { title: "奇幻", value: "奇幻" },
+            { title: "战争", value: "战争" },
+            { title: "历史", value: "历史" },
+            { title: "武侠", value: "武侠" },
+            { title: "惊悚", value: "惊悚" },
+            { title: "恐怖", value: "恐怖" },
+            { title: "情色", value: "情色" },
+            { title: "动画", value: "动画" },
+            { title: "剧情", value: "剧情" },
+            { title: "西部", value: "西部" },
+            { title: "家庭", value: "家庭" },
+            { title: "儿童", value: "儿童" },
+            { title: "音乐", value: "音乐" },
+            { title: "运动", value: "运动" },
             { title: "古装", value: "古装" },
+            { title: "歌舞", value: "歌舞" },
+            { title: "传记", value: "传记" },
+            { title: "短片", value: "短片" },
             { title: "纪录片", value: "纪录片" }
-          ]
-        },
-        {
-          name: "sort_by",
-          title: "🔢 排序",
-          type: "enumeration",
-          value: "T",
-          enumOptions: [
-            { title: "综合排序", value: "T" },
-            { title: "近期热度", value: "U" },
-            { title: "首映时间", value: "R" },
-            { title: "高分优选", value: "S" }
           ]
         },
         { name: "page", title: "页码", type: "page" },
@@ -935,16 +934,14 @@ async function loadDoubanRecommendItems(params = {}, mediaType = "movie") {
   const category = params.category || "";
   const subType = params.type || "";
   const tags = params.tags || "";
-  const sortBy = params.sort_by || "T";
   const encodedTags = encodeURIComponent(tags);
   
   let url;
   if (category === "全部" || category === "all") {
     url = `https://m.douban.com/rexxar/api/v2/${mediaType}/recommend?refresh=0&start=${start}&count=${limit}&selected_categories=${encodeURIComponent(JSON.stringify(params.selected_categories || {}))}&uncollect=false&score_range=0,10`;
     if (encodedTags) url += `&tags=${encodedTags}`;
-    url += `&sort=${sortBy}`; 
   } else {
-    url = `https://m.douban.com/rexxar/api/v2/subject/recent_hot/${mediaType}?start=${start}&count=${limit}&category=${encodeURIComponent(category)}&type=${encodeURIComponent(subType)}&sort=${sortBy}`;
+    url = `https://m.douban.com/rexxar/api/v2/subject/recent_hot/${mediaType}?start=${start}&count=${limit}&category=${encodeURIComponent(category)}&type=${encodeURIComponent(subType)}`;
   }
 
   const response = await Widget.http.get(url, {
@@ -960,20 +957,7 @@ async function loadDoubanRecommendItems(params = {}, mediaType = "movie") {
     const releaseYear = item.year || item.release_date?.substring(0, 4);
     const cover = item.cover?.url || item.pic?.normal;
     
-    let dynamicDesc = "";
-    switch(sortBy) {
-      case "U":
-        dynamicDesc = "近期热度排序";
-        break;
-      case "R":
-        dynamicDesc = `首映时间: ${releaseYear || '未知'}`;
-        break;
-      case "S":
-        dynamicDesc = `评分: ${rating?.toFixed(1) || '无'}`;
-        break;
-      default: // T
-        dynamicDesc = item.card_subtitle || item.description || "";
-    }
+    const dynamicDesc = item.card_subtitle || item.description || "";
 
     return {
       id: String(item.id),
