@@ -1,9 +1,5 @@
 // =============UserScript=============
-// @name         自用查询组件
-// @version      1.2.6
-// @description  聚合查询豆瓣/TMDB/IMDB/BGM影视数据
-// @author       阿米诺斯
-// =============UserScript=============
+//              自用查询组件
 WidgetMetadata = {
   id: "forward.combined.media.lists",
   title: "影视榜单",
@@ -91,7 +87,7 @@ WidgetMetadata = {
         ]
     },
 
-    // --- 平台筛选模块---
+    // --- 播出平台模块---
     {
         title: "TMDB 播出平台",
         description: "按播出平台和内容类型筛选剧集内容",
@@ -124,7 +120,6 @@ WidgetMetadata = {
                     { title: "Hulu", value: "453" },
                     { title: "Amazon Prime Video", value: "1024" },
                     { title: "FOX", value: "19" },
-                    { title: "Paramount", value: "576" },
                     { title: "Paramount+", value: "4330" },
                     { title: "TV Tokyo", value: "94" },
                     { title: "BBC One", value: "332" },
@@ -132,8 +127,7 @@ WidgetMetadata = {
                     { title: "NBC", value: "6" },
                     { title: "AMC+", value: "174" },
                     { title: "We TV", value: "3732" },
-                    { title: "Viu TV", value: "2146" },
-                    { title: "TVB", value: "48" }
+                    { title: "Viu TV", value: "2146" }
                 ]
             },
             {
@@ -153,11 +147,9 @@ WidgetMetadata = {
                     { title: "喜剧", value: "35" },
                     { title: "剧情", value: "18" },
                     { title: "家庭", value: "10751" },
-                    { title: "儿童", value: "10762" },
                     { title: "悬疑", value: "9648" },
                     { title: "真人秀", value: "10764" },
                     { title: "脱口秀", value: "10767" },
-                    { title: "肥皂剧", value: "10766" },
                     { title: "纪录片", value: "99" },
                     { title: "动作与冒险", value: "10759" },
                     { title: "科幻与奇幻", value: "10765" },
@@ -223,7 +215,6 @@ WidgetMetadata = {
             { title: "Toho", value: "882" },
             { title: "中国电影集团公司", value: "14714" },
             { title: "BBC", value: "3324" },
-            { title: "印度", value: "1569" },
             { title: "A24", value: "41077" },
             { title: "Blumhouse", value: "3172" },
             { title: "Working Title Films", value: "10163" }
@@ -291,98 +282,8 @@ WidgetMetadata = {
       ]
     },
 
-    // --- 高级筛选模块 ---
-    {
-        title: "TMDB 即将上映",
-        description: "即将上映的电影 (可筛选)",
-        requiresWebView: false,
-        functionName: "tmdbUpcomingMovies",
-        cacheDuration: 3600,
-        params: [
-            { name: "language", title: "语言", type: "language", value: "zh-CN" },
-            { 
-                name: "primary_release_date.gte", 
-                title: "起始日期 (含)", 
-                type: "input", 
-                description: "格式：YYYY-MM-DD（默认今天）", 
-                value: "",
-                placeholder: "例：2023-12-31"
-            },
-            { 
-                name: "primary_release_date.lte", 
-                title: "结束日期 (含)", 
-                type: "input", 
-                description: "格式：YYYY-MM-DD（可选）", 
-                value: "",
-                placeholder: "例：2024-05-01"
-            },
-            { 
-                name: "with_release_type", 
-                title: "发行渠道", 
-                type: "enumeration", 
-                description: "选择发行渠道（多选用逗号分隔）", 
-                value: "2,3",
-                enumOptions: [ 
-                    { title: "影院上映 (优先)", value: "2,3" },
-                    { title: "全部渠道", value: "" }, 
-                    { title: "数字发行", value: "4" }, 
-                    { title: "实体发行", value: "5" }, 
-                    { title: "电视播出", value: "6" }
-                ] 
-            },
-            { 
-                name: "with_genres", 
-                title: "🎭类型筛选", 
-                type: "enumeration", 
-                description: "选择电影类型", 
-                value: "",
-                enumOptions: [ 
-                    { title: "任意类型", value: "" }, 
-                    { title: "动作", value: "28" }, 
-                    { title: "冒险", value: "12" },
-                    { title: "动画", value: "16" }, 
-                    { title: "喜剧", value: "35" }, 
-                    { title: "犯罪", value: "80" },
-                    { title: "纪录", value: "99" }, 
-                    { title: "剧情", value: "18" }, 
-                    { title: "家庭", value: "10751" },
-                    { title: "悬疑", value: "9648" }, 
-                    { title: "爱情", value: "10749" },
-                    { title: "科幻", value: "878" }, 
-                    { title: "战争", value: "10752" },
-                    { title: "西部", value: "37" }, 
-                    { title: "电视电影", value: "10770" }
-                ] 
-            },
-            { 
-                name: "vote_average.gte", 
-                title: "最低评分", 
-                type: "input", 
-                description: "输入0-10之间的数字（如7）", 
-                value: "",
-                placeholder: "0-10"
-            },
-            { 
-                name: "vote_count.gte", 
-                title: "最少评价数", 
-                type: "input", 
-                description: "输入最小评价数量", 
-                value: "",
-                placeholder: "如：100"
-            },
-            { 
-                name: "with_keywords", 
-                title: "关键词", 
-                type: "input", 
-                description: "英文关键词（如'superhero'）", 
-                value: "",
-                placeholder: "多个用逗号分隔"
-            },
-            { name: "page", title: "页码", type: "page" }
-        ]
-    },
     // =============豆瓣模块=============
-    // --- 🔥 实时热点 ---
+    // --- 实时热点 ---
     {
       title: "豆瓣电影实时热榜",
       description: "来自豆瓣的当前热门电影榜单",
@@ -422,7 +323,7 @@ WidgetMetadata = {
       ]
     },
 
-    // --- 🏆 精选榜单 ---
+    // --- 精选榜单 ---
     {
       title: "豆瓣 Top 250 电影",
       description: "豆瓣评分最高的 250 部电影",
@@ -466,7 +367,7 @@ WidgetMetadata = {
       ]
     },
 
-    // --- 🎬 探索发现 ---
+    // --- 探索发现 ---
     {
       title: "豆瓣电影推荐",
       description: "按分类、地区、类型标签浏览豆瓣推荐电影",
@@ -533,7 +434,6 @@ WidgetMetadata = {
             { title: "剧情", value: "剧情" },
             { title: "西部", value: "西部" },
             { title: "家庭", value: "家庭" },
-            { title: "儿童", value: "儿童" },
             { title: "音乐", value: "音乐" },
             { title: "运动", value: "运动" },
             { title: "古装", value: "古装" },
@@ -690,22 +590,6 @@ async function tmdbTopRated(params) {
     return await fetchTmdbData(api, params);
 }
 
-async function tmdbUpcomingMovies(params) {
-    const api = "discover/movie";
-    const discoverParams = {
-        language: params.language || 'zh-CN',
-        page: params.page || 1,
-        sort_by: 'primary_release_date.asc',
-        'primary_release_date.gte': params['primary_release_date.gte'] || getCurrentDate(),
-        with_release_type: params.with_release_type || '2,3'
-    };
-    if (params['primary_release_date.lte']) discoverParams['primary_release_date.lte'] = params['primary_release_date.lte'];
-    if (params.with_genres) discoverParams.with_genres = params.with_genres;
-    if (params['vote_average.gte']) discoverParams['vote_average.gte'] = params['vote_average.gte'];
-    if (params['vote_count.gte']) discoverParams['vote_count.gte'] = params['vote_count.gte'];
-    if (params.with_keywords) discoverParams.with_keywords = params.with_keywords;
-    return await fetchTmdbData(api, discoverParams);
-}
 
 async function tmdbDiscoverByNetwork(params = {}) {
     const api = "discover/tv";
