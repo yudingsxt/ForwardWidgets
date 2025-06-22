@@ -1,5 +1,4 @@
-// =============UserScript=============
-//              自用查询组件
+// =============自用查询模块=============
 WidgetMetadata = {
   id: "forward.combined.media.lists",
   title: "影视榜单",
