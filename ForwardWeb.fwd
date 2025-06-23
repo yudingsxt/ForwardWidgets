@@ -35,9 +35,9 @@
       "title": "JAVDay",
       "description": "获取 JAVDay 推荐",
       "requiredVersion": "0.0.1",
-      "version": "1.0.1",
+      "version": "1.1.0",
       "author": "Ti",
-      "url": "https://gist.githubusercontent.com/bemarkt/17e04f66b772d4ab9ab839c12a8ad608/raw/javday.js"
+      "url": "https://raw.githubusercontent.com/quantumultxx/ForwardWidgets/refs/heads/main/Widgets/JAVDay.js"
     },
     {
       "id": "ti.bemarkt.javrate",
