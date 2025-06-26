@@ -21,9 +21,9 @@ def get_actor_info():
         'DNT': '1'
     }
     
-    actor_info = []  # 存储唯一艺人信息
+    actor_info = []  # 存储艺人信息
     unique_ids = set()  # 存储已处理的艺人ID用于去重
-    MAX_PAGES = 116
+    MAX_PAGES = 116  #选择需要抓取的最大页数
     TIMEOUT = 15
     base_url = "https://www.javrate.com/actor/list"
     
@@ -101,55 +101,57 @@ def get_actor_info():
                             # 提取原始艺人名称
                             raw_name = link.text.strip()
                             
-                            # 清洗名称：去除多余空格和不可见字符
-                            actor_name = re.sub(r'\s+', ' ', raw_name)
-                            actor_name = actor_name.replace('\u200b', '')  # 移除零宽空格
-                            
-                            # 提取作品数量 -（在父元素中查找）
-                            work_count = 0
-                            
-                            # 仅在父元素中查找作品数量
-                            if link.parent:
-                                parent_text = link.parent.get_text()
-                                # 使用正则表达式匹配作品数量格式（如"（123部）"）
-                                count_match = re.search(r'\((\d+)\s*部?\)', parent_text)
-                                if count_match:
-                                    work_count = int(count_match.group(1))
-                                else:
-                                    # 如果未找到括号内标注的作品数量，尝试查找纯数字表示的作品计数
-                                    # 这可能是由于网站改版导致的格式变化
-                                    count_match = re.search(r'\b(\d+)\s*部作品?\b', parent_text)
-                                    if count_match:
-                                        work_count = int(count_match.group(1))
-                            
-                            # 检查名称是否有效
-                            if actor_name:
-                                actor_info.append({
-                                    "name": actor_name,
-                                    "id": actor_id,
-                                    "count": work_count
-                                })
-                                print(f"添加艺人: {actor_name} ({actor_id}), 作品数量={work_count}")
+                            # 关键修改：彻底处理crown相关前缀
+                            # 1. 移除所有crown相关前缀
+                            if raw_name.startswith("crown HOT "):
+                                processed_name = raw_name[len("crown HOT "):].strip()
+                                print(f"处理热门艺人: '{raw_name}' -> '{processed_name}'")
+                            elif raw_name.startswith("crown "):
+                                processed_name = raw_name[len("crown "):].strip()
+                                print(f"处理crown前缀: '{raw_name}' -> '{processed_name}'")
                             else:
-                                print(f"跳过无效名称的艺人ID: {actor_id}")
+                                processed_name = raw_name
+                            
+                            # 2. 分割名称为关键词列表
+                            keywords = re.split(r'[\s・。·.．]', processed_name)
+                            # 移除空字符串
+                            keywords = [k.strip() for k in keywords if k.strip()]
+                            
+                            # 3. 特殊处理：如果第一个关键词是"crown"，保留前三个关键词
+                            final_name = ""
+                            if keywords and keywords[0] == "crown":
+                                # 取前三个关键词（如果存在）
+                                final_name = " ".join(keywords[:3])
+                                print(f"特殊处理crown开头: 保留三个关键词 - {final_name}")
+                            elif keywords:
+                                # 普通情况：取第一个关键词
+                                final_name = keywords[0]
+                                # 处理过长名字
+                                if len(final_name) > 8:
+                                    jp_match = re.match(r'^[\u3040-\u309F\u30A0-\u30FF\u4E00-\u9FFF]{2,4}', processed_name)
+                                    if jp_match:
+                                        final_name = jp_match.group(0)
+                                        print(f"处理过长名称: 匹配到日文名字 -> {final_name}")
+                            else:
+                                final_name = processed_name  # 保底处理
+                            
+                            # 添加艺人信息
+                            actor_info.append({
+                                "name": final_name,
+                                "id": actor_id,
+                                "raw_name": raw_name
+                            })
+                            print(f"添加艺人: {final_name} ({actor_id})")
                         else:
                             print(f"跳过无效ID格式: {actor_id}")
                     else:
                         print(f"无法从链接提取ID: {href}")
                 
-                
+                # 检查是否还有下一页
                 has_next_page = False
-                
-                #如果当前页面有艺人链接且不是最后一页，继续下一页
                 if page < MAX_PAGES and len(actor_links) > 0:
                     has_next_page = True
-                    print(f"存在下一页内容(page={page}, max={MAX_PAGES}, 当前页艺人数量={len(actor_links)}), 继续爬取")
-                else:
-                    print(f"到达最大页码{MAX_PAGES}或当前页无艺人链接, 停止爬取")
-                
-                if not has_next_page:
-                    print("停止条件已满足，结束爬取")
-                    break
+                    print(f"继续下一页 (page={page}/{MAX_PAGES})")
                 
                 # 随机延时 1-3秒
                 delay = uniform(1.0, 3.0)
@@ -166,8 +168,7 @@ def get_actor_info():
                 
         print(f"\n共获取 {len(actor_info)} 个唯一艺人信息")
         print(f"发现并跳过 {duplicate_count} 个重复艺人")
-        # 按作品数量降序排序
-        return sorted(actor_info, key=lambda x: x["count"], reverse=True)
+        return actor_info
     
     except Exception as e:
         print(f"程序运行出错: {e}")
@@ -175,31 +176,56 @@ def get_actor_info():
 
 def save_to_js(actor_info, filename="javrate_actors.js"):
     try:
-        # 创建JavaScript数组
-        js_content = "const javrateActors = [\n"
+        # 创建JavaScript对象
+        js_content = "const javrateActors = {\n"
         
-        # 添加每个艺人对象
+        # 添加每个键值对
         for i, actor in enumerate(actor_info):
-            name = json.dumps(actor["name"], ensure_ascii=False)
-            js_content += f"  {{ name: {name}, id: \"{actor['id']}\" }}"
+            # 直接使用JSON转义
+            name_str = json.dumps(actor["name"], ensure_ascii=False)
+            id_str = f'"{actor["id"]}"'
             
+            # 格式化行：键（艺人名）和值（艺人ID）
+            line = f"    {name_str}: {id_str}"
+            
+            # 如果不是最后一行，添加逗号
             if i < len(actor_info) - 1:
-                js_content += ","
-            
-            js_content += "\n"
+                line += ","
+                
+            js_content += line + "\n"
         
-        js_content += "];"
+        js_content += "};"
         
-        # 添加排序说明注释
-        min_count = min(a["count"] for a in actor_info) if actor_info else 0
-        max_count = max(a["count"] for a in actor_info) if actor_info else 0
-        js_content = f"// 按作品数量降序排序（{max_count}-{min_count}），包含{len(actor_info)}个唯一艺人数据\n" + js_content
+        # 添加注释说明
+        summary = (
+            f"// JavRate艺人数据 ({len(actor_info)}位艺人)\n"
+            f"// 生成时间: {time.strftime('%Y-%m-%d %H:%M:%S')}\n"
+        )
+        js_content = summary + js_content
         
         # 写入文件
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(js_content)
         
         print(f"成功保存 {len(actor_info)} 个艺人信息到 {filename}")
+        
+        # 显示格式示例
+        print("\n输出格式示例:")
+        examples = 0
+        for actor in actor_info:
+            # 只显示特殊处理过的示例
+            if "crown" in actor["raw_name"].lower() and examples < 5:
+                prefix = "    "
+                if "crown" in actor["name"].lower():
+                    prefix += "[保留多个关键词] "
+                print(f'{prefix}"{actor["name"]}": "{actor["id"]}",')
+                examples += 1
+            elif examples < 3:  # 也显示一些普通示例
+                print(f'    "{actor["name"]}": "{actor["id"]}",')
+                examples += 1
+            if examples >= 5:
+                break
+            
         return True
     except Exception as e:
         print(f"保存JavaScript文件时出错: {e}")
@@ -213,13 +239,7 @@ if __name__ == "__main__":
     
     if actor_info:
         if save_to_js(actor_info):
-            print(f"任务完成! 共爬取 {len(actor_info)} 个唯一艺人信息")
-            print(f"艺人已按作品数量降序排序")
-            
-            # 显示前10位艺人（作品数量最多）
-            print("\n作品数量最多的前10位艺人:")
-            for i, actor in enumerate(actor_info[:10]):
-                print(f"{i+1}. {actor['name']} - {actor['count']}部作品")
+            print(f"任务完成! 共爬取 {len(actor_info)} 个艺人信息")
         else:
             print("数据获取成功但保存失败")
     else:
