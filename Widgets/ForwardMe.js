@@ -2,10 +2,10 @@
 WidgetMetadata = {
   id: "forward.combined.media.lists",
   title: "影视榜单",
-  description: "聚合豆瓣、TMDB、IMDB和Bangumi的影视动画榜单",
+  description: "聚合TMDB和豆瓣的影视动画榜单",
   author: "阿米诺斯",
   site: "https://github.com/quantumultxx/FW-Widgets",
-  version: "1.2.6",
+  version: "1.2.7",
   requiredVersion: "0.0.1",
   detailCacheDuration: 60,
   modules: [
@@ -524,51 +524,64 @@ function calculatePagination(params) {
     return { page, limit, start };
 }
 
-function getCurrentDate() {
+function getBeijingDate() {
     const now = new Date();
-    return now.toISOString().split('T')[0];
+    
+    const beijingTime = now.getTime() + (8 * 60 * 60 * 1000);
+    const beijingDate = new Date(beijingTime);
+    
+    const year = beijingDate.getUTCFullYear();
+    const month = String(beijingDate.getUTCMonth() + 1).padStart(2, '0');
+    const day = String(beijingDate.getUTCDate()).padStart(2, '0');
+    
+    return `${year}-${month}-${day}`;
 }
 
 //===============TMDB功能函数===============
 async function fetchTmdbData(api, params) {
     try {
-        const tmdbParams = { ...params };
-        delete tmdbParams.type;
-        delete tmdbParams.time_window;
-        const response = await Widget.tmdb.get(api, { params: tmdbParams });
-        if (!response?.results) {
-            throw new Error(response?.status_message || "无效的API响应格式");
+        const response = await Widget.tmdb.get(api, { params: params });
+
+        if (!response) {
+            throw new Error("获取数据失败");
         }
-        return response.results
-        .map(item => {
-            const isMovie = api.includes('movie') || item.media_type === 'movie';
-            const mediaType = isMovie ? 'movie' : 'tv';
-            return {
-                id: item.id,
-                type: "tmdb",
-                mediaType: mediaType,
-                title: isMovie ? item.title : item.name,
-                description: formatItemDescription({
+
+        const data = response.results;
+        
+        return data
+            .filter(item => {
+                const hasPoster = item.poster_path;
+                const hasTitle = item.title || item.name;
+                const hasValidId = Number.isInteger(item.id);
+                
+                return hasPoster && hasTitle && hasValidId;
+            })
+            .map((item) => {
+                let mediaType = item.media_type;
+                
+                if (!mediaType) {
+                    if (item.title) mediaType = "movie";
+                    else if (item.name) mediaType = "tv";
+                }
+                
+                return {
+                    id: item.id,
+                    type: "tmdb",
+                    title: item.title || item.name,
                     description: item.overview,
-                    rating: item.vote_average ? (item.vote_average / 2).toFixed(1) : undefined,
-                    releaseDate: isMovie ? item.release_date : item.first_air_date
-                }),
-                releaseDate: isMovie ? item.release_date : item.first_air_date,
-                backdropPath: item.backdrop_path && `https://image.tmdb.org/t/p/original${item.backdrop_path}`,
-                posterPath: item.poster_path && `https://image.tmdb.org/t/p/original${item.poster_path}`,
-                rating: item.vote_average ? (item.vote_average / 2).toFixed(1) : undefined
-            };
-        })
-        .filter(item => 
-            item.id && 
-            item.title && 
-            item.posterPath
-        );
+                    releaseDate: item.release_date || item.first_air_date,
+                    backdropPath: item.backdrop_path,
+                    posterPath: item.poster_path,
+                    rating: item.vote_average,
+                    mediaType: mediaType || "unknown",
+                };
+            });
     } catch (error) {
-        console.error(`API调用失败: ${api}`, error);
-        return [createErrorItem(api, '数据加载失败', error)];
+        console.error("调用 TMDB API 失败:", error);
+        return [createErrorItem("tmdb-api", "API调用失败", error)];
     }
 }
+
 
 async function tmdbNowPlaying(params) {
     const type = params.type || 'movie';
@@ -589,59 +602,94 @@ async function tmdbTopRated(params) {
     return await fetchTmdbData(api, params);
 }
 
+async function tmdbUpcomingMovies(params) {
+    const api = "discover/movie";
+    const beijingDate = getBeijingDate();
+    const discoverParams = {
+        language: params.language || 'zh-CN',
+        page: params.page || 1,
+        sort_by: 'primary_release_date.asc',
+        'primary_release_date.gte': params['primary_release_date.gte'] || beijingDate,
+        with_release_type: params.with_release_type || '2,3'
+    };
+    
+    if (params['primary_release_date.lte']) {
+        discoverParams['primary_release_date.lte'] = params['primary_release_date.lte'];
+    }
+    if (params.with_genres) {
+        discoverParams.with_genres = params.with_genres;
+    }
+    if (params['vote_average.gte']) {
+        discoverParams['vote_average.gte'] = params['vote_average.gte'];
+    }
+    if (params['vote_count.gte']) {
+        discoverParams['vote_count.gte'] = params['vote_count.gte'];
+    }
+    if (params.with_keywords) {
+        discoverParams.with_keywords = params.with_keywords;
+    }
+    
+    return await fetchTmdbData(api, discoverParams);
+}
 
 async function tmdbDiscoverByNetwork(params = {}) {
     const api = "discover/tv";
+    const beijingDate = getBeijingDate();
     const discoverParams = {
         language: params.language || 'zh-CN',
         page: params.page || 1,
         with_networks: params.with_networks,
-        sort_by: params.sort_by,
-        ...(params.air_status === 'released' && { 
-            'first_air_date.lte': getCurrentDate() 
-        }),
-        ...(params.air_status === 'upcoming' && { 
-            'first_air_date.gte': getCurrentDate() 
-        }),
-        ...(params.with_genres && { with_genres: params.with_genres })
+        sort_by: params.sort_by || "first_air_date.desc",
     };
+    
+    if (params.air_status === 'released') {
+        discoverParams['first_air_date.lte'] = beijingDate;
+    } else if (params.air_status === 'upcoming') {
+        discoverParams['first_air_date.gte'] = beijingDate;
+    }
+    
+    if (params.with_genres) {
+        discoverParams.with_genres = params.with_genres;
+    }
+    
     return await fetchTmdbData(api, discoverParams);
 }
 
 async function tmdbCompanies(params = {}) {
-  try {
-    const api = "discover/movie";
-    const withCompanies = String(params.with_companies || '').trim();
+    try {
+        const api = "discover/movie";
+        const beijingDate = getBeijingDate();
+        const withCompanies = String(params.with_companies || '').trim();
 
-    const cleanParams = {
-      page: params.page || 1,
-      language: params.language || "zh-CN",
-      sort_by: params.sort_by || "primary_release_date.desc",
-    };
+        const cleanParams = {
+            page: params.page || 1,
+            language: params.language || "zh-CN",
+            sort_by: params.sort_by || "primary_release_date.desc",
+            include_adult: false,
+            include_video: false
+        };
 
-    if (withCompanies) {
-      cleanParams.with_companies = withCompanies;
+        if (withCompanies) {
+            cleanParams.with_companies = withCompanies;
+        }
+
+        if (params.air_status === 'released') {
+            cleanParams['primary_release_date.lte'] = beijingDate;
+        } else if (params.air_status === 'upcoming') {
+            cleanParams['primary_release_date.gte'] = beijingDate;
+        }
+
+        if (params.with_genres) {
+            cleanParams.with_genres = String(params.with_genres).trim();
+        }
+
+        return await fetchTmdbData(api, cleanParams);
+    } catch (error) {
+        console.error('公司数据加载失败:', error);
+        return [createErrorItem('companies', '数据加载失败', error)];
     }
-
-    const currentDate = getCurrentDate();
-    if (params.air_status === 'released') {
-      cleanParams['primary_release_date.lte'] = currentDate;
-    } else if (params.air_status === 'upcoming') {
-      cleanParams['primary_release_date.gte'] = currentDate;
-    }
-
-    if (params.with_genres) {
-      cleanParams.with_genres = String(params.with_genres).trim();
-    }
-
-    console.log('TMDB请求参数:', cleanParams);
-    return await fetchTmdbData(api, cleanParams);
-    
-  } catch (error) {
-    console.error('公司数据加载失败:', error);
-    return [createErrorItem('companies', '数据加载失败', error)];
-  }
 }
+
 // ===============豆瓣功能函数===============
 async function loadDoubanCardItems(params = {}) {
   try {
