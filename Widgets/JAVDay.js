@@ -446,9 +446,6 @@ async function loadPage(params = {}) {
   
   const pagePath = buildPageUrl(baseUrl, sortBy, page);
   const targetUrl = getFullUrl(pagePath);
-  
-  console.log(`${JAVDAY_LOG_PREFIX} 抓取页面: ${targetUrl}`);
-  console.log(`${JAVDAY_LOG_PREFIX} 排序方式: ${sortBy}, 页码: ${page}`);
 
   try {
     const response = await Widget.http.get(targetUrl, {
@@ -514,8 +511,6 @@ async function search(params = {}) {
   } else {
     searchUrl = `https://javday.app/search/page/${page}/wd/${keyword}/`;
   }
-  
-  console.log(`${JAVDAY_LOG_PREFIX} 执行搜索: ${keyword}, 页码: ${page}`);
 
   try {
     const response = await Widget.http.get(searchUrl, {
@@ -568,7 +563,6 @@ async function search(params = {}) {
 }
 
 async function loadDetail(link) {
-  console.log(`${JAVDAY_LOG_PREFIX} 加载视频详情: ${link}`);
   
   try {
     const response = await Widget.http.get(link, {
