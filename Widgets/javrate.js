@@ -1401,7 +1401,6 @@ async function fetchDataForPath(currentBaseUrl, path, params = {}) {
     const items = await parseItems(currentBaseUrl, $, requestUrl);
     
     if (items.length === 0) {
-      console.log(`解析结果为空: ${requestUrl}`);
       return [{
         id: `${requestUrl}-empty`,
         type: "url",
@@ -1436,8 +1435,6 @@ async function loadDetail(linkValue) {
   } else {
     console.warn(`loadDetail: 无法从链接 ${linkValue} 中解析baseUrl，将使用默认值`);
   }
-
-  console.log(`loadDetail: 正在加载详情: ${linkValue} (使用baseUrl: ${currentBaseUrl})`);
   
   try {
     const response = await Widget.http.get(linkValue, {
