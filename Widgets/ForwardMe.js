@@ -602,36 +602,6 @@ async function tmdbTopRated(params) {
     return await fetchTmdbData(api, params);
 }
 
-async function tmdbUpcomingMovies(params) {
-    const api = "discover/movie";
-    const beijingDate = getBeijingDate();
-    const discoverParams = {
-        language: params.language || 'zh-CN',
-        page: params.page || 1,
-        sort_by: 'primary_release_date.asc',
-        'primary_release_date.gte': params['primary_release_date.gte'] || beijingDate,
-        with_release_type: params.with_release_type || '2,3'
-    };
-    
-    if (params['primary_release_date.lte']) {
-        discoverParams['primary_release_date.lte'] = params['primary_release_date.lte'];
-    }
-    if (params.with_genres) {
-        discoverParams.with_genres = params.with_genres;
-    }
-    if (params['vote_average.gte']) {
-        discoverParams['vote_average.gte'] = params['vote_average.gte'];
-    }
-    if (params['vote_count.gte']) {
-        discoverParams['vote_count.gte'] = params['vote_count.gte'];
-    }
-    if (params.with_keywords) {
-        discoverParams.with_keywords = params.with_keywords;
-    }
-    
-    return await fetchTmdbData(api, discoverParams);
-}
-
 async function tmdbDiscoverByNetwork(params = {}) {
     const api = "discover/tv";
     const beijingDate = getBeijingDate();
