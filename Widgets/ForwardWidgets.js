@@ -247,7 +247,7 @@ WidgetMetadata = {
         description: "今日热门电影与剧集",
         requiresWebView: false,
         functionName: "tmdbTrending",
-        cacheDuration: 3600,
+        cacheDuration: 900,
         params: [
             { name: "time_window", 
               title: "时间", 
@@ -262,7 +262,7 @@ WidgetMetadata = {
         description: "本周热门电影与剧集",
         requiresWebView: false,
         functionName: "tmdbTrending",
-        cacheDuration: 3600,
+        cacheDuration: 900,
         params: [
             { name: "time_window", 
               title: "时间", 
@@ -1317,9 +1317,10 @@ async function tmdbNowPlaying(params) {
 }
 
 async function tmdbTrending(params) {
-    const timeWindow = params.time_window || 'day';
-    const api = `trending/all/${timeWindow}`;
-    return await fetchTmdbData(api, params);
+  const timeWindow = params.time_window;
+  const api = `trending/all/${timeWindow}`;
+  delete params.time_window;
+  return await fetchTmdbData(api, params);
 }
 
 
