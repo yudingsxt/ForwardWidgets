@@ -15,11 +15,20 @@
     {
       "id": "91porn",
       "title": "91Porn",
-      "description": "获取 91Porn 视频",
+      "description": "91Porn",
       "requiredVersion": "0.0.1",
-      "version": "0.5.0",
-      "author": "Baran",
+      "version": "0.9.0",
+      "author": "匿名",
       "url": "https://github.com/baranwang/forward-widget/releases/latest/download/91porn.js"
+    },
+    {
+      "id": "xvideos",
+      "title": "XVideos",
+      "description": "XVideos",
+      "requiredVersion": "0.0.1",
+      "version": "0.9.0",
+      "author": "匿名",
+      "url": "https://github.com/baranwang/forward-widget/releases/latest/download/xvideos.js"
     },
     {
       "id": "Pornhub",
