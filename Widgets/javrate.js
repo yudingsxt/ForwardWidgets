@@ -4,7 +4,7 @@ var WidgetMetadata = {
   description: "获取 JAVRate 推荐",
   author: "Ti",
   site: "https://www.javrate.com/",
-  version: "2.0.0",
+  version: "2.1.0",
   requiredVersion: "0.0.1",
   detailCacheDuration: 60,
   modules: [
@@ -98,7 +98,7 @@ var WidgetMetadata = {
         }
       ]
     },
-    // AV分类模块
+    // 标签分类模块
     {
       title: "AV 分类",
       description: "按详细分类浏览所有分类的影片",
@@ -773,40 +773,35 @@ var WidgetMetadata = {
         }
       ]
     },
-    // 最新发布模块
+    // 首页分类
     {
-      title: "最新发布",
-      description: "浏览 JAVRate 的最新影片",
+      title: "首页分类",
+      description: "选择需要浏览的分类",
       requiresWebView: false,
       functionName: "loadPage",
       cacheDuration: 3600,
       params: [
         {
-          name: "path",
-          title: "列表类型",
-          type: "constant",
-          description: "列表路径",
+          name: "categoryType",
+          title: "📁 分类类型",
+          type: "enumeration",
+          enumOptions: [
+            { title: "最新发布", value: "/movie/new/" },
+            { title: "热门排行", value: "/best/thisweek" },
+            { title: "无码A片", value: "/menu/uncensored/5-2-" },
+            { title: "日本A片", value: "/menu/censored/5-2-" },
+            { title: "国产AV", value: "/menu/chinese/5-2-" }
+          ],
           value: "/movie/new/"
         },
-        {
-          name: "page",
-          title: "页码",
-          type: "page"
-        }
-      ]
-    },
-    // 热门排行模块
-    {
-      title: "热门排行",
-      description: "浏览 JAVRate 的热门排行",
-      requiresWebView: false,
-      functionName: "loadPage",
-      cacheDuration: 3600,
-      params: [
         {
           name: "sort_by",
           title: "时间范围",
           type: "enumeration",
+          belongTo: {
+            paramName: "categoryType",
+            value: ["/best/thisweek"],
+          },
           enumOptions: [
             { title: "最近一周", value: "/best/thisweek" },
             { title: "最近一月", value: "/best/thismonth" },
@@ -814,8 +809,8 @@ var WidgetMetadata = {
             { title: "最近一年", value: "/best/thisyear" },
             { title: "全部时间", value: "/best" }
           ],
-          value: "/best/thisweek", // 默认选择最近一周
-          description: "选择要查看的时间范围"
+          value: "/best/thisweek",
+          description: "选择要查看的时间范围（仅热门排行有效）"
         },
         {
           name: "page",
@@ -824,73 +819,7 @@ var WidgetMetadata = {
         }
       ]
     },
-    // 无码A片模块
-    {
-      title: "无码A片",
-      description: "浏览 JAVRate 的无码影片",
-      requiresWebView: false,
-      functionName: "loadPage",
-      cacheDuration: 3600,
-      params: [
-        {
-          name: "path",
-          title: "列表类型",
-          type: "constant",
-          description: "列表路径",
-          value: "/menu/uncensored/"
-        },
-        {
-          name: "page",
-          title: "页码",
-          type: "page"
-        }
-      ]
-    },
-    // 日本A片模块
-    {
-      title: "日本A片",
-      description: "浏览 JAVRate 的日本有码影片",
-      requiresWebView: false,
-      functionName: "loadPage",
-      cacheDuration: 3600,
-      params: [
-        {
-          name: "path",
-          title: "列表类型",
-          type: "constant",
-          description: "列表路径",
-          value: "/menu/censored/"
-        },
-        {
-          name: "page",
-          title: "页码",
-          type: "page"
-        }
-      ]
-    },
-    // 国产AV
-    {
-      title: "国产AV",
-      description: "浏览 JAVRate 的国产影片",
-      requiresWebView: false,
-      functionName: "loadPage",
-      cacheDuration: 3600,
-      params: [
-        {
-          name: "path",
-          title: "列表类型",
-          type: "constant",
-          description: "列表路径",
-          value: "/menu/chinese/"
-        },
-        {
-          name: "page",
-          title: "页码",
-          type: "page"
-        }
-      ]
-    },
-    //出品厂商
+    // 出品厂商
     {
       title: "出品厂商",
       description: "按出品厂商浏览影片",
@@ -991,10 +920,17 @@ var WidgetMetadata = {
 
 
 const ARTIST_MAP_REMOTE_URL = "https://raw.githubusercontent.com/quantumultxx/ForwardWidgets/refs/heads/main/Widgets/javrate_actors.json";
-
 let artistMapCache = null;
 let artistMapCacheTime = 0;
 const CACHE_DURATION = 24 * 60 * 60 * 1000;
+const BASE_URL = "https://www.javrate.com";
+
+function getCommonHeaders() {
+  return {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+    Referer: BASE_URL
+  };
+}
 
 async function fetchArtistMap() {
   if (artistMapCache && Date.now() - artistMapCacheTime < CACHE_DURATION) {
@@ -1003,12 +939,10 @@ async function fetchArtistMap() {
   
   try {
     const response = await Widget.http.get(ARTIST_MAP_REMOTE_URL, {
-      headers: getCommonHeaders("https://raw.githubusercontent.com")
+      headers: getCommonHeaders()
     });
     
-    if (!response.data) {
-      throw new Error("艺人列表返回空数据");
-    }
+    if (!response.data) throw new Error("艺人列表返回空数据");
     
     artistMapCache = typeof response.data === "object" 
       ? response.data 
@@ -1035,97 +969,8 @@ async function normalizeArtistName(name) {
     .normalize("NFKC");
 }
 
-async function loadPage(params) {
-  const baseUrl = "https://www.javrate.com";
-  let path = "";
-  
-  if (params?.artistId) {
-    try {
-      const artistMap = await fetchArtistMap();
-      
-      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.artistId);
-      
-      if (!isUUID) {
-        const normalizedInput = await normalizeArtistName(params.artistId);
-        
-        let matchedId = null;
-        let matchedName = null;
-        
-        for (const [name, id] of Object.entries(artistMap)) {
-          const normalizedMapName = await normalizeArtistName(name);
-          
-          if (normalizedMapName === normalizedInput) {
-            matchedId = id;
-            matchedName = name;
-            break;
-          }
-        }
-        
-        if (matchedId) {
-          params.artistId = matchedId;
-        } else {
-          return [{
-            id: "artist-not-found",
-            type: "url",
-            title: "艺人未找到",
-            description: `未找到艺人: ${params.artistId}\n\n请尝试输入全名或更换艺人名称`,
-            backdropPath: "",
-            link: ""
-          }];
-        }
-      }
-      
-      path = `/actor/movie/${params.artistId}.html`;
-    } catch (error) {
-      console.error("艺人模块处理出错:", error.message);
-      return [{
-        id: "artist-map-error",
-        type: "url",
-        title: "艺人列表加载失败",
-        description: "请检查网络连接或稍后再试\n错误信息: " + error.message,
-        backdropPath: "",
-        link: ""
-      }];
-    }
-  }
-  else if (params && params.tagType && params.tagValue) {
-    const encodedTag = encodeURIComponent(params.tagValue);
-    path = `/keywords/movie/${encodedTag}`;
-  }
-  else if (params && params.issuer) {
-    const decodedIssuer = decodeURIComponent(params.issuer);
-    const encodedIssuer = encodeURIComponent(decodedIssuer);
-    path = `/Issuer/${encodedIssuer}`;
-  }
-  else if (params && params.sort_by) {
-    path = params.sort_by;
-  }
-  else if (params && params.path) {
-    path = params.path;
-  } else {
-    return [{
-      id: "param-error",
-      type: "url",
-      title: "参数配置错误",
-      description: "缺少必要参数，请检查模块配置。",
-      backdropPath: "",
-      link: ""
-    }];
-  }
-  
-  return fetchDataForPath(baseUrl, path, {page: params.page || 1});
-}
 
-const VIDEO_PLAY_REFERER = "https://iframe.mediadelivery.net/";
-
-function getCommonHeaders(baseUrl) {
-  return {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
-    Referer: baseUrl
-  };
-}
-
-function parseDetailPage(detailPageHtml, detailPageUrl, currentBaseUrl) {
+function parseDetailPage(detailPageHtml, detailPageUrl) {
   const $ = Widget.html.load(detailPageHtml);
   
   const titleH1 = $("h1.mb-2.mt-1");
@@ -1138,7 +983,6 @@ function parseDetailPage(detailPageHtml, detailPageUrl, currentBaseUrl) {
   let videoUrl = null;
   let imgSrc = null;
   let description = "";
-  let durationText = "";
 
   try {
     const schemaScript = $('script[type="application/ld+json"]').html();
@@ -1146,21 +990,10 @@ function parseDetailPage(detailPageHtml, detailPageUrl, currentBaseUrl) {
       const schemaData = JSON.parse(schemaScript);
       videoUrl = schemaData.contentUrl || schemaData.embedUrl;
       imgSrc = schemaData.thumbnailUrl;
-      description = schemaData.description;
-      if (schemaData.duration) {
-        const durationMatch = schemaData.duration.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
-        if (durationMatch) {
-          const hours = parseInt(durationMatch[1] || 0);
-          const minutes = parseInt(durationMatch[2] || 0);
-          const seconds = parseInt(durationMatch[3] || 0);
-          durationText = [hours, minutes, seconds]
-            .map(num => num.toString().padStart(2, "0"))
-            .join(":");
-        }
-      }
+      description = schemaData.description || "";
     }
   } catch (e) {
-    console.error(`parseDetailPage: 解析 LD+JSON schema 失败:`, e.message);
+    console.error(`解析 LD+JSON schema 失败:`, e.message);
   }
 
   if (!videoUrl) {
@@ -1178,17 +1011,11 @@ function parseDetailPage(detailPageHtml, detailPageUrl, currentBaseUrl) {
   if (releaseDate) {
     const dateMatch = releaseDate.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
     if (dateMatch) {
-      releaseDate = `${dateMatch[1]}-${dateMatch[2].padStart(2, "0")}-${dateMatch[3].padStart(2, "0")}`;
+      const year = dateMatch[1];
+      const month = dateMatch[2].padStart(2, '0');
+      const day = dateMatch[3].padStart(2, '0');
+      releaseDate = `${year}-${month}-${day}`;
     }
-  }
-
-  if (!durationText) {
-    $("div.d-flex.gap-2 span.badge.bg-default").each(function() {
-      const text = $(this).text().trim();
-      if (/\d{2}\s*:\s*\d{2}\s*:\s*\d{2}/.test(text)) {
-        durationText = text.replace(/\s/g, "");
-      }
-    });
   }
 
   if (!description) {
@@ -1196,8 +1023,8 @@ function parseDetailPage(detailPageHtml, detailPageUrl, currentBaseUrl) {
   }
 
   const tags = [];
-  $("section.movie-keywords a.badge").each((i, el) => {
-    tags.push($(el).text().trim());
+  $("section.movie-keywords a.badge").each((idx, element) => {
+    tags.push($(element).text().trim());
   });
   const genreTitle = tags.join(", ");
 
@@ -1216,7 +1043,7 @@ function parseDetailPage(detailPageHtml, detailPageUrl, currentBaseUrl) {
 
       const absoluteLink = relativeLink.startsWith("http")
         ? relativeLink
-        : currentBaseUrl + (relativeLink.startsWith("/") ? relativeLink : "/" + relativeLink);
+        : BASE_URL + (relativeLink.startsWith("/") ? relativeLink : "/" + relativeLink);
 
       const childImgSrc = item.find(".mgn-picture img.mgn-cover").attr("src");
 
@@ -1238,7 +1065,7 @@ function parseDetailPage(detailPageHtml, detailPageUrl, currentBaseUrl) {
         });
       }
     } catch (e) {
-      console.error(`parseDetailPage: 解析相关推荐第 ${idx + 1} 个条目时出错:`, e.message);
+      console.error(`解析条目出错: 第 ${idx + 1} 个条目时出错:`, e.message);
     }
   });
 
@@ -1249,14 +1076,14 @@ function parseDetailPage(detailPageHtml, detailPageUrl, currentBaseUrl) {
     videoUrl: videoUrl,
     description: description || "暂无简介",
     releaseDate: releaseDate,
-    durationText: durationText,
     genreTitle: genreTitle,
     backdropPath: imgSrc || "",
     link: detailPageUrl,
-    customHeaders: videoUrl ? { Referer: VIDEO_PLAY_REFERER } : undefined,
+    customHeaders: videoUrl ? { Referer: "https://iframe.mediadelivery.net/" } : undefined,
     relatedItems: relatedItems,
   };
 }
+
 
 async function parseItems(currentBaseUrl, $, listPageUrl) {
   const videoItems = [];
@@ -1271,21 +1098,17 @@ async function parseItems(currentBaseUrl, $, listPageUrl) {
       const titleElement = item.find(".mgn-title h3");
       
       if (!relativeLink || !titleElement.length) return;
-      
+
       const movieNumber = titleElement.find("strong").text().trim();
       const movieTitle = titleElement.clone().find("strong").remove().end().text().trim();
       const fullTitle = `${movieNumber} ${movieTitle}`.trim();
-      
       const absoluteLink = relativeLink.startsWith("http")
         ? relativeLink
         : `${currentBaseUrl}${relativeLink.startsWith("/") ? "" : "/"}${relativeLink}`;
-      
+
       const imgSrc = item.find(".mgn-picture img.mgn-cover").attr("src") || "";
-      
-      const rating = item.find(".mgn-rating .score-label").text().trim();
-      
+
       let dateText = item.find(".mgn-date").clone().find("svg").remove().end().text().trim();
-      
       const dateMatch = dateText.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
       if (dateMatch) {
         const year = dateMatch[1];
@@ -1293,7 +1116,7 @@ async function parseItems(currentBaseUrl, $, listPageUrl) {
         const day = dateMatch[3].padStart(2, '0');
         dateText = `${year}-${month}-${day}`;
       }
-      
+
       videoItems.push({
         id: absoluteLink,
         type: "url",
@@ -1301,9 +1124,7 @@ async function parseItems(currentBaseUrl, $, listPageUrl) {
         backdropPath: imgSrc,
         link: absoluteLink,
         releaseDate: dateText || null,
-        rating: rating || null,
-        mediaType: "movie",
-        description: "点击查看详情"
+        mediaType: "movie"
       });
     } catch (e) {
       console.error(`解析条目出错: ${e.message}`);
@@ -1313,66 +1134,66 @@ async function parseItems(currentBaseUrl, $, listPageUrl) {
 }
 
 
-async function fetchDataForPath(currentBaseUrl, path, params = {}) {
+async function fetchDataForPath(path, params = {}) {
   const page = parseInt(params.page, 10) || 1;
   let requestUrl = "";
-  
+
   if (!path || !path.startsWith("/")) {
     path = "/" + (path || "");
   }
-  
+
   if (path.includes("/actor/movie/") && path.endsWith(".html")) {
     const artistId = path.match(/\/actor\/movie\/([^\/]+)\.html$/)?.[1];
-    
     if (!artistId) {
-      console.error(`艺人ID解析失败: ${path}`);
       return [{
-        id: "artist-id-error",
-        type: "url",
-        title: "艺人识别错误",
-        description: `无法从URL识别艺人ID: ${path}`,
-        backdropPath: "",
-        link: path
+        id: "artist-id-error", 
+        type: "url", 
+        title: "艺人识别错误", 
+        description: `无法从URL识别艺人ID: ${path}`, 
+        backdropPath: "", 
+        link: path 
       }];
     }
-    
-    if (page > 1) {
-      requestUrl = `${currentBaseUrl}/actor/movie/1-0-2-${page}/${artistId}.html`;
-    } else {
-      requestUrl = `${currentBaseUrl}${path}`;
-    }
+    requestUrl = page > 1 
+      ? `${BASE_URL}/actor/movie/1-0-2-${page}/${artistId}.html`
+      : `${BASE_URL}${path}`;
   }
   else if (path.startsWith("/keywords/movie/")) {
     requestUrl = page > 1 
-      ? `${currentBaseUrl}${path}?page=${page}&sort=5`
-      : `${currentBaseUrl}${path}`;
+      ? `${BASE_URL}${path}?page=${page}&sort=5`
+      : `${BASE_URL}${path}`;
   }
   else if (path.startsWith("/Issuer/")) {
     requestUrl = page > 1 
-      ? `${currentBaseUrl}${path}?page=${page}&sort=5`
-      : `${currentBaseUrl}${path}`;
+      ? `${BASE_URL}${path}?page=${page}&sort=5`
+      : `${BASE_URL}${path}`;
   }
-  else if (path.startsWith("/best")) {
+  else if (path.startsWith("/best/")) { 
+    const sortByPath = params.sort_by || path; 
     requestUrl = page > 1 
-      ? `${currentBaseUrl}${path}?page=${page}`
-      : `${currentBaseUrl}${path}`;
+      ? `${BASE_URL}${sortByPath}?page=${page}` 
+      : `${BASE_URL}${sortByPath}`;
+  }
+  else if ([
+    "/menu/uncensored/5-2-", 
+    "/menu/censored/5-2-", 
+    "/menu/chinese/5-2-"
+  ].includes(path)) {
+    requestUrl = `${BASE_URL}${path}${page}`;
+  }
+  else if (path === "/movie/new/") {
+    requestUrl = `${BASE_URL}${path}`;
   }
   else {
     const trimmedPath = path.endsWith("/") ? path.slice(0, -1) : path;
-    
-    if (trimmedPath.startsWith("/menu/")) {
-      requestUrl = `${currentBaseUrl}${trimmedPath}/5-2-${page}`;
-    } else {
-      requestUrl = page > 1 
-        ? `${currentBaseUrl}${trimmedPath}/${page}.html`
-        : `${currentBaseUrl}${trimmedPath}`;
-    }
+    requestUrl = page > 1 
+      ? `${BASE_URL}${trimmedPath}/${page}.html`
+      : `${BASE_URL}${trimmedPath}`;
   }
 
-  
   try {
     const response = await Widget.http.get(requestUrl, {
-      headers: getCommonHeaders(currentBaseUrl),
+      headers: getCommonHeaders(),
     });
     
     if (!response?.data) {
@@ -1385,7 +1206,6 @@ async function fetchDataForPath(currentBaseUrl, path, params = {}) {
         link: requestUrl
       }];
     }
-
     if (response.data.includes("抱歉，没有找到")) {
       return [{
         id: `${requestUrl}-no-content`,
@@ -1398,7 +1218,7 @@ async function fetchDataForPath(currentBaseUrl, path, params = {}) {
     }
 
     const $ = Widget.html.load(response.data);
-    const items = await parseItems(currentBaseUrl, $, requestUrl);
+    const items = await parseItems(BASE_URL, $, requestUrl);
     
     if (items.length === 0) {
       return [{
@@ -1417,7 +1237,7 @@ async function fetchDataForPath(currentBaseUrl, path, params = {}) {
     return [{
       id: `${requestUrl}-error`,
       type: "url",
-      title: `加载失败: ${page > 1 ? `第 ${page} 页` : '列表'}`,
+      title: `加载失败: 第${page}页`,
       description: `请求出错: ${error.message}`,
       backdropPath: "",
       link: requestUrl
@@ -1438,14 +1258,14 @@ async function loadDetail(linkValue) {
   
   try {
     const response = await Widget.http.get(linkValue, {
-      headers: getCommonHeaders(currentBaseUrl),
+      headers: getCommonHeaders(),
     });
     
     if (!response || !response.data) {
       throw new Error("无法加载详情页面: " + linkValue);
     }
     
-    const detailData = parseDetailPage(response.data, linkValue, currentBaseUrl);
+    const detailData = parseDetailPage(response.data, linkValue);
 
     return {
       id: linkValue,
@@ -1454,7 +1274,6 @@ async function loadDetail(linkValue) {
       videoUrl: detailData.videoUrl,
       description: detailData.description,
       releaseDate: detailData.releaseDate,
-      durationText: detailData.durationText,
       genreTitle: detailData.genreTitle,
       backdropPath: detailData.backdropPath || "",
       link: detailData.link,
@@ -1472,4 +1291,98 @@ async function loadDetail(linkValue) {
       backdropPath: "",
     };
   }
+}
+
+
+async function loadPage(params) {
+  let path = "";
+  
+    if (params?.artistId) {
+    try {
+      const artistMap = await fetchArtistMap();
+    
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.artistId);
+    
+      if (!isUUID) {
+        const normalizedInput = await   normalizeArtistName(params.artistId);
+        let matchedId = null;
+        let matchedName = null;
+        let matchScore = 0;
+      
+        for (const [name, id] of  Object.entries(artistMap)) {
+          const normalizedMapName = await normalizeArtistName(name);
+        
+          if (normalizedMapName === normalizedInput) {
+            matchedId = id;
+            matchedName = name;
+            matchScore = 100;
+            break;
+          }
+        
+          if  (normalizedMapName.includes(normalizedInput)) {
+            const score = normalizedInput.length * 10;
+            if (score > matchScore) {
+              matchScore = score;
+              matchedId = id;
+              matchedName = name;
+            }
+          }
+        }
+      
+        if (!matchedId) {
+          return [{
+            id: "artist-not-found",
+            type: "url", 
+            title: "艺人未找到",
+            description: `未找到艺人: ${params.artistId}\n\n请尝试输入全名或更换艺人名称`,
+            backdropPath: "",
+            link: ""
+          }];
+        }
+      
+        params.artistId = matchedId;
+      }
+    
+      path = `/actor/movie/${params.artistId}.html`;
+    } catch (error) {
+      console.error("艺人模块处理出错:", error.message);
+      return [{
+        id: "artist-map-error",
+        type: "url",
+        title: "艺人列表加载失败",
+        description: "请检查网络连接或稍后再试\n错误信息: " + error.message,
+        backdropPath: "",
+        link: ""
+      }];
+    }
+  }
+
+  
+  else if (params && params.tagType && params.tagValue) {
+    const encodedTag = encodeURIComponent(params.tagValue);
+    path = `/keywords/movie/${encodedTag}`;
+  }
+  
+  else if (params && params.issuer) {
+    const decodedIssuer = decodeURIComponent(params.issuer);
+    const encodedIssuer = encodeURIComponent(decodedIssuer);
+    path = `/Issuer/${encodedIssuer}`;
+  }
+  
+  else if (params && params.categoryType) {
+    path = params.categoryType;
+  }
+  
+  else {
+    return [{
+      id: "param-error",
+      type: "url",
+      title: "参数配置错误",
+      description: "缺少必要参数，请检查模块配置。",
+      backdropPath: "",
+      link: ""
+    }];
+  }
+  
+  return fetchDataForPath(path, params);
 }
