@@ -54,7 +54,6 @@ def get_actor_info():
 
                 links_to_process = actor_links[:LINKS_PER_PAGE]
                 actual_processed = len(links_to_process)
-                print(f"当前页共找到 {len(actor_links)} 个演员链接，将处理前 {actual_processed} 个")
 
                 for idx, link in enumerate(links_to_process, 1):
                     href = link.get('href', '')
