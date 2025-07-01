@@ -23,7 +23,7 @@ def get_actor_info():
     
     actor_info = []
     unique_ids = set()
-    MAX_PAGES = 116
+    MAX_PAGES = 120
     TIMEOUT = 15
     base_url = "https://www.javrate.com/actor/list"
 
