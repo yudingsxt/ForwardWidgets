@@ -46,7 +46,7 @@ jobs:
         if: steps.check_file.outputs.file_exists == 'true'
         run: |
           git add Widgets/javrate_actors.json
-          git commit -m "自动更新: JavRate演员数据（运行ID: ${{ github.run_id }}）"
+          git commit -m "自动更新: JavRate演员数据"
           git push
           echo "数据文件已成功提交到仓库"
         env:
