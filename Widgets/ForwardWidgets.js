@@ -461,6 +461,7 @@ WidgetMetadata = {
             { title: "爱情", value: "10749" },
             { title: "犯罪", value: "80" },
             { title: "科幻", value: "878" },
+            { title: "记录", value: "99" },
             { title: "西部", value: "37" },
             { title: "音乐", value: "10402" },
             { title: "电视电影", value: "10770" }
