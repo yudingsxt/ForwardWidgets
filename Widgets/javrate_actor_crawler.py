@@ -73,7 +73,8 @@ def parse_actors(html):
     if not html:
         return {}
     
-    soup = BeautifulSoup(html, 'lxml')
+    # 使用更可靠的html.parser替代lxml
+    soup = BeautifulSoup(html, 'html.parser')
     actors_dict = {}
     
     # 直接使用特定的卡片选择器
@@ -168,6 +169,7 @@ def main():
     all_actors = {}
     pages_to_scrape = 117  # 要爬取的页数
     total_actors_found = 0  # 总共找到的演员数量
+    successful_pages = 0    # 成功处理的页面数量
     
     for page in range(1, pages_to_scrape + 1):
         print(f"\n{'='*40}")
@@ -182,6 +184,9 @@ def main():
                 # 记录本页找到的演员数量
                 page_count = len(page_actors)
                 total_actors_found += page_count
+                
+                # 增加成功页面计数
+                successful_pages += 1
                 
                 # 合并到总字典
                 all_actors.update(page_actors)
