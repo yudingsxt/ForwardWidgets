@@ -1,7 +1,7 @@
 {
   "title": "𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂 ‘𝓼 𝓦𝓲𝓭𝓰𝓮𝓽𝓼",
   "description": "汇集瑟瑟、直播、VOD、RSS播客等模块",
-  "icon": "https://raw.githubusercontent.com/quantumultxx/ForwardWidgets/refs/heads/main/icon/icon1.PNG",
+  "icon": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/icon/icon1.PNG",
   "widgets": [
     {
       "id": "jable",
@@ -10,34 +10,7 @@
       "requiredVersion": "0.0.1",
       "version": "1.0.8",
       "author": "nibiru",
-      "url": "https://raw.githubusercontent.com/quantumultxx/ForwardWidgets/refs/heads/main/Widgets/jable.js"
-    },
-    {
-      "id": "91porn",
-      "title": "91Porn",
-      "description": "91Porn",
-      "requiredVersion": "0.0.1",
-      "version": "0.9.4",
-      "author": "匿名",
-      "url": "https://github.com/baranwang/forward-widget/releases/latest/download/91porn.js"
-    },
-    {
-      "id": "xvideos",
-      "title": "XVideos",
-      "description": "XVideos",
-      "requiredVersion": "0.0.1",
-      "version": "0.9.4",
-      "author": "匿名",
-      "url": "https://github.com/baranwang/forward-widget/releases/latest/download/xvideos.js"
-    },
-    {
-      "id": "Pornhub",
-      "title": "Pornhub",
-      "description": "在线观看Pornhub",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.5",
-      "author": "海带",
-      "url": "https://raw.githubusercontent.com/Madai-v/ForwardWidgets/refs/heads/main/Widgets/ph.js"
+      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/jable.js"
     },
     {
       "id": "ti.bemarkt.javday",
@@ -46,7 +19,7 @@
       "requiredVersion": "0.0.1",
       "version": "1.1.0",
       "author": "Ti",
-      "url": "https://raw.githubusercontent.com/quantumultxx/ForwardWidgets/refs/heads/main/Widgets/javday.js"
+      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/javday.js"
     },
     {
       "id": "ti.bemarkt.javrate",
@@ -55,7 +28,7 @@
       "requiredVersion": "0.0.1",
       "version": "2.1.0",
       "author": "Ti",
-      "url": "https://raw.githubusercontent.com/quantumultxx/ForwardWidgets/refs/heads/main/Widgets/javrate.js"
+      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/javrate.js"
     },
     {
       "id": "ti.bemarkt.vod.maccms",
@@ -65,15 +38,6 @@
       "version": "1.1.0",
       "author": "Ti",
       "url": "https://raw.githubusercontent.com/bemarkt/scripts/refs/heads/master/provider/Forward/widgets/vod.js"
-    },
-    {
-      "id": "ti.bemarkt.podcast",
-      "title": "Podcast",
-      "description": "获取 RSS 播客数据",
-      "requiredVersion": "0.0.1",
-      "version": "2.1.0",
-      "author": "Ti",
-      "url": "https://raw.githubusercontent.com/bemarkt/scripts/refs/heads/master/provider/Forward/widgets/podcast.js"
     },
     {
       "id": "live",
