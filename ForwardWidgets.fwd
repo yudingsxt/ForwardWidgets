@@ -1,7 +1,7 @@
 {
   "title": "𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂 ‘𝓼 𝓦𝓲𝓭𝓰𝓮𝓽𝓼",
   "description": "汇集豆瓣、TMDB、IMDB、猫眼和Bangumi的各类榜单",
-  "icon": "https://raw.githubusercontent.com/quantumultxx/ForwardWidgets/refs/heads/main/icon/icon2.PNG",
+  "icon": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/icon/icon2.PNG",
   "widgets": [
     {
       "id": "forward.combined.media.lists",
@@ -10,7 +10,7 @@
       "requiredVersion": "0.0.1",
       "version": "1.2.7",
       "author": "阿米诺斯",
-      "url": "https://raw.githubusercontent.com/quantumultxx/ForwardWidgets/refs/heads/main/Widgets/ForwardWidgets.js"
+      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/ForwardWidgets.js"
     },
    	{
       "id": "zhuijurili",
@@ -20,33 +20,6 @@
       "version": "1.0.3",
       "author": "huangxd",
       "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/zhuijurili.js"
-    },
-    {
-      "id": "trakt",
-      "title": "Trakt我看&Trakt个性化推荐",
-      "description": "解析Trakt想看、在看、已看、片单、追剧日历以及根据个人数据生成的个性化推荐",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.11",
-      "author": "huangxd",
-      "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/trakt.js"
-    },
-    {
-      "id": "douban",
-      "title": "豆瓣我看&豆瓣个性化推荐",
-      "description": "解析豆瓣想看、在看、已看以及根据个人数据生成的个性化推荐",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.13",
-      "author": "huangxd",
-      "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/douban.js"
-    },
-    {
-      "id": "yatu",
-      "title": "雅图(每日放送+点播排行榜+评分排行榜)",
-      "description": "解析雅图每日放送更新以及各类排行榜",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.6",
-      "author": "huangxd",
-      "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/yatu.js"
     },
     {
       "id": "hot_picks",
@@ -83,15 +56,6 @@
       "version": "1.0.4",
       "author": "Evan",
       "url": "https://github.com/EmrysChoo/ForwardWidgets/raw/refs/heads/main/Widgets/person_movie.js"
-    },
-    {
-      "id": "douban",
-      "title": "豆瓣",
-      "description": "解析豆瓣片单，获取视频信息",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.0",
-      "author": "pack1r",
-      "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/douban.js"
     },
     {
       "id": "imdb",
