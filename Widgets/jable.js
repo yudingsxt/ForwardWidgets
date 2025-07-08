@@ -145,7 +145,7 @@ WidgetMetadata = {
           enumOptions: [
             { 
               title: "羽月乃蒼", 
-              value: "https://jable.tv/models/fd88f5ce-0f6f-46c0-9a50-c511ce2aae8f/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+              value: "https://jable.tv/models/49b54928c23fd7c915161cc49c3e3d5d/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
               title: "三上悠亚", 
