@@ -21,6 +21,9 @@ var WidgetMetadata = {
           title: "搜索艺人",
           type: "input",
           placeholders: [
+            {
+              title: "羽月乃蒼", value: "羽月乃蒼"
+            },
             { 
               title: "大槻响", value: "大槻响" 
             },
