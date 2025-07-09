@@ -156,6 +156,10 @@ WidgetMetadata = {
               value: "https://jable.tv/models/f2cb5678bddcc809f77827eb6f38f025/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
+              title: "Hitomi", 
+              value: "https://jable.tv/models/hitomi/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
               title: "楪可怜", 
               value: "https://jable.tv/models/86b2f23f95cc485af79fe847c5b9de8d/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
