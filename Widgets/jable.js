@@ -160,6 +160,18 @@ WidgetMetadata = {
               value: "https://jable.tv/models/hitomi/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
+              title: "藤井兰兰", 
+              value: "https://jable.tv/models/a10cf5340283ba19747efc1c0b9bdb81/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "Hitomi", 
+              value: "https://jable.tv/models/hitomi/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "Hitomi", 
+              value: "https://jable.tv/models/hitomi/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
               title: "楪可怜", 
               value: "https://jable.tv/models/86b2f23f95cc485af79fe847c5b9de8d/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
