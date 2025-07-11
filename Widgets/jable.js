@@ -164,12 +164,8 @@ WidgetMetadata = {
               value: "https://jable.tv/models/a10cf5340283ba19747efc1c0b9bdb81/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
-              title: "Hitomi", 
-              value: "https://jable.tv/models/hitomi/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
-            },
-            { 
-              title: "Hitomi", 
-              value: "https://jable.tv/models/hitomi/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+              title: "神乐桃香", 
+              value: "https://jable.tv/models/7bf6de1f3c59111c2c5cae61f5c84a7e/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
               title: "楪可怜", 
