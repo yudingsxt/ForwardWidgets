@@ -204,8 +204,8 @@ WidgetMetadata = {
               value: "https://jable.tv/models/miura-sakura/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
-              title: "水卜樱", 
-              value: "https://jable.tv/models/miura-sakura/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+              title: "藤浦惠", 
+              value: "https://jable.tv/models/7cdb926baab256cc26da8146f4980a10/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
               title: "三木環奈", 
