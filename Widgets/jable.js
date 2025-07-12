@@ -176,6 +176,10 @@ WidgetMetadata = {
               value: "https://jable.tv/models/2958338aa4f78c0afb071e2b8a6b5f1b/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
+              title: "前田桃杏", 
+              value: "https://jable.tv/models/dc0b21e8faccc99571729a33bd0d9e08/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
               title: "大槻响", 
               value: "https://jable.tv/models/hibiki-otsuki/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
