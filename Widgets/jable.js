@@ -216,6 +216,10 @@ WidgetMetadata = {
               value: "https://jable.tv/models/sayama-ai/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
+              title: "梦乃爱华", 
+              value: "https://jable.tv/models/yumeno-aika/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
               title: "美園和花", 
               value: "https://jable.tv/models/waka-misono/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
