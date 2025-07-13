@@ -236,6 +236,14 @@ WidgetMetadata = {
               value: "https://jable.tv/models/d20eb61704c5bec4efe1cfb07608d722/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
+              title: "小梅惠奈", 
+              value: "https://jable.tv/models/ena-koume/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
+              title: "雨宮響", 
+              value: "https://jable.tv/models/8b3374ffac5ab84951432eaeb6d0330c/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
               title: "桃乃木香奈", 
               value: "https://jable.tv/models/momonogi-kana/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
