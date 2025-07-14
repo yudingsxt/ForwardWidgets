@@ -244,6 +244,10 @@ WidgetMetadata = {
               value: "https://jable.tv/models/8b3374ffac5ab84951432eaeb6d0330c/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
             { 
+              title: "Unpai", 
+              value: "https://jable.tv/models/3e2243d9c56bccb509008e1486522285/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
+            },
+            { 
               title: "桃乃木香奈", 
               value: "https://jable.tv/models/momonogi-kana/?mode=async&function=get_block&block_id=list_videos_common_videos_list"
             },
