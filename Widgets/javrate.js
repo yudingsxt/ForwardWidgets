@@ -922,7 +922,7 @@ var WidgetMetadata = {
 };
 
 
-const ARTIST_MAP_REMOTE_URL = "https://raw.githubusercontent.com/quantumultxx/ForwardWidgets/refs/heads/main/Widgets/javrate_actors.json";
+const ARTIST_MAP_REMOTE_URL = "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/javrate_actors.json";
 let artistMapCache = null;
 let artistMapCacheTime = 0;
 const CACHE_DURATION = 24 * 60 * 60 * 1000;
