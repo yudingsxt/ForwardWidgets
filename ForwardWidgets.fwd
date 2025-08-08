@@ -38,15 +38,6 @@
       "version": "2.0.0",
       "author": "Autism",
       "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/imdb.js"
-    },
-    {
-      "id": "forward.playurl.danmu",
-      "title": "播放链接弹幕",
-      "description": "从指定播放链接和服务器获取弹幕",
-      "requiredVersion": "0.0.2",
-      "version": "1.0.0",
-      "author": "huangxd",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/danmu_playurl.js"
     }
   ]
 }
