@@ -74,6 +74,15 @@
       "version": "v2.1.0",
       "author": "Ti",
       "url": "https://widgets-xd.vercel.app/Widgets/Javrate.js"
+    },
+    {
+      "id": "missav_27",
+      "title": "MissAV",
+      "description": "获取 MissAV 推荐",
+      "requiredVersion": "0.0.1",
+      "version": "v1.0.0",
+      "author": "𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂",
+      "url": "https://widgets-xd.vercel.app/Widgets/MissAV.js"
     }
   ]
 }
