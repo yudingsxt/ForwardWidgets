@@ -10,7 +10,7 @@
       "requiredVersion": "0.0.1",
       "version": "v1.3.2",
       "author": "阿米诺斯",
-      "url": "https://widgets-xd.vercel.app/Widgets/combined.js"
+      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/%E5%BD%B1%E8%A7%86%E6%A6%9C%E5%8D%95.js"
     },
     {
       "id": "_______6",
@@ -37,7 +37,7 @@
       "requiredVersion": "0.0.1",
       "version": "v1.1.7",
       "author": "两块",
-      "url": "https://widgets-xd.vercel.app/Widgets/HotPicks.js"
+      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/%E7%83%AD%E9%97%A8%E7%B2%BE%E9%80%89.js"
     },
     {
       "id": "imdb______v2_10",
@@ -46,7 +46,7 @@
       "requiredVersion": "0.0.1",
       "version": "v2.0.0",
       "author": "Autism",
-      "url": "https://widgets-xd.vercel.app/Widgets/IMDb.js"
+      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/IMDb%20%E5%88%86%E7%B1%BB%E8%B5%84%E6%BA%90%20v2.js"
     },
     {
       "id": "jable_22",
@@ -55,7 +55,7 @@
       "requiredVersion": "0.0.1",
       "version": "v1.0.9",
       "author": "nibiru",
-      "url": "https://widgets-xd.vercel.app/Widgets/Jable.js"
+      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Jable.js"
     },
     {
       "id": "javday_25",
@@ -64,7 +64,7 @@
       "requiredVersion": "0.0.1",
       "version": "v1.1.0",
       "author": "Ti",
-      "url": "https://widgets-xd.vercel.app/Widgets/Javday.js"
+      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/JAVDay.js"
     },
     {
       "id": "javrate_26",
@@ -73,7 +73,7 @@
       "requiredVersion": "0.0.1",
       "version": "v2.1.0",
       "author": "Ti",
-      "url": "https://widgets-xd.vercel.app/Widgets/Javrate.js"
+      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/JAVRate.js"
     },
     {
       "id": "missav_27",
@@ -82,7 +82,7 @@
       "requiredVersion": "0.0.1",
       "version": "v1.0.0",
       "author": "𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂",
-      "url": "https://widgets-xd.vercel.app/Widgets/MissAV.js"
+      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/MissAV.js"
     }
   ]
 }
