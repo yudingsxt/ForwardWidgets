@@ -1,674 +1,1274 @@
 var WidgetMetadata = {
   id: "ti.bemarkt.javrate",
   title: "JAVRate",
-  description: "获取 JAVRate 推荐数据",
+  description: "获取 JAVRate 推荐",
   author: "Ti",
   site: "https://www.javrate.com/",
-  version: "1.0.0",
+  version: "2.1.0",
   requiredVersion: "0.0.1",
+  detailCacheDuration: 60,
   modules: [
+    // 艺人模块
     {
-      title: "按分类浏览",
-      description: "根据选择的分类浏览 JAVRate 上的视频。",
-      functionName: "getJAVRateContent",
+      title: "搜索女优",
+      description: "搜索女优影片",
+      requiresWebView: false,
+      functionName: "loadPage",
+      cacheDuration: 3600,
       params: [
         {
-          name: "baseUrl",
-          title: "JAVRate 网址",
+          name: "artistId",
+          title: "搜索艺人",
           type: "input",
-          value: "https://www.javrate.com",
-          description: "JAVRate 可用网址，例如 https://www.javrate.com",
-        },
-        {
-          name: "categoryPath",
-          title: "选择分类",
-          type: "enumeration",
-          value: "/movie/new/",
-          enumOptions: [
-            { title: "最新发布", value: "/movie/new/" },
-            { title: "无码A片", value: "/menu/uncensored/" },
-            { title: "日本A片", value: "/menu/censored/" },
-            { title: "国产AV", value: "/menu/chinese/" },
-            { title: "热门排行", value: "/movie/hot/" },
-            { title: "评分最高", value: "/movie/top/" },
+          placeholders: [
+            {
+              title: "羽月乃蒼", value: "羽月乃蒼"
+            },
+            { 
+              title: "大槻响", value: "大槻响" 
+            },
+            { 
+              title: "美園和花", value: "美園和花" 
+            },
+            { 
+              title: "森澤佳奈", value: "森澤佳奈" 
+            },
+            { 
+              title: "波多野结衣", value: "波多野结衣" 
+            },
+            { 
+              title: "明里紬", value: "明里紬" 
+            },
+            { 
+              title: "松本一香", value: "松本一香" 
+            },
+            { 
+              title: "桃乃木香奈", value: "桃乃木香奈" 
+            },
+            { 
+              title: "希島愛理", value: "希島愛理" 
+            },
+            { 
+              title: "天海翼", value: "天海翼" 
+            },
+            { 
+              title: "JULIA", value: "JULIA" 
+            },
+            { 
+              title: "新有菜", value: "新有菜" 
+            },
+            { 
+              title: "美谷朱里", value: "美谷朱里" 
+            },
+            { 
+              title: "相澤南", value: "相澤南" 
+            },
+            { 
+              title: "藤森里穂", value: "藤森里穂" 
+            },
+            { 
+              title: "天使萌", value: "天使萌" 
+            },
+            { 
+              title: "AIKA", value: "AIKA" 
+            },
+            { 
+              title: "葵司", value: "葵司" 
+            },
+            { 
+              title: "小野夕子", value: "小野夕子" 
+            },
+            { 
+              title: "楪可憐", value: "楪可憐" 
+            },
+            { 
+              title: "三上悠亜", value: "三上悠亜" 
+            },
+            { 
+              title: "水户香奈", value: "水户香奈" 
+            },
+            { 
+              title: "小沢菜穂", value: "小沢菜穂" 
+            }
           ],
+          value: "大槻响",
+          description: "选择或手动输入女优名称"
         },
         {
           name: "page",
           title: "页码",
-          type: "page",
-        },
-      ],
+          type: "page"
+        }
+      ]
     },
-  ],
-  search: {
-    title: "搜索影片",
-    functionName: "searchJAVRate",
-    params: [
-      {
-        name: "baseUrl",
-        title: "JAVRate 网址",
-        type: "input",
-        value: "https://www.javrate.com",
-        description: "JAVRate 可用网址 (用于搜索)",
-      },
-      {
-        name: "query",
-        title: "搜索词",
-        type: "input",
-        description: "输入番号、标题关键词或演员名称",
-      },
-      {
-        name: "page",
-        title: "页码",
-        type: "page",
-      },
-    ],
-  },
+    // 标签分类模块
+    {
+      title: "AV 分类",
+      description: "按详细分类浏览所有分类的影片",
+      requiresWebView: false,
+      functionName: "loadPage",
+      cacheDuration: 3600,
+      params: [
+        {
+          name: "tagType",
+          title: "🏷️ 分类",
+          type: "enumeration",
+          enumOptions: [
+            { title: "热门", value: "hot" },
+            { title: "颜值", value: "appearance" },
+            { title: "类型", value: "genre" },
+            { title: "剧情", value: "plot" },
+            { title: "职业", value: "occupation" },
+            { title: "关系", value: "relationship" },
+            { title: "衣着", value: "outfit" },
+            { title: "特征", value: "characteristics" },
+            { title: "主题", value: "theme" },
+            { title: "状态", value: "state" },
+            { title: "玩法", value: "playstyle" },
+            { title: "场景", value: "setting" }
+          ],
+          value: "hot",
+          description: "选择标签大类"
+        },
+        //热门选项
+        {
+          name: "tagValue",
+          title: "具体类型",
+          type: "enumeration",
+          belongTo: {
+            paramName: "tagType",
+            value: ["hot"],
+          },
+          enumOptions: [
+            { title: "美脚・美腿", value: "美脚・美腿" },
+            { title: "强奸・轮奸", value: "強姦・輪姦" },
+            { title: "NTR・寢取", value: "NTR・寢取" },
+            { title: "OL·职场", value: "OL・職場" },
+            { title: "差旅·相部屋", value: "差旅・相部屋" },
+            { title: "鬼畜・SM", value: "鬼畜・SM" },
+            { title: "黑丝・肉丝", value: "黑絲・肉絲" },
+            { title: "台湾女优", value: "台灣女優" },
+            { title: "出道作", value: "出道作" },
+            { title: "极上美人", value: "極上美人" },
+            { title: "极上巨乳", value: "極上巨乳" },
+            { title: "人妻", value: "人妻" },
+            { title: "熟女", value: "熟女" },
+            { title: "萝莉", value: "蘿莉" },
+            { title: "AI女优", value: "AI女優" },
+            { title: "魔镜号", value: "魔鏡號" },
+            { title: "时间停止", value: "時間停止" },
+            { title: "女搜查官", value: "女搜查官" },
+            { title: "应召・援交", value: "應召・援交" },
+            { title: "感谢祭", value: "感謝祭" },
+            { title: "女学生", value: "女學生" },
+            { title: "女仆", value: "女僕" },
+            { title: "合辑", value: "合輯" },
+            { title: "M男・M女", value: "M男・M女" }
+          ],
+          value: "美脚・美腿",
+          description: "选择要浏览的分类"
+        },
+        //颜值选项
+        {
+          name: "tagValue",
+          title: "具体标签",
+          type: "enumeration",
+          belongTo: {
+            paramName: "tagType",
+            value: ["appearance"],
+          },
+          enumOptions: [
+            { title: "美乳", value: "美乳" },
+            { title: "性感", value: "性感" },
+            { title: "巨乳", value: "巨乳" },
+            { title: "美脚", value: "美腳" },
+            { title: "苗条", value: "苗條" },
+            { title: "美臀", value: "美臀" },
+            { title: "美腿", value: "美腿" },
+            { title: "色白", value: "色白" },
+            { title: "大屁股", value: "大屁股" },
+            { title: "高颜值", value: "高顏值" },
+            { title: "清纯", value: "清純" },
+            { title: "明星脸", value: "明星臉" },
+            { title: "小只马", value: "小隻馬" },
+            { title: "无毛", value: "無毛" },
+            { title: "短发", value: "短髮" },
+            { title: "丰满", value: "豐滿" },
+            { title: "高妹", value: "高妹" },
+            { title: "超爆乳", value: "超爆乳" },
+            { title: "贫乳", value: "貧乳" },
+            { title: "肤黑", value: "膚黑" },
+            { title: "大乳晕", value: "大乳暈" },
+            { title: "肌肉", value: "肌肉" },
+            { title: "胖女人", value: "胖女人" },
+            { title: "双马尾", value: "雙馬尾" },
+            { title: "鬃毛", value: "鬃毛" },
+            { title: "大鸡巴", value: "大雞巴" },
+            { title: "刺青纹身", value: "刺青紋身" },
+            { title: "混血", value: "混血" },
+            { title: "童颜", value: "童顔" },
+            { title: "乳釘、穿孔、乳環", value: "乳釘、穿孔、乳環" }
+          ],
+          value: "美乳",
+          description: "选择要浏览的分类"
+        },
+        //类型选项
+        {
+          name: "tagValue",
+          title: "具体标签",
+          type: "enumeration",
+          belongTo: {
+            paramName: "tagType",
+            value: ["genre"],
+          },
+          enumOptions: [
+            { title: "剧情", value: "劇情" },
+            { title: "美少女电影", value: "美少女電影" },
+            { title: "形象俱乐部", value: "形象俱樂部" },
+            { title: "企画", value: "企畫" },
+            { title: "真实拍摄", value: "真實拍攝" },
+            { title: "感官作品", value: "感官作品" },
+            { title: "单体作品", value: "單體作品" },
+            { title: "国产", value: "國產" },
+            { title: "奇闻趣事", value: "奇聞趣事" },
+            { title: "4K", value: "4K" },
+            { title: "真人秀", value: "真人秀" },
+            { title: "出道作品", value: "出道作品" },
+            { title: "素人作品", value: "素人作品" },
+            { title: "魔鬼系", value: "魔鬼系" },
+            { title: "奇异的", value: "奇異的" },
+            { title: "主观视角", value: "主觀視角" },
+            { title: "纪念作", value: "紀念作" },
+            { title: "4小時以上作品", value: "4小時以上作品" },
+            { title: "精选综合", value: "精選綜合" },
+            { title: "精选大合辑", value: "精選大合輯" },
+            { title: "纪录片", value: "紀錄片" },
+            { title: "故事集", value: "故事集" },
+            { title: "二次元", value: "二次元" },
+            { title: "数位马赛克", value: "數位馬賽克" },
+            { title: "暗黑系", value: "暗黑系" },
+            { title: "业余", value: "業餘" },
+            { title: "自拍性愛", value: "自拍性愛" },
+            { title: "局部特写", value: "局部特寫" },
+            { title: "综艺", value: "綜藝" },
+            { title: "原作改編", value: "原作改編" },
+            { title: "无码流出", value: "無碼流出" },
+            { title: "无做爱场面", value: "無做愛場面" },
+            { title: "恶搞", value: "惡搞" },
+            { title: "漫画改编", value: "漫畫改編" },
+            { title: "偷拍・盗摄", value: "偷拍・盜撮" },
+            { title: "后宫系", value: "後宮系" },
+            { title: "薄码", value: "薄碼" },
+            { title: "鬼畜片", value: "鬼畜片" },
+            { title: "无码破解", value: "無碼破解" },
+            { title: "ASMR颅内高潮", value: "ASMR顱内高潮" },
+            { title: "解禁作", value: "解禁作" },
+            { title: "中日合作", value: "中日合作" },
+            { title: "女性向", value: "女性向" },
+            { title: "教学", value: "教學" },
+            { title: "退休作品", value: "退休作品" },
+            { title: "搞笑・模仿", value: "搞笑・模仿" },
+            { title: "不露脸", value: "不露臉" },
+            { title: "唯美写真", value: "唯美寫真" },
+            { title: "民国", value: "民國" },
+            { title: "古风", value: "古風" },
+            { title: "写真偶像", value: "寫真偶像" },
+            { title: "心理惊悚", value: "心理驚悚" },
+            { title: "特效", value: "特效" },
+            { title: "节日限定", value: "節日限定" },
+            { title: "被妹子搭讪", value: "被妹子搭訕" },
+            { title: "热点改编", value: "熱點改編" }
+          ],
+          value: "劇情",
+          description: "选择要浏览的分类"
+        },
+        //剧情选项
+        {
+          name: "tagValue",
+          title: "具体标签",
+          type: "enumeration",
+          belongTo: {
+            paramName: "tagType",
+            value: ["plot"],
+          },
+          enumOptions: [
+            { title: "NTR", value: "NTR" },
+            { title: "出轨", value: "出軌" },
+            { title: "艳遇", value: "艷遇" },
+            { title: "不伦", value: "不倫" },
+            { title: "勾引・诱惑", value: "勾引・誘惑" },
+            { title: "纯粹的欲望", value: "純粹的慾望" },
+            { title: "按摩・美容", value: "按摩・物理治療・美容" },
+            { title: "轮奸", value: "輪姦" },
+            { title: "乱伦", value: "亂倫" },
+            { title: "女优访谈", value: "女優訪談" },
+            { title: "胁迫做爱", value: "脅迫做愛" },
+            { title: "偷窃", value: "偷竊" },
+            { title: "寢取", value: "寢取" },
+            { title: "猎艳", value: "獵豔" },
+            { title: "约炮", value: "約炮" },
+            { title: "校园生活", value: "校園生活" },
+            { title: "媚药・迷药", value: "媚藥・迷藥" },
+            { title: "迷奸", value: "迷姦" },
+            { title: "纯爱・恋爱", value: "純愛・戀愛" },
+            { title: "旅行", value: "旅行" },
+            { title: "监禁", value: "監禁" },
+            { title: "出差", value: "出差" },
+            { title: "粉丝福利", value: "粉絲福利" },
+            { title: "报复", value: "報復" },
+            { title: "酒后乱性", value: "酒後亂性" },
+            { title: "游戏COSPLAY", value: "游戲COSPLAY" },
+            { title: "水疗・泡泡浴", value: "水療・泡泡浴" },
+            { title: "绑架", value: "綁架" },
+            { title: "看病・住院", value: "看病・住院" },
+            { title: "加班", value: "加班" },
+            { title: "身体换业务", value: "身體換業務" },
+            { title: "欠债肉偿", value: "欠債肉償" },
+            { title: "私房摄影", value: "私房攝影" },
+            { title: "同住一屋", value: "同住一屋・相部屋" },
+            { title: "聚会・PARTY", value: "聚會・PARTY" },
+            { title: "职场", value: "職場" },
+            { title: "搭讪", value: "搭訕" },
+            { title: "上门福利", value: "上門福利" },
+            { title: "瑜珈·健身", value: "瑜珈·健身" },
+            { title: "尾随", value: "尾礦" },
+            { title: "运动", value: "運動" },
+            { title: "街头福利", value: "街頭福利" },
+            { title: "邀请函", value: "邀請函" },
+            { title: "探亲", value: "探親" },
+            { title: "新人面试", value: "新人面試" },
+            { title: "谢罪", value: "謝罪" },
+            { title: "夫妻交换", value: "夫妻交換" },
+            { title: "野战", value: "野戰" },
+            { title: "战斗行动", value: "戰鬥行动" },
+            { title: "跳舞", value: "跳舞" },
+            { title: "同学聚会", value: "同學聚會" },
+            { title: "直播", value: "直播" },
+            { title: "女优面试", value: "女優面試" },
+            { title: "看房", value: "看房" },
+            { title: "上门家访", value: "上門家訪" },
+            { title: "集训", value: "集訓" },
+            { title: "上门推销", value: "上門推銷" },
+            { title: "捡尸", value: "撿尸" },
+            { title: "丧夫", value: "喪夫" },
+            { title: "新闻采访", value: "新聞采訪" },
+            { title: "裸体素描", value: "裸體素描" },
+            { title: "男女互换", value: "男女互換" },
+            { title: "格斗", value: "格鬥" },
+            { title: "神话故事", value: "神話故事" },
+            { title: "电竞", value: "電競" },
+            { title: "女体盛", value: "女體盛" }
+          ],
+          value: "NTR",
+          description: "选择要浏览的分类"
+        },
+         //职业选项
+        {
+          name: "tagValue",
+          title: "具体标签",
+          type: "enumeration",
+          belongTo: {
+            paramName: "tagType",
+            value: ["occupation"],
+          },
+          enumOptions: [
+            { title: "风俗娘", value: "風俗娘" },
+            { title: "按摩女郎", value: "按摩女郎" },
+            { title: "女教师", value: "女教師" },
+            { title: "角色扮演", value: "角色扮演" },
+            { title: "护士", value: "護士" },
+            { title: "饭店小姐・援交妹", value: "飯店小姐・援交妹" },
+            { title: "写真女郎", value: "寫真女郎" },
+            { title: "偶像", value: "偶像" },
+            { title: "运动女孩", value: "運動女孩" },
+            { title: "女艺人・女星", value: "女藝人・女星" },
+            { title: "职员", value: "職員" },
+            { title: "宅男・宅女", value: "宅男・宅女" },
+            { title: "家庭教师", value: "家庭教師" },
+            { title: "女秘书", value: "女秘書" },
+            { title: "服务生", value: "服務生" },
+            { title: "网络红人", value: "網路紅人" },
+            { title: "女主持・主播", value: "女主持・主播" },
+            { title: "传播妹", value: "傳播妹" },
+            { title: "空服", value: "空服" },
+            { title: "其他职业", value: "其他職業" },
+            { title: "家政妇", value: "家政婦" },
+            { title: "模特儿", value: "模特兒" },
+            { title: "女奴", value: "女奴" },
+            { title: "老板娘，女主人", value: "老闆娘，女主人" },
+            { title: "健身教练", value: "健身教練" },
+            { title: "黑帮", value: "黑幫" },
+            { title: "女医生", value: "女醫生" },
+            { title: "泡姬", value: "泡姬" },
+            { title: "女业务", value: "女業務" },
+            { title: "黑人男优", value: "黑人男優" },
+            { title: "女鬼・女妖", value: "女鬼・女妖" },
+            { title: "女性护理", value: "女性護理" },
+            { title: "房产中介", value: "房產中介" },
+            { title: "白人女优", value: "白人女優" },
+            { title: "赛车女郎", value: "賽車女郎" },
+            { title: "女贼", value: "女賊" },
+            { title: "舞女", value: "舞女" },
+            { title: "国产女优", value: "國產女優" },
+            { title: "女格斗家", value: "女格鬥家" },
+            { title: "罪犯・逃犯", value: "罪犯・逃犯" },
+            { title: "客服小姐", value: "客服小姐" },
+            { title: "游泳教练", value: "游泳教練" },
+            { title: "女警", value: "女警" },
+            { title: "陪酒女", value: "陪酒女" },
+            { title: "修理工", value: "修理工" },
+            { title: "幼稚园老师", value: "幼稚園老師" },
+            { title: "女祭司", value: "女祭司" },
+            { title: "DJ", value: "DJ" },
+            { title: "拉拉队", value: "拉拉隊" },
+            { title: "实习生", value: "實習生" },
+            { title: "舞蹈老师", value: "舞蹈老師" },
+            { title: "荷官", value: "荷官" },
+            { title: "女记者", value: "女記者" },
+            { title: "清扫员", value: "清掃員" },
+            { title: "女间谍・特工", value: "女間諜・特工" },
+            { title: "女机器人", value: "女機器人" },
+            { title: "女战士", value: "女戰士" },
+            { title: "性爱娃娃", value: "性愛娃娃" },
+            { title: "足球宝贝", value: "足球寶貝" }
+          ],
+          value: "風俗娘",
+          description: "选择要浏览的分类"
+        },
+        //关系选项
+        {
+          name: "tagValue",
+          title: "具体标签",
+          type: "enumeration",
+          belongTo: {
+            paramName: "tagType",
+            value: ["relationship"],
+          },
+          enumOptions: [
+            { title: "女同事", value: "女同事" },
+            { title: "姐姐・妹妹", value: "姐姐・妹妹" },
+            { title: "女友・妻子", value: "女友・妻子" },
+            { title: "女上司", value: "女上司" },
+            { title: "邻居", value: "鄰居" },
+            { title: "公公", value: "公公" },
+            { title: "姐弟・兄妹", value: "姐弟・兄妹" },
+            { title: "儿媳", value: "兒媳" },
+            { title: "青梅竹马", value: "青梅竹馬" },
+            { title: "同学", value: "同學" },
+            { title: "嫂嫂", value: "嫂嫂" },
+            { title: "母亲", value: "母親" },
+            { title: "继母", value: "繼母" },
+            { title: "母子", value: "母子" },
+            { title: "女友姐姐", value: "女友姐姐" },
+            { title: "岳母", value: "岳母" },
+            { title: "继父", value: "繼父" },
+            { title: "小姨子", value: "小姨子" },
+            { title: "表姐・表妹", value: "表姐・表妹" },
+            { title: "叔叔・侄女", value: "叔叔・姪女" },
+            { title: "小三・情人", value: "小三・情人" },
+            { title: "父女", value: "父女" },
+            { title: "朋友女友・妻子", value: "朋友女友・妻子" },
+            { title: "下属女友・妻子", value: "下屬女友・妻子" },
+            { title: "上司女友・妻子", value: "上司女友・妻子" },
+            { title: "女友闺蜜", value: "女友閨蜜" },
+            { title: "女儿", value: "女兒" },
+            { title: "未亡人・寡妇", value: "未亡人・寡婦" },
+            { title: "婶婶", value: "嬸嬸" },
+            { title: "朋友母亲", value: "朋友母親" },
+            { title: "同事女友・妻子", value: "同事女友・妻子" },
+            { title: "母女", value: "母女" },
+            { title: "学姐・学妹", value: "學姐・學妹" },
+            { title: "母亲的朋友", value: "母親的朋友" },
+            { title: "阿姨・侄子", value: "阿姨・侄子" },
+            { title: "小姨・姑姑", value: "小姨・姑姑" },
+            { title: "父亲", value: "父親" },
+            { title: "女租客", value: "女租客" },
+            { title: "室友", value: "室友" },
+            { title: "夫妻", value: "夫妻" },
+            { title: "女房东", value: "女房東" },
+            { title: "弟媳", value: "弟媳" }
+          ],
+          value: "女同事",
+          description: "选择要浏览的分类"
+        },
+        //衣着选项
+        {
+          name: "tagValue",
+          title: "具体标签",
+          type: "enumeration",
+          belongTo: {
+            paramName: "tagType",
+            value: ["outfit"],
+          },
+          enumOptions: [
+            { title: "黑丝", value: "黑絲" },
+            { title: "情趣內衣", value: "情趣內衣" },
+            { title: "内衣", value: "內衣" },
+            { title: "JK校服", value: "JK校服" },
+            { title: "制服", value: "制服" },
+            { title: "猥亵穿着", value: "猥褻穿著" },
+            { title: "网袜", value: "網襪" },
+            { title: "COSPLAY服饰", value: "COSPLAY服飾" },
+            { title: "过膝袜・小腿袜", value: "過膝襪・小腿襪" },
+            { title: "肉丝", value: "肉絲" },
+            { title: "白丝", value: "白絲" },
+            { title: "和服・浴衣・丧服", value: "和服・浴衣・喪服" },
+            { title: "眼镜", value: "眼鏡" },
+            { title: "女仆制服", value: "女僕制服" },
+            { title: "泳装", value: "泳裝" },
+            { title: "高跟鞋", value: "高跟鞋" },
+            { title: "运动服装", value: "運動服裝" },
+            { title: "兔女郎装扮", value: "兔女郎妝扮" },
+            { title: "护士制服", value: "護士制服" },
+            { title: "紧身衣", value: "緊身衣" },
+            { title: "短裙・迷你裙", value: "短裙・迷你裙" },
+            { title: "比基尼", value: "比基尼" },
+            { title: "蒙面・面罩", value: "蒙面・面罩" },
+            { title: "完全着衣", value: "完全着衣" },
+            { title: "性感睡衣", value: "性感睡衣" },
+            { title: "牛仔裤", value: "牛仔褲" },
+            { title: "猫耳装饰", value: "貓耳裝飾" },
+            { title: "中囯服装", value: "中囯服裝" },
+            { title: "靴子", value: "靴子" },
+            { title: "裸体围裙", value: "裸體圍裙" },
+            { title: "空姐制服", value: "空姐制服" },
+            { title: "身体意识", value: "身體意識" },
+            { title: "口罩", value: "口罩" },
+            { title: "警察制服", value: "警察制服" },
+            { title: "医生制服", value: "醫生製服" },
+            { title: "古装", value: "古裝" },
+            { title: "婚纱", value: "婚紗" },
+            { title: "睡衣", value: "睡衣" },
+            { title: "体操服装", value: "體操服裝" }
+          ],
+          value: "黑絲",
+          description: "选择要浏览的分类"
+        },
+        //特征选项
+        {
+          name: "tagValue",
+          title: "具体标签",
+          type: "enumeration",
+          belongTo: {
+            paramName: "tagType",
+            value: ["characteristics"],
+          },
+          enumOptions: [
+            { title: "荡妇", value: "蕩婦" },
+            { title: "美人", value: "美人" },
+            { title: "痴女", value: "癡女" },
+            { title: "少女", value: "少女" },
+            { title: "蛮横娇羞", value: "蠻橫嬌羞" },
+            { title: "美人妻", value: "美人妻" },
+            { title: "极品美人", value: "極品美人" },
+            { title: "清楚系", value: "清楚系" },
+            { title: "变态", value: "變態" },
+            { title: "御姐系", value: "御姐系" },
+            { title: "校花", value: "校花" },
+            { title: "老头子", value: "老頭子" },
+            { title: "拜金女", value: "拜金女" },
+            { title: "野性", value: "野性" },
+            { title: "若妻", value: "若妻" },
+            { title: "绿茶婊", value: "綠茶婊" },
+            { title: "骚扰", value: "騷擾" },
+            { title: "坂道系", value: "阪道系" },
+            { title: "叛逆少女", value: "叛逆少女" },
+            { title: "港区女子", value: "港區女子" },
+            { title: "地味", value: "地味" },
+            { title: "女神", value: "女神" },
+            { title: "心机婊", value: "心機婊" },
+            { title: "傲娇", value: "傲嬌" },
+            { title: "三十路", value: "三十路" },
+            { title: "文艺女", value: "文藝女" },
+            { title: "贵妇", value: "貴婦" },
+            { title: "女王", value: "女王" },
+            { title: "处男", value: "處男" },
+            { title: "地雷系", value: "地雷系" },
+            { title: "正统派", value: "正統派" },
+            { title: "四十路", value: "四十路" },
+            { title: "新娘", value: "新娘" },
+            { title: "大小姐", value: "大小姐" },
+            { title: "女同性恋", value: "女同性戀" },
+            { title: "昭和系", value: "昭和系" },
+            { title: "废青", value: "廢青" },
+            { title: "中性", value: "中性" },
+            { title: "正太", value: "正太" },
+            { title: "神待娘", value: "神待娘" },
+            { title: "老太婆", value: "老太婆" },
+            { title: "处女", value: "處女" },
+            { title: "双胞胎姐妹", value: "雙胞胎姐妹" },
+            { title: "田舍娘", value: "田舍娘" },
+            { title: "变性者", value: "變性者" }
+          ],
+          value: "蕩婦",
+          description: "选择要浏览的分类"
+        },
+        //主题选项
+        {
+          name: "tagValue",
+          title: "具体标签",
+          type: "enumeration",
+          belongTo: {
+            paramName: "tagType",
+            value: ["theme"],
+          },
+          enumOptions: [
+            { title: "淫乱", value: "淫亂" },
+            { title: "乱交•群P", value: "亂交%20•%20群P" },
+            { title: "3P・4P", value: "3P・4P" },
+            { title: "按摩棒", value: "按摩棒" },
+            { title: "两男一女", value: "兩男一女" },
+            { title: "多P", value: "多P" },
+            { title: "凌辱", value: "凌辱" },
+            { title: "抹油", value: "抹油" },
+            { title: "调教", value: "調教" },
+            { title: "拘束・拷问", value: "拘束・拷問" },
+            { title: "捆绑", value: "捆綁" },
+            { title: "淫语", value: "淫語" },
+            { title: "SM", value: "SM" },
+            { title: "双飞", value: "雙飛" },
+            { title: "两女一男", value: "兩女一男" },
+            { title: "跳蛋", value: "跳蛋" },
+            { title: "放尿", value: "放尿" },
+            { title: "性骚扰", value: "性騷擾" },
+            { title: "诱骗女性", value: "誘騙女性" },
+            { title: "淫荡・硬核", value: "淫蕩・硬核" },
+            { title: "偷窥", value: "偷窺" },
+            { title: "大乱交", value: "大亂交" },
+            { title: "两男两女", value: "兩男兩女" },
+            { title: "在丈夫面前被操", value: "在丈夫面前被操" },
+            { title: "色诱", value: "色誘" },
+            { title: "一男多女", value: "一男多女" },
+            { title: "导尿", value: "導尿" },
+            { title: "口球", value: "口球" },
+            { title: "露出", value: "露出" },
+            { title: "即时插入", value: "即時插入" },
+            { title: "蜡烛", value: "蠟燭" },
+            { title: "催眠", value: "催眠" },
+            { title: "潜入", value: "潛入" },
+            { title: "刑架", value: "刑架" },
+            { title: "调戏", value: "調戲" },
+            { title: "喝尿", value: "喝尿" },
+            { title: "纹身刺字", value: "紋身刺字" },
+            { title: "剃毛", value: "剃毛" },
+            { title: "约会", value: "約會" },
+            { title: "瘙痒", value: "瘙癢" }
+          ],
+          value: "淫亂",
+          description: "选择要浏览的分类"
+        },
+        //状态选项
+        {
+          name: "tagValue",
+          title: "具体标签",
+          type: "enumeration",
+          belongTo: {
+            paramName: "tagType",
+            value: ["state"],
+          },
+          enumOptions: [
+            { title: "羞耻", value: "羞恥" },
+            { title: "湿身", value: "濕身" },
+            { title: "流汗", value: "流汗" },
+            { title: "酒醉", value: "酒醉" },
+            { title: "早漏", value: "早漏" },
+            { title: "绝顶高潮", value: "絕頂高潮" },
+            { title: "欲求不满", value: "慾求不滿" },
+            { title: "白眼失神", value: "白眼失神" }
+          ],
+          value: "羞恥",
+          description: "选择要浏览的分类"
+        },
+        //玩法选项
+        {
+          name: "tagValue",
+          title: "具体标签",
+          type: "enumeration",
+          belongTo: {
+            paramName: "tagType",
+            value: ["playstyle"],
+          },
+          enumOptions: [
+            { title: "中出", value: "中出" },
+            { title: "口交", value: "口交" },
+            { title: "女上位", value: "女上位" },
+            { title: "骑乘位", value: "騎乗位" },
+            { title: "后入", value: "後入" },
+            { title: "手指插入", value: "手指插入" },
+            { title: "潮吹", value: "潮吹" },
+            { title: "乳交", value: "乳交" },
+            { title: "舔阴", value: "舔陰" },
+            { title: "口爆", value: "口爆" },
+            { title: "颜射", value: "顏射" },
+            { title: "深喉", value: "深喉" },
+            { title: "接吻", value: "接吻" },
+            { title: "舔腳", value: "舔腳" },
+            { title: "吞精", value: "吞精" },
+            { title: "69", value: "69" },
+            { title: "自慰", value: "自慰" },
+            { title: "足交", value: "足交" },
+            { title: "打手枪", value: "打手槍" },
+            { title: "唾液敷面", value: "唾液敷面" },
+            { title: "插入异物", value: "插入異物" },
+            { title: "打屁股", value: "打屁股" },
+            { title: "颜面骑乘", value: "顔面騎乘" },
+            { title: "二穴同入", value: "二穴同入" },
+            { title: "拳击交", value: "拳擊交" }
+          ],
+          value: "中出",
+          description: "选择要浏览的分类"
+        },
+        //场景选项
+        {
+          name: "tagValue",
+          title: "具体标签",
+          type: "enumeration",
+          belongTo: {
+            paramName: "tagType",
+            value: ["setting"],
+          },
+          enumOptions: [
+            { title: "饭店", value: "飯店" },
+            { title: "自宅", value: "自宅" },
+            { title: "学校", value: "學校" },
+            { title: "按摩・美容店", value: "按摩・美容店" },
+            { title: "办公室", value: "辦公室" },
+            { title: "温泉", value: "溫泉" },
+            { title: "医院・诊所", value: "醫院・診所" },
+            { title: "公共场所", value: "公共場所" },
+            { title: "泡泡浴店", value: "泡泡浴店" },
+            { title: "更衣室", value: "更衣室" },
+            { title: "野外露天", value: "野外露天" },
+            { title: "风俗夜場", value: "風俗夜場" },
+            { title: "火车", value: "火車" },
+            { title: "泳池", value: "泳池" },
+            { title: "乡下", value: "鄉下" },
+            { title: "AV拍摄现场", value: "AV拍攝現場" },
+            { title: "仓库", value: "倉庫" },
+            { title: "监狱", value: "監獄" },
+            { title: "健身房", value: "健身房" },
+            { title: "情趣饭店", value: "情趣飯店" },
+            { title: "厕所", value: "厠所" },
+            { title: "酒吧", value: "酒吧" },
+            { title: "便利商店", value: "便利商店" },
+            { title: "车震", value: "車震" },
+            { title: "KTV夜总会", value: "KTV夜總會" },
+            { title: "体育馆", value: "體育舘" },
+            { title: "商店", value: "商店" },
+            { title: "咖啡店", value: "咖啡店" },
+            { title: "海滩", value: "海灘" },
+            { title: "巴士", value: "巴士" },
+            { title: "废墟", value: "廢墟" },
+            { title: "画室", value: "畫室" },
+            { title: "赌场", value: "賭場" },
+            { title: "厨房", value: "廚房" },
+            { title: "餐厅", value: "餐廳" },
+            { title: "电梯", value: "電梯" },
+            { title: "建筑工地", value: "建築工地" }
+          ],
+          value: "飯店",
+          description: "选择要浏览的分类"
+        },
+        {
+          name: "page",
+          title: "页码",
+          type: "page"
+        }
+      ]
+    },
+    // 首页分类
+    {
+      title: "首页分类",
+      description: "选择需要浏览的分类",
+      requiresWebView: false,
+      functionName: "loadPage",
+      cacheDuration: 3600,
+      params: [
+        {
+          name: "categoryType",
+          title: "📁 分类类型",
+          type: "enumeration",
+          enumOptions: [
+            { title: "最新发布", value: "/movie/new/" },
+            { title: "热门排行", value: "/best/thisweek" },
+            { title: "无码A片", value: "/menu/uncensored/5-2-" },
+            { title: "日本A片", value: "/menu/censored/5-2-" },
+            { title: "国产AV", value: "/menu/chinese/5-2-" }
+          ],
+          value: "/movie/new/"
+        },
+        {
+          name: "sort_by",
+          title: "时间范围",
+          type: "enumeration",
+          belongTo: {
+            paramName: "categoryType",
+            value: ["/best/thisweek"],
+          },
+          enumOptions: [
+            { title: "最近一周", value: "/best/thisweek" },
+            { title: "最近一月", value: "/best/thismonth" },
+            { title: "最近半年", value: "/best/thishalfyear" },
+            { title: "最近一年", value: "/best/thisyear" },
+            { title: "全部时间", value: "/best" }
+          ],
+          value: "/best/thisweek",
+          description: "选择要查看的时间范围（仅热门排行有效）"
+        },
+        {
+          name: "page",
+          title: "页码",
+          type: "page"
+        }
+      ]
+    },
+    // 出品厂商
+    {
+      title: "出品厂商",
+      description: "按出品厂商浏览影片",
+      requiresWebView: false,
+      functionName: "loadPage",
+      cacheDuration: 3600,
+      params: [
+        {
+          name: "issuer",
+          title: "选择或输入出品厂商",
+          type: "input",
+          placeholders: [
+            { 
+              title: "S1", value: "S1" 
+            },
+            { 
+              title: "SOD", value: "SOD" 
+            },
+            { 
+              title: "麻豆传媒", value: "麻豆傳媒" 
+            },
+            { 
+              title: "蚊香社", value: "蚊香社" 
+            },
+            { 
+              title: "91製片廠", value: "91製片廠" 
+            },
+            { 
+              title: "果凍傳媒", value: "果凍傳媒" 
+            },
+            { 
+              title: "抖陰", value: "抖陰" 
+            },
+            { 
+              title: "H.M.P芳友舍", value: "H.M.P 芳友舍" 
+            },
+            { 
+              title: "天美傳媒", value: "天美傳媒" 
+            },
+            { 
+              title: "蜜桃影像傳媒", value: "蜜桃影像傳媒" 
+            },
+            { 
+              title: "星空無限傳媒", value: "星空無限傳媒" 
+            },
+            { 
+              title: "精東影業", value: "精東影業" 
+            },
+            { 
+              title: "皇家華人", value: "皇家華人" 
+            },
+            { 
+              title: "桃太郎映像出版", value: "桃太郎映像出版" 
+            },
+            { 
+              title: "水晶映像", value: "水晶映像" 
+            },
+            { 
+              title: "本中", value: "本中" 
+            },
+            { 
+              title: "溜池", value: "溜池" 
+            },
+            { 
+              title: "癡女特化", value: "癡女特化" 
+            },
+            { 
+              title: "無垢", value: "無垢" 
+            },
+            { 
+              title: "熟女人妻最強廠", value: "熟女人妻最強廠" 
+            },
+            { 
+              title: "妄想族", value: "妄想族" 
+            },
+            { 
+              title: "人妻花園劇場", value: "人妻花園劇場" 
+            },
+            { 
+              title: "人妻官能AV", value: "人妻官能AV" 
+            },
+            { 
+              title: "変態紳士倶楽部", value: "変態紳士倶楽部" 
+            }
+          ],
+          value: "S1",
+          description: "选择或输入出品厂商"
+        },
+        {
+          name: "page",
+          title: "页码",
+          type: "page"
+        }
+      ]
+    }
+  ]
 };
 
-const VIDEO_PLAY_REFERER = "https://iframe.mediadelivery.net/";
-const DETAIL_FETCH_BATCH_SIZE = 5; // 每批获取详情的数量
 
-function getCommonHeaders(baseUrl) {
+const ARTIST_MAP_REMOTE_URL = "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/javrate_actors.json";
+let artistMapCache = null;
+let artistMapCacheTime = 0;
+const CACHE_DURATION = 24 * 60 * 60 * 1000;
+const BASE_URL = "https://www.javrate.com";
+
+function getCommonHeaders() {
   return {
-    "User-Agent":
-      "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
-    Referer: baseUrl
-      ? baseUrl.endsWith("/")
-        ? baseUrl
-        : baseUrl + "/"
-      : "https://www.javrate.com/",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36",
+    Referer: BASE_URL
   };
 }
 
-/**
- * 转换时间
- * @param {string} durationText
- * @returns {number|null}
- */
-function parseDurationToMinutes(durationText) {
-  if (!durationText || typeof durationText !== "string") return null;
-  const parts = durationText
-    .split(":")
-    .map((part) => parseInt(part.trim(), 10));
-
-  let totalMinutes = 0;
-
-  if (parts.some(isNaN)) return null;
-
-  if (parts.length === 3) {
-    // HH : MM : SS
-    totalMinutes = parts[0] * 60 + parts[1] + parts[2] / 60;
-  } else if (parts.length === 2) {
-    // MM : SS
-    totalMinutes = parts[0] + parts[1] / 60;
-  } else {
-    return null;
+async function fetchArtistMap() {
+  if (artistMapCache && Date.now() - artistMapCacheTime < CACHE_DURATION) {
+    return artistMapCache;
   }
-  return totalMinutes;
+  
+  try {
+    const response = await Widget.http.get(ARTIST_MAP_REMOTE_URL, {
+      headers: getCommonHeaders()
+    });
+    
+    if (!response.data) throw new Error("艺人列表返回空数据");
+    
+    artistMapCache = typeof response.data === "object" 
+      ? response.data 
+      : JSON.parse(response.data);
+    
+    if (typeof artistMapCache !== "object" || artistMapCache === null) {
+      throw new Error("艺人列表格式无效");
+    }
+    
+    artistMapCacheTime = Date.now();
+    return artistMapCache;
+    
+  } catch (error) {
+    console.error("艺人列表加载失败:", error.message);
+    throw new Error("无法加载艺人列表: " + error.message);
+  }
 }
 
-/**
- * 解析影片详情页的HTML内容。
- * @param {string} detailPageHtml - 详情页的HTML字符串。
- * @param {string} detailPageUrl - 详情页的URL，用于错误日志和ID。
- * @param {string} currentBaseUrl - 当前使用的 JAVRate 网址，用于解析相对路径。
- * @returns {object} 包含影片详细信息的对象。
- */
-function parseDetailPage(detailPageHtml, detailPageUrl, currentBaseUrl) {
-  const $ = Widget.html.load(detailPageHtml);
+async function normalizeArtistName(name) {
+  return name
+    .replace(/[\s\u3000]+/g, "")
+    .replace(/[・･]/g, "")
+    .toLowerCase()
+    .normalize("NFKC");
+}
 
-  // --- 主影片信息提取 ---
-  let title = "";
-  const titleH1 = $("h1.fw-bolder.fs-3");
-  const movieNumber = titleH1.find("label.fg-main").text().trim();
-  let movieMainTitle = "";
-  titleH1.contents().each(function () {
-    if (this.type === "text" && $(this).text().trim()) {
-      movieMainTitle += $(this).text().trim() + " ";
-    }
-  });
-  movieMainTitle = movieMainTitle.trim();
-  title = movieNumber ? `${movieNumber} ${movieMainTitle}` : movieMainTitle;
-  if (!title) {
-    title = $("title").text().split("|")[0].trim();
-  }
+
+function parseDetailPage(detailPageHtml, detailPageUrl) {
+  const $ = Widget.html.load(detailPageHtml);
+  
+  const titleH1 = $("h1.mb-2.mt-1");
+  const movieNumber = titleH1.find("strong.fg-main").text().trim();
+  const titleClone = titleH1.clone();
+  titleClone.find("strong").remove();
+  const mainTitleText = titleClone.text().trim();
+  const rawTitle = movieNumber ? `${movieNumber} ${mainTitleText}` : mainTitleText;
 
   let videoUrl = null;
-  let dPlayerPoster = null;
-  const scripts = $("script");
-  const dplayerRegex = /new DPlayer\(\s*(\{[\s\S]*?\})\s*\);/m;
-  const videoUrlRegex = /url:\s*'([^']+)'/;
-  const picRegex = /pic:\s*'([^']+)'/;
+  let imgSrc = null;
+  let description = "";
 
-  scripts.each((i, script) => {
-    const scriptContent = $(script).html();
-    if (scriptContent) {
-      const match = scriptContent.match(dplayerRegex);
-      if (match && match[1]) {
-        const dplayerConfig = match[1];
-        const videoUrlMatch = dplayerConfig.match(videoUrlRegex);
-        if (videoUrlMatch && videoUrlMatch[1]) {
-          videoUrl = videoUrlMatch[1];
-        }
-        const picMatch = dplayerConfig.match(picRegex);
-        if (picMatch && picMatch[1]) {
-          dPlayerPoster = picMatch[1].replace(/\\/g, "/");
-        }
-      }
+  try {
+    const schemaScript = $('script[type="application/ld+json"]').html();
+    if (schemaScript) {
+      const schemaData = JSON.parse(schemaScript);
+      videoUrl = schemaData.contentUrl || schemaData.embedUrl;
+      imgSrc = schemaData.thumbnailUrl;
+      description = schemaData.description || "";
     }
-  });
-
-  if (!videoUrl) {
-    videoUrl = $('section[style*="padding-top:56.25%"] iframe').attr("src");
+  } catch (e) {
+    console.error(`解析 LD+JSON schema 失败:`, e.message);
   }
 
-  const description = $(
-    ".movie-detail-main .col-xl-10.col-12.fg-light4.text-line-height"
-  )
-    .text()
-    .trim();
+  if (!videoUrl) {
+    videoUrl = $(".player-box iframe").attr("src");
+  }
 
   let releaseDate = "";
-  $("aside .row.justify-content-start.mt-4").each((i, el) => {
-    const h4Elements = $(el).find("h4");
-    if (h4Elements.length >= 2) {
-      const labelText = h4Elements.first().text().trim();
-      if (labelText.includes("发片日期")) {
-        releaseDate = h4Elements.eq(1).text().trim();
-      }
-    }
-  });
+  $('.main-content > .left h4:contains("发片日期")')
+    .next("div.col-auto")
+    .find("h4")
+    .each(function() {
+      releaseDate = $(this).text().trim();
+    });
+  
   if (releaseDate) {
     const dateMatch = releaseDate.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
     if (dateMatch) {
-      releaseDate = `${dateMatch[1]}-${dateMatch[2].padStart(
-        2,
-        "0"
-      )}-${dateMatch[3].padStart(2, "0")}`;
+      const year = dateMatch[1];
+      const month = dateMatch[2].padStart(2, '0');
+      const day = dateMatch[3].padStart(2, '0');
+      releaseDate = `${year}-${month}-${day}`;
     }
   }
 
-  let durationText = "";
-  let durationMinutes = null;
-  $("aside div.row.justify-content-start.mt-3").each((i, rowElement) => {
-    const firstColLabel = $(rowElement).find(
-      "div.col-auto:first-child label.fs-4"
-    );
-    if (firstColLabel.text().includes("播放時長")) {
-      const durationLabel = $(rowElement).find(
-        "div.col-auto:nth-child(2) label.fs-4"
-      );
-      if (durationLabel.length > 0) {
-        durationText = durationLabel.text().trim();
-        durationMinutes = parseDurationToMinutes(durationText);
-        return false;
-      }
-    }
-  });
+  if (!description) {
+    description = $(".description-text").text().trim();
+  }
 
   const tags = [];
-  $(".d-flex.flex-wrap.justify-content-start.mt-3 h3 span.badge a").each(
-    (i, el) => {
-      tags.push($(el).text().trim());
-    }
-  );
+  $("section.movie-keywords a.badge").each((idx, element) => {
+    tags.push($(element).text().trim());
+  });
   const genreTitle = tags.join(", ");
 
-  const actors = [];
-  $(".movie-actor-box .movie-actor-box-name h3 a").each((i, el) => {
-    actors.push($(el).text().trim());
-  });
-  let actorsString = actors.length > 0 ? `演员: ${actors.join(", ")}` : "";
-
-  let studio = "";
-  const studioElement = $("aside .company-tag a").first();
-  if (studioElement.length > 0) {
-    studio = studioElement.text().trim();
-  }
-  let studioString = studio ? `出品: ${studio}` : "";
-
-  let fullDescription = description;
-  if (actorsString) fullDescription += `\n\n${actorsString}`;
-  if (studioString) fullDescription += `\n${studioString}`;
-
-  let backdropPath = $(".movie-detail-bg").css("background-image");
-  if (backdropPath) {
-    backdropPath = backdropPath
-      .replace(/^url\(["']?/, "")
-      .replace(/["']?\)$/, "");
-    backdropPath = backdropPath.replace(/\\/g, "/");
+  const backdropImg = $(".fixed-background-img").attr("src");
+  if (!imgSrc) {
+    imgSrc = backdropImg;
   }
 
-  let posterPath = dPlayerPoster;
-  if (!posterPath) {
+  const relatedItems = [];
+  $("div.alike-grid-container .mgn-item").each((idx, element) => {
     try {
-      const schemaScript = $('script[type="application/ld+json"]').html();
-      if (schemaScript) {
-        const schemaData = JSON.parse(schemaScript);
-        if (schemaData && schemaData.thumbnailUrl) {
-          posterPath = schemaData.thumbnailUrl.replace(/\\/g, "/");
-        }
-      }
-    } catch (e) {
-      console.warn(
-        `parseDetailPage: Could not parse schema.org JSON-LD for posterPath on ${detailPageUrl}:`,
-        e
-      );
-    }
-  }
-  if (!posterPath && backdropPath) {
-    posterPath = backdropPath;
-  }
-
-  // --- “你可能也喜欢:” 子项目提取 ---
-  const childItems = [];
-  $('article.col-xl-7 div.row.me-2.mt-5 div[class*="col-xl-3"]').each(
-    (idx, el) => {
-      const childItem = $(el);
-      const linkElement = childItem.find(".movie-box-default > a");
+      const item = $(element);
+      const linkElement = item.find(".mgn-title a");
       const relativeLink = linkElement.attr("href");
-
       if (!relativeLink) return;
 
-      let absoluteLink = relativeLink;
-      if (relativeLink.startsWith("/")) {
-        absoluteLink = currentBaseUrl + relativeLink;
-      } else if (!relativeLink.startsWith("http")) {
-        console.warn(
-          `parseDetailPage: Unexpected relative link for child item: ${relativeLink} on page ${detailPageUrl}`
-        );
-        absoluteLink = currentBaseUrl + "/" + relativeLink;
-      }
+      const absoluteLink = relativeLink.startsWith("http")
+        ? relativeLink
+        : BASE_URL + (relativeLink.startsWith("/") ? relativeLink : "/" + relativeLink);
 
-      let childPoster = childItem
-        .find(".movie-box-default > a > img")
-        .attr("src");
+      const childImgSrc = item.find(".mgn-picture img.mgn-cover").attr("src");
 
-      const titleElement = childItem.find(".movie-box-title a").last();
-      let childTitle = titleElement.text().trim();
-      if (!childTitle) {
-        childTitle = childItem.find(".movie-box-default > a > img").attr("alt");
-      }
-      const idPart = childItem
-        .find(".movie-box-title label.fg-main a")
-        .text()
-        .trim();
-      if (!childTitle && idPart) childTitle = idPart;
+      const childTitleH = item.find(".mgn-title h5");
+      const titleClone = childTitleH.clone();
+      titleClone.find("strong").remove();
+      const mainTitle = titleClone.text().trim();
+      const number = childTitleH.find("strong").text().trim();
+      const fullTitle = `${number} ${mainTitle}`.trim();
 
-      let childReleaseDate = "";
-      const dateLabelChild = childItem.find(
-        ".d-flex.justify-content-between > label.fg-light5"
-      );
-      if (dateLabelChild.length > 0) {
-        const tempDateLabelChild = dateLabelChild.clone();
-        tempDateLabelChild.find("i").remove();
-        childReleaseDate = tempDateLabelChild.text().trim();
-        const dateParts = childReleaseDate.match(/(\d{2})\/(\d{2})\/(\d{4})/);
-        if (dateParts) {
-          childReleaseDate = `${dateParts[3]}-${dateParts[1]}-${dateParts[2]}`;
-        } else {
-          const ymdParts = childReleaseDate.match(/(\d{4})-(\d{2})-(\d{2})/);
-          if (ymdParts) {
-            childReleaseDate = `${ymdParts[1]}-${ymdParts[2]}-${ymdParts[3]}`;
-          } else {
-            childReleaseDate = "";
-          }
-        }
-      }
-
-      let childRating = "";
-      // Corrected rating extraction for child items
-      const ratingDiv = childItem
-        .find("div.d-flex.justify-content-between > div.fg-light5")
-        .first();
-      if (ratingDiv.length > 0) {
-        let ratingLabelElement = ratingDiv.find(
-          "label[style*='vertical-align:middle']"
-        );
-        if (ratingLabelElement.length === 0) {
-          // Fallback to any label in that div
-          ratingLabelElement = ratingDiv.find("label");
-        }
-        if (ratingLabelElement.length > 0) {
-          const text = ratingLabelElement.text().trim();
-          if (text) {
-            childRating = "5.0";
-          }
-        }
-      }
-
-      if (childTitle && absoluteLink) {
-        childItems.push({
+      if (fullTitle && absoluteLink) {
+        relatedItems.push({
           id: absoluteLink,
           type: "url",
-          title: childTitle,
-          posterPath: childPoster,
-          backdropPath: childPoster,
+          title: fullTitle,
+          imgSrc: childImgSrc || "",
           link: absoluteLink,
-          releaseDate: childReleaseDate || null,
-          rating: childRating || null,
           mediaType: "movie",
-          videoUrl: null,
-          description: `番号: ${idPart || "N/A"}`,
         });
       }
+    } catch (e) {
+      console.error(`解析条目出错: 第 ${idx + 1} 个条目时出错:`, e.message);
     }
-  );
+  });
 
   return {
     id: detailPageUrl,
     type: "url",
-    title: title || "详情加载中...",
+    title: rawTitle,
     videoUrl: videoUrl,
-    description: fullDescription || "暂无简介",
+    description: description || "暂无简介",
     releaseDate: releaseDate,
-    durationText: durationText,
-    duration: durationMinutes,
     genreTitle: genreTitle,
-    posterPath: posterPath,
-    backdropPath: backdropPath,
+    backdropPath: imgSrc || "",
     link: detailPageUrl,
-    childItems: childItems,
+    customHeaders: videoUrl ? { Referer: "https://iframe.mediadelivery.net/" } : undefined,
+    relatedItems: relatedItems,
   };
 }
 
-/**
- * 解析列表页面中的影片条目，并分批获取详细信息
- * @param {string} currentBaseUrl - 当前使用的 JAVRate 网址。
- * @param {CheerioAPI} $ - 列表页面的Cheerio实例。
- * @param {string} listPageUrl - 列表页面的URL。
- * @returns {Promise<Array<object>>}
- */
+
 async function parseItems(currentBaseUrl, $, listPageUrl) {
-  const allVideoItems = [];
-  const itemSelectors = [
-    '.body-container .container-fluid .row > div[class*="col-xl-2"]',
-    '.container-fluid .row > div[class*="col-xl-2"]',
-    'div.row > div[class*="col-"]',
-  ];
+  const videoItems = [];
+  const items = $('div[class^="movie-grid-new-"] .mgn-item');
 
-  let items = $(itemSelectors[0]);
-  if (items.length === 0) items = $(itemSelectors[1]);
-  if (items.length === 0) items = $(itemSelectors[2]);
-
-  console.log(
-    `parseItems: Found ${items.length} potential items on ${listPageUrl}`
-  );
-
-  const listPageItems = [];
   items.each((index, element) => {
-    const item = $(element);
-    const movieBox = item.find(".movie-box-default");
-    if (movieBox.length === 0) return;
+    try {
+      const item = $(element);
+      
+      const linkElement = item.find(".mgn-title a");
+      const relativeLink = linkElement.attr("href");
+      const titleElement = item.find(".mgn-title h3");
+      
+      if (!relativeLink || !titleElement.length) return;
 
-    const detailLinkRelative = movieBox.find("> a").attr("href");
-    let listItemPoster = movieBox.find("> a > img").attr("src");
-    if (listItemPoster) listItemPoster = listItemPoster.replace(/\\/g, "/");
+      const movieNumber = titleElement.find("strong").text().trim();
+      const movieTitle = titleElement.clone().find("strong").remove().end().text().trim();
+      const fullTitle = `${movieNumber} ${movieTitle}`.trim();
+      const absoluteLink = relativeLink.startsWith("http")
+        ? relativeLink
+        : `${currentBaseUrl}${relativeLink.startsWith("/") ? "" : "/"}${relativeLink}`;
 
-    const listItemTitleElement = item.find(".movie-box-title a");
-    let listItemTitle = listItemTitleElement.text().trim();
-    if (!listItemTitle) listItemTitle = movieBox.find("> a > img").attr("alt");
+      const imgSrc = item.find(".mgn-picture img.mgn-cover").attr("src") || "";
 
-    if (!detailLinkRelative || !listItemTitle) {
-      console.warn(
-        `parseItems: Skipping item on list page ${listPageUrl} due to missing link or title.`
-      );
-      return;
-    }
-    const detailLinkAbsolute = currentBaseUrl + detailLinkRelative;
-    const ratingFromList = item
-      .find(".d-lg-flex .fg-light5 label")
-      .text()
-      .trim(); // 列表页的评分
-    const genreFromList = item
-      .find(".movie-box-default .box-top .badge.bg-danger label")
-      .text()
-      .trim(); //列表页的分类
-
-    listPageItems.push({
-      detailLinkAbsolute,
-      listItemTitle,
-      listItemPoster,
-      ratingFromList,
-      genreFromList,
-    });
-  });
-
-  for (let i = 0; i < listPageItems.length; i += DETAIL_FETCH_BATCH_SIZE) {
-    const batch = listPageItems.slice(i, i + DETAIL_FETCH_BATCH_SIZE);
-    console.log(
-      `parseItems: Processing batch ${
-        i / DETAIL_FETCH_BATCH_SIZE + 1
-      } of ${Math.ceil(
-        listPageItems.length / DETAIL_FETCH_BATCH_SIZE
-      )} for ${listPageUrl}`
-    );
-
-    const batchPromises = batch.map(async (baseItem) => {
-      try {
-        const detailResponse = await Widget.http.get(
-          baseItem.detailLinkAbsolute,
-          {
-            headers: getCommonHeaders(currentBaseUrl),
-          }
-        );
-        if (!detailResponse || !detailResponse.data) {
-          throw new Error(
-            `No data from detail page: ${baseItem.detailLinkAbsolute}`
-          );
-        }
-        const detailData = parseDetailPage(
-          detailResponse.data,
-          baseItem.detailLinkAbsolute,
-          currentBaseUrl
-        );
-
-        return {
-          id: baseItem.detailLinkAbsolute,
-          type: "url",
-          title: detailData.title || baseItem.listItemTitle,
-          posterPath: detailData.posterPath || baseItem.listItemPoster,
-          link: baseItem.detailLinkAbsolute,
-          videoUrl: detailData.videoUrl,
-          description: detailData.description,
-          releaseDate: detailData.releaseDate,
-          rating: baseItem.ratingFromList, // 使用列表页的评分
-          genreTitle: detailData.genreTitle || baseItem.genreFromList, // 优先详情页，备选列表页
-          mediaType: "movie",
-          durationText: detailData.durationText,
-          duration: detailData.duration,
-          backdropPath: detailData.backdropPath,
-          customHeaders: detailData.videoUrl
-            ? { Referer: VIDEO_PLAY_REFERER }
-            : undefined,
-          childItems: detailData.childItems || [],
-        };
-      } catch (error) {
-        console.error(
-          `parseItems: Error fetching/parsing detail for ${baseItem.detailLinkAbsolute} (from list ${listPageUrl}):`,
-          error
-        );
-        return {
-          id: baseItem.detailLinkAbsolute,
-          type: "url",
-          title: `${baseItem.listItemTitle} (详情加载失败)`,
-          posterPath:
-            baseItem.listItemPoster ||
-            "https://placehold.co/200x300/A8D19E/F6F7F1?text=Made%5Cnby%5CnLove&font=source-sans-pro",
-          backdropPath:
-            baseItem.listItemPoster ||
-            "https://placehold.co/200x300/A8D19E/F6F7F1?text=Made%5Cnby%5CnLove&font=source-sans-pro",
-          link: baseItem.detailLinkAbsolute,
-          description: `无法加载详情: ${error.message}`,
-          mediaType: "movie",
-        };
+      let dateText = item.find(".mgn-date").clone().find("svg").remove().end().text().trim();
+      const dateMatch = dateText.match(/(\d{4})年(\d{1,2})月(\d{1,2})日/);
+      if (dateMatch) {
+        const year = dateMatch[1];
+        const month = dateMatch[2].padStart(2, '0');
+        const day = dateMatch[3].padStart(2, '0');
+        dateText = `${year}-${month}-${day}`;
       }
-    });
-    const resolvedBatchItems = await Promise.all(batchPromises);
-    allVideoItems.push(...resolvedBatchItems);
-  }
 
-  console.log(
-    `parseItems: Parsed and detailed ${allVideoItems.length} items from ${listPageUrl}`
-  );
-  return allVideoItems.filter((item) => item);
+      videoItems.push({
+        id: absoluteLink,
+        type: "url",
+        title: fullTitle,
+        backdropPath: imgSrc,
+        link: absoluteLink,
+        releaseDate: dateText || null,
+        mediaType: "movie"
+      });
+    } catch (e) {
+      console.error(`解析条目出错: ${e.message}`);
+    }
+  });
+  return videoItems;
 }
 
-/**
- * 通用列表数据获取
- * @param {string} currentBaseUrl - 当前使用的 JAVRate 网址
- * @param {string} path - 请求的路径 (例如 /movie/new/)
- * @param {object} params - 包含页码等参数的对象，page 从外部传入
- * @returns {Promise<Array<object>>}
- */
-async function fetchDataForPath(currentBaseUrl, path, params = {}) {
+
+async function fetchDataForPath(path, params = {}) {
   const page = parseInt(params.page, 10) || 1;
-  let requestUrl;
-  let basePathTrimmed = path.endsWith("/") ? path.slice(0, -1) : path;
+  let requestUrl = "";
 
-  const MENU_PATHS_PREFIX = "/menu/";
-  const DEFAULT_MENU_PAGINATION_PREFIX = "5-2-";
-  const HOT_TOP_PATHS = ["/movie/hot/", "/movie/top/"];
-
-  if (HOT_TOP_PATHS.includes(path)) {
-    requestUrl = `${currentBaseUrl}${path}`;
-    if (page > 1) {
-      requestUrl += `?page=${page}`;
-    }
-  } else if (path.startsWith(MENU_PATHS_PREFIX)) {
-    requestUrl = `${currentBaseUrl}${basePathTrimmed}/${DEFAULT_MENU_PAGINATION_PREFIX}${page}`;
-  } else {
-    if (page === 1) {
-      requestUrl = `${currentBaseUrl}${path}`;
-    } else {
-      requestUrl = `${currentBaseUrl}${basePathTrimmed}/${page}.html`;
-    }
+  if (!path || !path.startsWith("/")) {
+    path = "/" + (path || "");
   }
 
-  console.log(`fetchDataForPath: Fetching list data from URL: ${requestUrl}`);
+  if (path.includes("/actor/movie/") && path.endsWith(".html")) {
+    const artistId = path.match(/\/actor\/movie\/([^\/]+)\.html$/)?.[1];
+    if (!artistId) {
+      return [{
+        id: "artist-id-error", 
+        type: "url", 
+        title: "艺人识别错误", 
+        description: `无法从URL识别艺人ID: ${path}`, 
+        backdropPath: "", 
+        link: path 
+      }];
+    }
+    requestUrl = page > 1 
+      ? `${BASE_URL}/actor/movie/1-0-2-${page}/${artistId}.html`
+      : `${BASE_URL}${path}`;
+  }
+  else if (path.startsWith("/keywords/movie/")) {
+    requestUrl = page > 1 
+      ? `${BASE_URL}${path}?page=${page}&sort=5`
+      : `${BASE_URL}${path}`;
+  }
+  else if (path.startsWith("/Issuer/")) {
+    requestUrl = page > 1 
+      ? `${BASE_URL}${path}?page=${page}&sort=5`
+      : `${BASE_URL}${path}`;
+  }
+  else if (path.startsWith("/best/")) { 
+    const sortByPath = params.sort_by || path; 
+    requestUrl = page > 1 
+      ? `${BASE_URL}${sortByPath}?page=${page}` 
+      : `${BASE_URL}${sortByPath}`;
+  }
+  else if ([
+    "/menu/uncensored/5-2-", 
+    "/menu/censored/5-2-", 
+    "/menu/chinese/5-2-"
+  ].includes(path)) {
+    requestUrl = `${BASE_URL}${path}${page}`;
+  }
+  else if (path === "/movie/new/") {
+    requestUrl = `${BASE_URL}${path}`;
+  }
+  else {
+    const trimmedPath = path.endsWith("/") ? path.slice(0, -1) : path;
+    requestUrl = page > 1 
+      ? `${BASE_URL}${trimmedPath}/${page}.html`
+      : `${BASE_URL}${trimmedPath}`;
+  }
 
   try {
     const response = await Widget.http.get(requestUrl, {
-      headers: getCommonHeaders(currentBaseUrl),
+      headers: getCommonHeaders(),
     });
-    if (!response || !response.data) {
-      console.error(
-        `fetchDataForPath: Failed to fetch list data from ${requestUrl}, no response data.`
-      );
-      throw new Error(`无法从 ${requestUrl} 获取列表数据`);
+    
+    if (!response?.data) {
+      return [{
+        id: `${requestUrl}-error`,
+        type: "url",
+        title: "加载失败",
+        description: `服务器未返回有效数据: ${requestUrl}`,
+        backdropPath: "",
+        link: requestUrl
+      }];
+    }
+    if (response.data.includes("抱歉，没有找到")) {
+      return [{
+        id: `${requestUrl}-no-content`,
+        type: "url",
+        title: "未找到影片",
+        description: "此页面没有任何影片，请尝试其他分页或分类",
+        backdropPath: "",
+        link: requestUrl
+      }];
     }
 
     const $ = Widget.html.load(response.data);
-    return await parseItems(currentBaseUrl, $, requestUrl);
-  } catch (error) {
-    console.error(
-      `fetchDataForPath: Error fetching or parsing list data from ${requestUrl}:`,
-      error
-    );
-    return [
-      {
-        id: `error-list-${path}-${page}`,
+    const items = await parseItems(BASE_URL, $, requestUrl);
+    
+    if (items.length === 0) {
+      return [{
+        id: `${requestUrl}-empty`,
         type: "url",
-        title: `列表加载失败: ${path} (页 ${page})`,
-        description: error.message,
-        link: requestUrl,
-        posterPath:
-          "https://placehold.co/200x300/A8D19E/F6F7F1?text=Made%5Cnby%5CnLove&font=source-sans-pro",
-        backdropPath:
-          "https://placehold.co/200x300/A8D19E/F6F7F1?text=Made%5Cnby%5CnLove&font=source-sans-pro",
-      },
-    ];
-  }
-}
-
-async function getJAVRateContent(params = {}) {
-  const baseUrl = params.baseUrl || "https://www.javrate.com";
-  const categoryPath = params.categoryPath;
-  return fetchDataForPath(baseUrl, categoryPath, params);
-}
-
-async function searchJAVRate(params = {}) {
-  const baseUrl = params.baseUrl || "https://www.javrate.com";
-  const query = params.query;
-  const page = parseInt(params.page, 10) || 1;
-
-  if (!query) {
-    throw new Error("请输入搜索关键词");
-  }
-
-  let searchPath = `/Search/${encodeURIComponent(query)}`;
-  if (page === 1) {
-    searchPath += ".html";
-  } else {
-    searchPath += `/${page}.html`;
-  }
-
-  const requestUrl = baseUrl + searchPath;
-  console.log(`searchJAVRate: Searching list data from URL: ${requestUrl}`);
-
-  try {
-    const response = await Widget.http.get(requestUrl, {
-      headers: getCommonHeaders(baseUrl),
-    });
-    if (!response || !response.data) {
-      console.error(
-        `searchJAVRate: Failed to fetch search list data from ${requestUrl}, no response data.`
-      );
-      throw new Error(`无法从 ${requestUrl} 获取搜索结果列表`);
+        title: "无匹配影片",
+        description: "未找到任何影片，可能是内容已变更",
+        backdropPath: "",
+        link: requestUrl
+      }];
     }
-    const $ = Widget.html.load(response.data);
-    return await parseItems(baseUrl, $, requestUrl);
+    
+    return items;
   } catch (error) {
-    console.error(
-      `searchJAVRate: Error fetching or parsing search list data from ${requestUrl}:`,
-      error
-    );
-    return [
-      {
-        id: `error-search-list-${query}-${page}`,
-        type: "url",
-        title: `搜索列表失败: ${query}`,
-        description: error.message,
-        link: requestUrl,
-        posterPath:
-          "https://placehold.co/200x300/A8D19E/F6F7F1?text=Made%5Cnby%5CnLove&font=source-sans-pro",
-        backdropPath:
-          "https://placehold.co/200x300/A8D19E/F6F7F1?text=Made%5Cnby%5CnLove&font=source-sans-pro",
-      },
-    ];
+    console.error(`请求失败: ${requestUrl} - ${error.message}`);
+    return [{
+      id: `${requestUrl}-error`,
+      type: "url",
+      title: `加载失败: 第${page}页`,
+      description: `请求出错: ${error.message}`,
+      backdropPath: "",
+      link: requestUrl
+    }];
   }
 }
+
 
 async function loadDetail(linkValue) {
   let currentBaseUrl = "https://www.javrate.com";
-  try {
-    const urlParts = linkValue.match(/^(https?:\/\/[^/]+)/);
-    if (urlParts && urlParts[1]) {
-      currentBaseUrl = urlParts[1];
-    }
-  } catch (e) {
-    console.warn(
-      `loadDetail: Could not parse baseUrl from linkValue for loadDetail: ${linkValue}. Using default.`
-    );
+  
+  const urlMatch = linkValue.match(/^(https?:\/\/[^/]+)/);
+  if (urlMatch) {
+    currentBaseUrl = urlMatch[0];
+  } else {
+    console.warn(`loadDetail: 无法从链接 ${linkValue} 中解析baseUrl，将使用默认值`);
   }
-
-  console.log(
-    `loadDetail: loadDetail called with: ${linkValue} (using baseUrl: ${currentBaseUrl})`
-  );
+  
   try {
     const response = await Widget.http.get(linkValue, {
-      headers: getCommonHeaders(currentBaseUrl),
+      headers: getCommonHeaders(),
     });
+    
     if (!response || !response.data) {
       throw new Error("无法加载详情页面: " + linkValue);
     }
-    const detailData = parseDetailPage(
-      response.data,
-      linkValue,
-      currentBaseUrl
-    );
+    
+    const detailData = parseDetailPage(response.data, linkValue);
 
     return {
       id: linkValue,
@@ -677,29 +1277,115 @@ async function loadDetail(linkValue) {
       videoUrl: detailData.videoUrl,
       description: detailData.description,
       releaseDate: detailData.releaseDate,
-      durationText: detailData.durationText,
-      duration: detailData.duration,
       genreTitle: detailData.genreTitle,
-      posterPath: detailData.posterPath,
-      backdropPath: detailData.backdropPath,
+      backdropPath: detailData.backdropPath || "",
       link: detailData.link,
-      customHeaders: detailData.videoUrl
-        ? { Referer: VIDEO_PLAY_REFERER }
-        : undefined,
-      childItems: detailData.childItems || [],
+      customHeaders: detailData.customHeaders,
+      relatedItems: detailData.relatedItems || [],
     };
   } catch (error) {
-    console.error(`loadDetail: Error in loadDetail for ${linkValue}:`, error);
+    console.error(`loadDetail: 加载详情失败 ${linkValue}:`, error);
     return {
       id: linkValue,
       type: "url",
       title: "加载详情失败",
       description: error.message,
       link: linkValue,
-      posterPath:
-        "https://placehold.co/200x300/A8D19E/F6F7F1?text=Made%5Cnby%5CnLove&font=source-sans-pro",
-      backdropPath:
-        "https://placehold.co/200x300/A8D19E/F6F7F1?text=Made%5Cnby%5CnLove&font=source-sans-pro",
+      backdropPath: "",
     };
   }
+}
+
+
+async function loadPage(params) {
+  let path = "";
+  
+    if (params?.artistId) {
+    try {
+      const artistMap = await fetchArtistMap();
+    
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(params.artistId);
+    
+      if (!isUUID) {
+        const normalizedInput = await   normalizeArtistName(params.artistId);
+        let matchedId = null;
+        let matchedName = null;
+        let matchScore = 0;
+      
+        for (const [name, id] of  Object.entries(artistMap)) {
+          const normalizedMapName = await normalizeArtistName(name);
+        
+          if (normalizedMapName === normalizedInput) {
+            matchedId = id;
+            matchedName = name;
+            matchScore = 100;
+            break;
+          }
+        
+          if  (normalizedMapName.includes(normalizedInput)) {
+            const score = normalizedInput.length * 10;
+            if (score > matchScore) {
+              matchScore = score;
+              matchedId = id;
+              matchedName = name;
+            }
+          }
+        }
+      
+        if (!matchedId) {
+          return [{
+            id: "artist-not-found",
+            type: "url", 
+            title: "艺人未找到",
+            description: `未找到艺人: ${params.artistId}\n\n请尝试输入全名或更换艺人名称`,
+            backdropPath: "",
+            link: ""
+          }];
+        }
+      
+        params.artistId = matchedId;
+      }
+    
+      path = `/actor/movie/${params.artistId}.html`;
+    } catch (error) {
+      console.error("艺人模块处理出错:", error.message);
+      return [{
+        id: "artist-map-error",
+        type: "url",
+        title: "艺人列表加载失败",
+        description: "请检查网络连接或稍后再试\n错误信息: " + error.message,
+        backdropPath: "",
+        link: ""
+      }];
+    }
+  }
+
+  
+  else if (params && params.tagType && params.tagValue) {
+    const encodedTag = encodeURIComponent(params.tagValue);
+    path = `/keywords/movie/${encodedTag}`;
+  }
+  
+  else if (params && params.issuer) {
+    const decodedIssuer = decodeURIComponent(params.issuer);
+    const encodedIssuer = encodeURIComponent(decodedIssuer);
+    path = `/Issuer/${encodedIssuer}`;
+  }
+  
+  else if (params && params.categoryType) {
+    path = params.categoryType;
+  }
+  
+  else {
+    return [{
+      id: "param-error",
+      type: "url",
+      title: "参数配置错误",
+      description: "缺少必要参数，请检查模块配置。",
+      backdropPath: "",
+      link: ""
+    }];
+  }
+  
+  return fetchDataForPath(path, params);
 }
