@@ -13,15 +13,6 @@
       "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/movie.js"
     },
     {
-      "id": "_______6",
-      "title": "手动链接弹幕",
-      "description": "从指定播放链接和服务器获取弹幕【30% off code：CHEAP】",
-      "requiredVersion": "0.0.1",
-      "version": "v1.0.5",
-      "author": "huangxd",
-      "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/danmu_playurl.js"
-    },
-    {
       "id": "_______7",
       "title": "自动链接弹幕",
       "description": "自动获取播放链接并从服务器获取弹幕【30% off code：CHEAP】",
