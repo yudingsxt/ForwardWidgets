@@ -13,11 +13,29 @@
       "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/movie.js"
     },
     {
+      "id": "_______99",
+      "title": "御坂弹幕",
+      "description": "御坂弹幕",
+      "requiredVersion": "0.0.2",
+      "version": "v1.0.0",
+      "author": "我们是夜晚",
+      "url": "https://gist.githubusercontent.com/yudingsxt/941d4d27688949849ae5515b5a93de4a/raw/b31f407f70b70bb42dbad311b7747f8b3bed3c58/danmu.js"
+    },
+    {
+      "id": "_______98",
+      "title": "通用弹幕",
+      "description": "通用弹幕",
+      "requiredVersion": "0.0.2",
+      "version": "v0.6.1",
+      "author": "Baran",
+      "url": "https://unpkg.com/@forward-widget/danmu-universe"
+    },
+    {
       "id": "_______7",
       "title": "自动链接弹幕",
-      "description": "自动获取播放链接并从服务器获取弹幕【30% off code：CHEAP】",
-      "requiredVersion": "0.0.1",
-      "version": "v1.0.11",
+      "description": "自动获取播放链接并从服务器获取弹幕",
+      "requiredVersion": "0.0.2",
+      "version": "v1.0.22",
       "author": "huangxd",
       "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/danmu_auto.js"
     },
@@ -65,6 +83,24 @@
       "version": "v2.1.0",
       "author": "Ti",
       "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/JAVRate.js"
+    },
+    {
+      "id": "91porn_97",
+      "title": "91Porn",
+      "description": "91Porn",
+      "requiredVersion": "0.0.1",
+      "version": "v0.10.1",
+      "author": "Baran",
+      "url": "https://unpkg.com/@forward-widget/nsfw/91porn"
+    },
+    {
+      "id": "xvideos_96",
+      "title": "XVideos",
+      "description": "XVideos",
+      "requiredVersion": "0.0.1",
+      "version": "v0.10.1",
+      "author": "Ti",
+      "url": "https://unpkg.com/@forward-widget/nsfw/xvideos"
     },
     {
       "id": "missav_27",
