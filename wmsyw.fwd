@@ -10,7 +10,16 @@
       "requiredVersion": "0.0.1",
       "version": "v1.3.2",
       "author": "阿米诺斯",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/movie.js"
+      "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/combined.js"
+    },
+    {
+      "id": "zhuijurili",
+      "title": "追剧日历(今/明日播出、各项榜单、今日推荐)",
+      "description": "解析追剧日历今/明日播出剧集/番剧/国漫/综艺、各项榜单、今日推荐等",
+      "requiredVersion": "0.0.1",
+      "version": "1.0.4",
+      "author": "huangxd",
+      "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/zhuijurili.js"
     },
     {
       "id": "_______99",
@@ -46,7 +55,7 @@
       "requiredVersion": "0.0.1",
       "version": "v1.1.7",
       "author": "两块",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/%E7%83%AD%E9%97%A8%E7%B2%BE%E9%80%89.js"
+      "url": "https://raw.githubusercontent.com/2kuai/ForwardWidgets/refs/heads/main/Widgets/HotPicks.js"
     },
     {
       "id": "imdb______v2_10",
@@ -55,7 +64,7 @@
       "requiredVersion": "0.0.1",
       "version": "v2.0.0",
       "author": "Autism",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/IMDb%20%E5%88%86%E7%B1%BB%E8%B5%84%E6%BA%90%20v2.js"
+      "url": "https://raw.githubusercontent.com/opix-maker/Forward/refs/heads/main/js/IMDb.js"
     },
     {
       "id": "jable_22",
