@@ -13,7 +13,7 @@
  *
  */
 WidgetMetadata = {
-  id: "forward.auto.danmu_api",
+  id: "forward.auto.danmuapi",
   title: "LogVar弹幕1",
   version: "1.0.0",
   requiredVersion: "0.0.2",
