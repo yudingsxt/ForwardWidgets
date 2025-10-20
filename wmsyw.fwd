@@ -33,8 +33,8 @@
     {
       "id": "_______9999",
       "title": "LogVar弹幕1",
-      "description": "LogVar弹幕",
-      "requiredVersion": "0.0.2"1,
+      "description": "LogVar弹幕1",
+      "requiredVersion": "0.0.2",
       "version": "v1.0.0",
       "author": "我们是夜晚",
       "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/danmuapi.js"
