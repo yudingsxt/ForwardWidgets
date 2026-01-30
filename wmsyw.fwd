@@ -22,18 +22,9 @@
       "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/zhuijurili.js"
     },
     {
-      "id": "_______999",
+      "id": "_______9999",
       "title": "LogVar弹幕",
       "description": "LogVar弹幕",
-      "requiredVersion": "0.0.2",
-      "version": "v1.0.0",
-      "author": "我们是夜晚",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/danmuapi.js"
-    },
-    {
-      "id": "_______9999",
-      "title": "LogVar弹幕1",
-      "description": "LogVar弹幕1",
       "requiredVersion": "0.0.2",
       "version": "v1.0.0",
       "author": "我们是夜晚",
