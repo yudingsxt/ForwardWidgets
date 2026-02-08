@@ -40,15 +40,6 @@
       "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/vod.js"
     },
     {
-      "id": "ti.ddys.vod.maccms",
-      "title": "DDYS",
-      "description": "获取低端影视数据",
-      "requiredVersion": "0.0.1",
-      "version": "1.1.0",
-      "author": "Ti",
-      "url": "https://raw.githubusercontent.com/2kuai/ForwardWidgets/refs/heads/main/Widgets/ddys.js"
-    },
-    {
       "id": "live",
       "title": "直播(电视+网络)",
       "description": "解析直播订阅链接",
