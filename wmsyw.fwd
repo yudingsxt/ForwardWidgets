@@ -22,22 +22,13 @@
       "url": "https://raw.githubusercontent.com/huangxd-/ForwardWidgets/refs/heads/main/widgets/zhuijurili.js"
     },
     {
-      "id": "_______9999",
+      "id": "_______99991",
       "title": "LogVar弹幕",
       "description": "LogVar弹幕",
       "requiredVersion": "0.0.2",
       "version": "v1.0.0",
       "author": "我们是夜晚",
       "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/danmu_api.js"
-    },
-    {
-      "id": "_______99",
-      "title": "御坂弹幕",
-      "description": "御坂弹幕",
-      "requiredVersion": "0.0.2",
-      "version": "v1.0.0",
-      "author": "我们是夜晚",
-      "url": "https://gist.githubusercontent.com/yudingsxt/941d4d27688949849ae5515b5a93de4a/raw/b31f407f70b70bb42dbad311b7747f8b3bed3c58/danmu.js"
     },
     {
       "id": "_______98",
@@ -74,60 +65,6 @@
       "version": "v2.0.0",
       "author": "Autism",
       "url": "https://raw.githubusercontent.com/opix-maker/Forward/refs/heads/main/js/IMDb.js"
-    },
-    {
-      "id": "jable_22",
-      "title": "Jable",
-      "description": "获取 Jable 视频",
-      "requiredVersion": "0.0.1",
-      "version": "v1.0.9",
-      "author": "nibiru",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Jable.js"
-    },
-    {
-      "id": "javday_25",
-      "title": "JAVDay",
-      "description": "获取 JAVDay 推荐",
-      "requiredVersion": "0.0.1",
-      "version": "v1.1.0",
-      "author": "Ti",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/JAVDay.js"
-    },
-    {
-      "id": "javrate_26",
-      "title": "JAVRate",
-      "description": "获取 JAVRate 推荐",
-      "requiredVersion": "0.0.1",
-      "version": "v2.1.0",
-      "author": "Ti",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/JAVRate.js"
-    },
-    {
-      "id": "91porn_97",
-      "title": "91Porn",
-      "description": "91Porn",
-      "requiredVersion": "0.0.1",
-      "version": "v0.10.1",
-      "author": "Baran",
-      "url": "https://unpkg.com/@forward-widget/nsfw/91porn"
-    },
-    {
-      "id": "xvideos_96",
-      "title": "XVideos",
-      "description": "XVideos",
-      "requiredVersion": "0.0.1",
-      "version": "v0.10.1",
-      "author": "Ti",
-      "url": "https://unpkg.com/@forward-widget/nsfw/xvideos"
-    },
-    {
-      "id": "missav_27",
-      "title": "MissAV",
-      "description": "获取 MissAV 推荐",
-      "requiredVersion": "0.0.1",
-      "version": "v1.0.0",
-      "author": "𝓑𝓾𝓽𝓽𝓮𝓻𝓯𝓵𝔂",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/MissAV.js"
     }
   ]
 }
