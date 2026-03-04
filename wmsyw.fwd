@@ -4,15 +4,6 @@
   "icon": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/icon/icon2.PNG",
   "widgets": [
     {
-      "id": "_____0",
-      "title": "影视榜单",
-      "description": "聚合豆瓣、TMDB、IMDB和Bangumi的影视动画榜单",
-      "requiredVersion": "0.0.1",
-      "version": "v1.3.2",
-      "author": "阿米诺斯",
-      "url": "https://raw.githubusercontent.com/pack1r/ForwardWidgets/refs/heads/main/widgets/combined.js"
-    },
-    {
       "id": "zhuijurili",
       "title": "追剧日历(今/明日播出、各项榜单、今日推荐)",
       "description": "解析追剧日历今/明日播出剧集/番剧/国漫/综艺、各项榜单、今日推荐等",
