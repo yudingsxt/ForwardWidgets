@@ -29,42 +29,6 @@
       "version": "2.1.0",
       "author": "Ti",
       "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/javrate.js"
-    },
-    {
-      "id": "ti.bemarkt.vod.maccms",
-      "title": "VOD",
-      "description": "获取 VOD 影视数据",
-      "requiredVersion": "0.0.1",
-      "version": "1.1.0",
-      "author": "Ti",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/vod.js"
-    },
-    {
-      "id": "live",
-      "title": "直播(电视+网络)",
-      "description": "解析直播订阅链接",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.8",
-      "author": "huangxd",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/live.js"
-    },
-    {
-      "id": "movie_paradise",
-      "title": "在线影院",
-      "description": "获取在线电影、电视剧、动漫、综艺和短剧",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.0",
-      "author": "两块",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/zxyy.js"
-    },
-    {
-      "id": "tv_live",
-      "title": "电视台",
-      "description": "获取热门电视直播频道",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.1",
-      "author": "两块",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/tvlive.js"
     }
   ]
 }
