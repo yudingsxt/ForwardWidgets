@@ -4,15 +4,6 @@
   "icon": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/icon/icon1.PNG",
   "widgets": [
     {
-      "id": "jable",
-      "title": "Jable",
-      "description": "获取 Jable 视频",
-      "requiredVersion": "0.0.1",
-      "version": "1.0.9",
-      "author": "nibiru",
-      "url": "https://raw.githubusercontent.com/yudingsxt/ForwardWidgets/refs/heads/main/Widgets/jable.js"
-    },
-    {
       "id": "ti.bemarkt.javday",
       "title": "JAVDay",
       "description": "获取 JAVDay 推荐",
